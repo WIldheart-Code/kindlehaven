@@ -83,7 +83,7 @@ Three gold-only upgrade spaces sit around the plaza: comfort (supplies last long
 ![The Hero screen](assets/help/hero.jpg)
 - **Hero levels** come from gathering, building, selling and fighting, and add damage and health.
 - **Personal blacksmith upgrades:** the **Crystal Pick** (to mine crystal) and **ranged weapons** (below). Axes, packs, boots, weapons and armour are crafted at the forge (see Crafting). In co-op each player has their own.
-- **The Hero screen** (cog → Hero): your 3D hero in their gear, equipment slots, an inventory of everything you own (tap an item to see it or equip it), plus Forge, Pet, Stats, Town and Relics tabs, and your name and coat colour.
+- **The Hero screen** (cog → Hero): your 3D hero in their gear, equipment slots, your Gear and your Materials listed separately (tap an item to see it or equip it), plus Pet, Stats, Town and Relics tabs, and your name and coat colour.
 - New gear is equipped automatically when it's better than what you have.
 
 ## Crafting
@@ -94,7 +94,8 @@ Three gold-only upgrade spaces sit around the plaza: comfort (supplies last long
   - **Shaggy Pelt, Beast Sinew:** yetis, wraiths, golems, raptors, sabre tigers (rare).
   - **Dragon Scale, Ancient Sinew:** mammoths, T-rexes, dragons (very rare).
   - Camp legends drop three times as often and give extra. In co-op, materials from your kills go to you.
-- **The forge:** stand by the blacksmith and tap **⚒ Forge** (or cog → Hero → Forge). The first time, a short guide explains how it works. Logs, stone and crystal come from your pack; gold from your wallet. Each item lists what it needs and how much you have.
+- **The forge:** stand by the blacksmith and tap **⚒ Forge** to open the forge window. The first time, a short guide explains how it works. Recipes are grouped into tabs: **Weapons, Armour, Tools** (axes, packs, boots), **Special, Town** (supplies) and **Salvage**. A green number on a tab shows how many recipes there you can afford. Each recipe shows a picture of the item.
+- Forged gear is equipped on your hero straight away and listed under **Gear** on the Hero screen. Logs, stone and crystal come from your pack; gold from your wallet. Each item lists what it needs and how much you have.
 - **New recipe alerts:** when a recipe becomes available (a Town Hall or castle upgrade, a special earned, a scroll found), a banner tells you and the Forge button shows **NEW** until you open it.
 - **Recipes reveal as your town grows:** the forge only shows what your Town Hall allows. New recipes appear with each Town Hall upgrade, rare gear at **Castle I** and legendary gear at **Castle II**. The forge tells you when the next ones unlock.
 - **What you can craft**, one tier at a time:
@@ -132,7 +133,7 @@ Three gold-only upgrade spaces sit around the plaza: comfort (supplies last long
   - **Tower Runes I–III** (Town Hall II): +20% tower damage each.
   - **Warding Totem I–II** (Town Hall III): towers shoot 3 m farther each.
 - **Salvage:** break down gear you own (weapon, armour, ranged weapons, helmets, capes) for half its gold and materials back; logs, stone and crystal come back as gold. Salvaging a weapon or armour drops you one tier.
-- Materials are shown on the Forge tab, grouped into **Hides, Sinew, Gems and Magic**, each with its own icon (also used in recipe costs), and in your Hero inventory.
+- Materials are shown at the top of the forge, grouped into **Hides, Sinew, Gems and Magic**, each with its own icon (also used in recipe costs). The Hero screen lists your **Gear** and your **Materials** separately.
 
 ## Ranged weapons
 A ranged weapon fires on its own at the nearest threat in range, alongside your axes. **Hunting Bow** (12 m), **Crossbow** (Town Hall II) and **Rifle** (Town Hall III) are forged at the blacksmith. Magic staffs come from treasure: the **Frost Staff** slows, the **Fire Staff** explodes, and the **Storm Staff** throws lightning that jumps to two more foes.
