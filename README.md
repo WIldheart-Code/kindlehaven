@@ -134,7 +134,8 @@ Three gold-only upgrade spaces sit around the plaza: comfort (supplies last long
   - **Tower Runes I–III** (Town Hall II): +20% tower damage each.
   - **Warding Totem I–II** (Town Hall III): towers shoot 3 m farther each.
 - **Smelt & Brew:** a forge tab with a **smelter** and a **pot**. Tap ingredients (logs, stone, crystal, meat from your pack, or any material) to put up to six in, then **Fire the smelter** or **Stir the pot**.
-  - The right mix makes a new material. A wrong mix gives junk (Slag or Gunk, sell it for 2 gold each) or is simply lost.
+  - The right mix makes a new material. A wrong mix gives junk (Slag or Gunk, sell it for 2 gold each) or burns away, but **half of any metal, gem, magic, alloy or brewed material comes back**; only hides, sinew and resources are lost.
+  - **Alloys:** smelting any metal together with a gem or magic material always fuses into an alloy named after the rarest one you added (Frost, Spirit, Moon, Ember, Void or Heartfire Alloy). Better metal and more of it give more alloy. Each alloy unlocks a Special item (rivets, a band, a guard, gauntlets, an amulet and the legendary Heartfire Core).
   - Recipes are secret until you discover them. Once you've made something, its recipe is saved under **Known recipes** with **Make 1** and **Make 5** buttons. Mixes you've already tried that didn't work are flagged so you don't waste ingredients twice.
   - Everyone knows how to smelt **Iron Ingots** (3 stone, 2 logs). Steel, Runesteel, other metals and brewed materials such as tallow, glue, leather, oils and draughts are yours to find. Some need a hotter forge (a higher Town Hall).
   - Brewed materials unlock more **Special** items, shown once you've discovered what they need.
