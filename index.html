@@ -3925,6 +3925,15 @@ const BREWS = [
   { v: 'pot', in: { nightshade: 2, berries: 1 }, out: 'p_poison', n: 2 },
 ];
 const BREW_MAX = 6;
+// what each made material is for (potions describe their own effect)
+const MAT_USE = {
+  iron: 'Metal for Iron Mail, the Ember Cleaver, Axe III and Iron Wall Braces', steel: 'Metal for Runic Plate, higher weapons, Axe IV and alloys', runesteel: 'Top metal for the best weapons and armour',
+  moonsteel: 'Rare metal for the Moonsteel Edge', dragonsteel: 'Rare metal for the Dragonsteel Aegis', frostglass: 'Glass for the Moonsteel Edge and Dragonsteel Aegis',
+  tallow: 'Wax for Waxed Boots and Ember Oil', glue: 'Binds hides into Hardened Leather; used in Leather Padding', leather: 'Tough leather for padding, boots, rivets and guards',
+  emberoil: 'Oil for the Ember-Oiled Edge (+15% damage)', draught: 'Spirit Draught: makes the Spirit Elixir and Spirit Band', heartbrew: 'Heartfire Brew: makes the legendary Heartfire Core',
+  a_frostgem: 'Alloy for Frost-Alloy Rivets (+30 health)', a_moonsilver: 'Alloy for the Moon-Alloy Guard and Spirit Band', a_emberruby: 'Alloy for Ember-Alloy Gauntlets (+12% damage)', a_voidopal: 'Alloy for the Void-Alloy Amulet and Heartfire Core',
+};
+const matUse = k => POTIONS[k] ? POTIONS[k].d : MAT_USE[k] || 'Crafting material';
 // any smelter mix of metal with a gem or magic material fuses into an alloy named after the rarest one
 const METALS = ['iron', 'steel', 'runesteel', 'moonsteel', 'dragonsteel'], RARE_ORDER = ['voidopal', 'emberruby', 'moonsilver', 'frostgem'];
 // the smelter takes stone, crystal, metal, gems and glass; the pot takes food, hides, sinew, forage, magic and anything brewed
@@ -3993,10 +4002,10 @@ function brewHtml(near) {
     + `<div style="display:flex;gap:6px;margin-top:6px"><button type="button" data-bfire="1" ${brewUnits() && near && canAfford(brewSel) ? '' : 'disabled'}>${brewV === 'smelter' ? 'Fire the smelter' : 'Stir the pot'}</button><button type="button" class="salv" data-bclear="1" ${brewUnits() ? '' : 'disabled'}>Empty</button></div></div>`;
   const ing = brewIngredients();
   h += '<h3>Your ingredients</h3>' + (ing.length ? '<div class="mats">' + ing.map(k => { const have = MATS[k] ? S.mats[k] : carry[k].length, left = have - (brewSel[k] || 0);
-    return `<span data-badd="${k}" style="cursor:pointer;${left > 0 && brewUnits() < BREW_MAX ? '' : 'opacity:.4'}">${ingPic(k, 18)}<b>${left}</b> ${ingName(k)}</span>`; }).join('') + '</div>' : '<p>Carry logs, stone, crystal or meat in your pack, or gather materials.</p>');
+    return `<span data-badd="${k}" style="cursor:pointer;${left > 0 && brewUnits() < BREW_MAX ? '' : 'opacity:.4'}">${ingPic(k, 18)}<b>${left}</b> ${ingName(k)}</span>`; }).join('') + '</div>' : '<p>' + (brewV === 'smelter' ? 'Carry stone or crystal in your pack, or bring metal and gems.' : 'Carry food in your pack, or bring hides, sinew, forage and magic materials.') + '</p>');
   const mine = knownBrews().map(recipeOf).filter(b => b && b.v === brewV), left = BREWS.filter(b => b.v === brewV && !knownBrews().includes(b.key)).length;
   h += '<h3>Known recipes</h3>' + (mine.length ? mine.map(b => { const ok = S.th >= (b.th || 1);
-    return fRow(matSvg(b.out, 44), MATS[b.out] + (b.n > 1 ? ' ×' + b.n : ''), '', '', ok ? '' : 'Needs Town Hall ' + ROMAN[b.th], costChips(b.in),
+    return fRow(matSvg(b.out, 44), MATS[b.out] + (b.n > 1 ? ' ×' + b.n : ''), '', '', matUse(b.out) + (ok ? '' : ' · needs Town Hall ' + ROMAN[b.th]), costChips(b.in),
       `<span style="display:flex;flex-direction:column;gap:4px"><button type="button" data-bmake="${b.key}|1" ${ok && near && canAfford(b.in) ? '' : 'disabled'}>Make 1</button><button type="button" data-bmake="${b.key}|5" ${ok && near && canAfford(timesCost(b.in, 5)) ? '' : 'disabled'}>Make 5</button></span>`); }).join('') : '<p>None yet.</p>')
     + '<p>' + (left ? left + ' more ' + brewV + ' recipe' + (left > 1 ? 's' : '') + ' to discover. Experiment!' : 'You know every ' + brewV + ' recipe.') + '</p>';
   const junk = ((S.mats || {}).slag || 0) + ((S.mats || {}).gunk || 0);
@@ -4328,7 +4337,7 @@ function heroItems() {
   (S.rangedOwn || []).forEach(i => inv.push({ svg: pic('ranged', i, icon('ranged', i)), name: RANGED[i].n, on: S.rangedOn === i, eq: S.rangedOn === i, act: 'ranged:' + i, info: (RANGED[i].dmg * rangedMul()).toFixed(1) + ' damage, ' + RANGED[i].rng + ' m range. Tap to carry.' }));
   ['helm', 'cape'].forEach(sl => (W[sl] || []).filter(i => i).forEach(i => inv.push({ svg: pic(sl, i, icon(sl, i)), name: LOOKS[sl][i], on: (wear[sl] || 0) === i, eq: (wear[sl] || 0) === i, act: 'wear:' + sl + ':' + i, info: 'Tap to wear (tap again to take off).' })));
   const mats = [];
-  MAT_GROUPS.forEach(([g, ks]) => ks.forEach(k => { if ((S.mats || {})[k] > 0) mats.push({ svg: matSvg(k, 48).replace('class="mi" ', ''), name: MATS[k], count: S.mats[k], act: POTIONS[k] ? 'drink:' + k : undefined, info: POTIONS[k] ? POTIONS[k].d + '. Tap again to ' + (POTIONS[k].verb || 'drink it').toLowerCase() + '.' : g + ' · crafting material. Use it at the forge.' }); }));
+  MAT_GROUPS.forEach(([g, ks]) => ks.forEach(k => { if ((S.mats || {})[k] > 0) mats.push({ svg: matSvg(k, 48).replace('class="mi" ', ''), name: MATS[k], count: S.mats[k], act: POTIONS[k] ? 'drink:' + k : undefined, info: POTIONS[k] ? POTIONS[k].d + '. Tap again to ' + (POTIONS[k].verb || 'drink it').toLowerCase() + '.' : g + ' · ' + (MAT_USE[k] ? MAT_USE[k] + '.' : 'crafting material. Use it at the forge.') }); }));
   if (S.medkits) inv.push({ svg: pic('medkit', 0, icon('medkit')), name: 'Med kit', count: S.medkits, info: 'Stand by a downed teammate to revive them.' });
   ensureOwn();
   S.ownA.slice().sort((a, b) => b - a).forEach(t => inv.unshift({ svg: itemPic('armor', t), name: ARMORS[t].n, on: S.armorLv === t, eq: S.armorLv === t, act: 'eqa:' + t, info: 'Armour: take ' + Math.round(ARMORS[t].a * 100) + '% less damage. ' + (S.armorLv === t ? 'Equipped.' : 'Tap to wear it.') }));
