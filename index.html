@@ -2877,7 +2877,7 @@ const FORAGE = {
   frostmint: { n: 'Frostmint', food: 0, col: 0x7fe0c8, r0: 30, r1: 800, count: 70, regrow: 200, near: 25 },
   nightshade: { n: 'Nightshade', food: 0, col: 0x6a3a8a, r0: 80, r1: 900, count: 45, regrow: 260 },
   emberroot: { n: 'Ember Root', food: 0, col: 0xff6a2a, r0: 110, r1: 1000, count: 45, regrow: 260 },
-  shard: { n: 'Ice shards', food: 0, col: 0x9fe8ff, r0: 0, r1: 0, count: 0, regrow: 480 },
+  shard: { n: 'Ice shards', food: 0, col: 0x9fe8ff, r0: 0, r1: 0, count: 0, regrow: 900 },
   moonpetal: { n: 'Moonpetal', food: 0, col: 0xdfe6ff, r0: 190, r1: 1120, count: 35, regrow: 360 },
 };
 const plants = [];
@@ -2899,7 +2899,7 @@ function makePlant(k) {
 }
 function spawnForage() {
   const R = outerRing();
-  for (const [x, z] of DECOR_SHARDS) { if (onLake(x, z, 1) || (R && inSquare(x, z, R.h + 2))) continue; const g = makePlant('shard'); g.position.set(x, 0, z); g.rotation.y = rand(0, TAU); scene.add(g); plants.push({ k: 'shard', x, z, g, alive: true, respawn: 0 }); }
+  for (const [x, z] of DECOR_SHARDS) { if (onLake(x, z, 1) || (R && inSquare(x, z, R.h + 2)) || Math.hypot(x - C.x, z - C.z) < 90 || Math.random() > 0.12)  /* rare: about one in eight crystal spots, none right by town */ continue; const g = makePlant('shard'); g.position.set(x, 0, z); g.rotation.y = rand(0, TAU); scene.add(g); plants.push({ k: 'shard', x, z, g, alive: true, respawn: 0 }); }
   for (const [x, z] of DECOR_BERRIES) { if (onLake(x, z, 1) || (R && inSquare(x, z, R.h + 2))) continue; const g = makePlant('berries'); g.position.set(x, 0, z); g.rotation.y = rand(0, TAU); scene.add(g); plants.push({ k: 'berries', x, z, g, alive: true, respawn: 0 }); }
   for (const k in FORAGE) { const F = FORAGE[k], near = F.near || 0;
     for (let i = 0, tries = 0; i < F.count + near && tries < (F.count + near) * 20; tries++) {
