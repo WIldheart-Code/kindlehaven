@@ -111,6 +111,7 @@ html,body{height:100%;margin:0;background:var(--ice);color:var(--ink);overflow:h
 .craft .brewin{background:#fff3e6;border:2px dashed #c07a12;border-radius:12px;padding:10px;margin:6px 0}.craft .brewin>b{display:block;font:15px var(--display);color:#5a3a10;margin-bottom:4px}.craft .brewin button{flex:1;border:0;border-radius:9px;padding:10px;font:14px var(--display);background:#c0531a;color:#fff;cursor:pointer}.craft .brewin button.salv{flex:0 0 auto;background:#8a96a8}.craft .brewin button:disabled{background:#aab4c2}.craft .warn{color:#a3271b;font:800 12px var(--body);margin:4px 0}
 .craft .fhero{display:block;width:100%;margin:0 0 8px;border:0;border-radius:10px;padding:9px;font:15px var(--display);background:#2b4a74;color:#fff;cursor:pointer}.craft .row.mini{padding:4px 8px;opacity:.75}.craft .row.mini .pic{flex-basis:32px;height:32px}.craft .row.mini .pic img,.craft .row.mini .pic svg{width:30px;height:30px}.craft .tagx{font:800 11px var(--body);color:#5a6b80;background:#dfe6f0;border-radius:8px;padding:4px 8px;white-space:nowrap}.craft .tagx.eq{background:#3f8a5a;color:#fff}.craft .clab{display:block;font:800 11px var(--body);color:#5a6b80;margin-top:4px}
 .slot em.eq{position:absolute;top:3px;left:3px;font:800 9px var(--body);font-style:normal;background:#3f8a5a;color:#fff;border-radius:6px;padding:1px 4px}
+.craft details summary{cursor:pointer;font:800 12px var(--body);color:#2b4a74;margin-top:3px;list-style:none}.craft details summary::-webkit-details-marker{display:none}.craft details summary::before{content:'▸ '}.craft details[open] summary::before{content:'▾ '}
 .craft .mats{display:flex;flex-wrap:wrap;gap:4px}.craft .mats span{display:inline-flex;align-items:center;gap:4px;background:#f4f7fb;color:#2b4a74;border:1px solid #dfe6f0;border-radius:8px;padding:3px 8px 3px 4px;font:800 12px var(--body)}.craft .mats span b{color:#1d2128}.craft .mgrp{display:flex;gap:8px;align-items:flex-start;margin:4px 0}.craft .mgrp>i{flex:0 0 54px;font:800 10px var(--body);font-style:normal;text-transform:uppercase;color:#8a96a8;padding-top:7px}.craft .cost span{display:inline-flex;align-items:center;gap:3px}.mi{flex:none;vertical-align:middle}.craft p{font:800 12px var(--body);color:#5a6b80;margin:6px 0}
 #tameBtn{position:fixed;z-index:8;left:50%;transform:translateX(-50%);bottom:calc(78px + env(safe-area-inset-bottom,0px));border:2px solid #fff;background:#3f8a5a;color:#fff;font:17px/1 var(--display);letter-spacing:.04em;padding:14px 20px;border-radius:14px;box-shadow:0 6px 18px rgba(0,0,0,.3);cursor:pointer;white-space:nowrap}
 #chipMenu{position:fixed;z-index:9;display:flex;flex-direction:column;gap:6px;background:var(--panel);border:1px solid var(--panel-line);border-radius:12px;padding:7px}
@@ -2832,6 +2833,7 @@ $('forgeBtn').addEventListener('click', e => { e.stopPropagation(); showForge();
 $('closeForge').addEventListener('click', e => { e.stopPropagation(); $('forge').hidden = true; });
 $('forgeBody').addEventListener('click', e => {
   e.stopPropagation();
+  const dk = e.target.closest('summary[data-dk]'); if (dk) { const k = dk.dataset.dk; if (dk.parentElement.open) openDetails.delete(k); else openDetails.add(k); return; }
   if (e.target.closest('[data-ftut]')) { S.forgeSeen = true; savePersonal(); return showForge(); }
   if (e.target.closest('[data-fhero]')) { $('forge').hidden = true; heroTab = 'gear'; heroPick = null; return showStats(); }
   const ft = e.target.closest('[data-ftab]'); if (ft) { forgeTab = ft.dataset.ftab; return showForge(); }
@@ -3973,7 +3975,10 @@ function doSmelt(id, n) {
   payCost(c); gainMats({ [id]: n }, player.x, player.z); play('hammer'); savePersonal();
 }
 let forgeTab = 'weapon';
-const fRow = (img, name, tag, cls, desc, body, btn) => `<div class="row${cls ? ' ' + cls : ''}"><span class="pic">${img}</span><div><b>${name}${tag ? ' <em>' + tag + '</em>' : ''}</b>${desc}${body}</div>${btn}</div>`;
+// costs and ingredients stay folded away until the player taps Details (remembered while the forge is open)
+const openDetails = new Set();
+const fRow = (img, name, tag, cls, desc, body, btn) => { const k = String(name).replace(/<[^>]*>/g, '').replace(/"/g, '');
+  return `<div class="row${cls ? ' ' + cls : ''}"><span class="pic">${img}</span><div><b>${name}${tag ? ' <em>' + tag + '</em>' : ''}</b>${desc}${body ? `<details${openDetails.has(k) ? ' open' : ''}><summary data-dk="${k}">Details</summary>${body}</details>` : ''}</div>${btn}</div>`; };
 function showForge() {
   $('forgeBtn').classList.remove('new');
   const near = nearForge(), M = S.mats || {}, owned = Object.keys(MATS).filter(k => M[k] > 0);
