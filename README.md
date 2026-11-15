@@ -23,6 +23,9 @@ Open `index.html` in a browser. There is no build step; three.js r128 loads from
 - **Housing:** each house holds 4; **Bunk Beds** (Town Hall II) raise that to 7 and **Stone Lofts** (Town Hall III) to 10; each Town Hall and Castle level adds more. Workers and guards live in their lodges and barracks, so they don't take beds.
 
 ## Food sources
+All food counts as one resource, **food** (the bowl counter): meat you hunt, veggies you grow, fish and fruit and roots you forage all fill it and feed the town at the cookhouse.
+- **Foraging:** berry bushes (red berries, 2 food) and wild roots (orange tops, 3 food) grow all over the wilds; walk into one to pick it. Each also gives the plant as an ingredient (Snowberries, Wild Roots). They grow back after a few minutes.
+- **Herbs** grow in the wilds too: **Frostmint** (pale green, everywhere), **Nightshade** (purple, 80 m and out), **Ember Root** (orange, 110 m and out) and **Moonpetal** (white, rare, 190 m and out). They're potion ingredients, not food.
 - **Rabbits** (1 food) and **deer** (2–3 food) graze in large numbers around the settlement.
 - **Yaks** (5–6 food) and **boars** (5–6 food, they charge back when hurt) keep to the far meadows, 130 m and more out. **Eagles** circle the far meadows too.
 - **Garden** (after the cookhouse): veggies pile up beside it, fastest in summer.
@@ -70,6 +73,7 @@ At **Castle III** the final battles begin: each night brings a **dragon siege** 
 ## Workers
 - **Loggers, hunters, stonecutters and miners** gather on their own and stack what they collect on a pile beside their lodge. Stand on a pile to load your pack. Piles hold 80, or 300 after the Warehouse.
 - **Hunters** stay near the settlement and hunt rabbits and deer.
+- **Gatherers** (hire them by the garden once it's built) pick berries, roots and herbs within about 130 m of town. Food goes to the cookhouse; the fruit and herbs go into the **town chest** for anyone to use.
 - **Tap a pile's label** to lock it (a padlock shows): haulers won't take from a locked pile, so you can save it for building. Tap again to unlock.
 - **Haulers** carry logs to the firewood stall and food to the cookhouse, serving whichever meter is lower first.
 - **Menders** walk the walls and repair damaged sections.
@@ -136,12 +140,18 @@ Three gold-only upgrade spaces sit around the plaza: comfort (supplies last long
   - **Iron Wall Braces I–III** (Town Hall II): +20% wall health each.
   - **Tower Runes I–III** (Town Hall II): +20% tower damage each.
   - **Warding Totem I–II** (Town Hall III): towers shoot 3 m farther each.
-- **Smelt & Brew:** a forge tab with a **smelter** and a **pot**. Tap ingredients (logs, stone, crystal, meat from your pack, or any material) to put up to six in, then **Fire the smelter** or **Stir the pot**.
+- **Smelt & Brew:** a forge tab with a **smelter** and a **pot**. The **smelter** takes stone, crystal, metal, alloys, gems and glass; the **pot** takes food, hides, sinew, forage (fruit, roots, herbs), magic materials and anything already brewed. Tap ingredients to put up to six in, then **Fire the smelter** or **Stir the pot**.
   - The right mix makes a new material. A wrong mix gives junk (Slag or Gunk, sell it for 2 gold each) or burns away, but **half of any metal, gem, magic, alloy or brewed material comes back**; only hides, sinew and resources are lost.
   - **Alloys:** smelting any metal together with a gem or magic material always fuses into an alloy named after the rarest one you added (Frost, Spirit, Moon, Ember, Void or Heartfire Alloy). Better metal and more of it give more alloy. Each alloy unlocks a Special item (rivets, a band, a guard, gauntlets, an amulet and the legendary Heartfire Core).
   - Recipes are secret until you discover them. Once you've made something, its recipe is saved under **Known recipes** with **Make 1** and **Make 5** buttons. Mixes you've already tried that didn't work are flagged so you don't waste ingredients twice.
   - Everyone knows how to smelt **Iron Ingots** (3 stone, 2 logs). Steel, Runesteel, other metals and brewed materials such as tallow, glue, leather, oils and draughts are yours to find. Some need a hotter forge (a higher Town Hall).
   - Brewed materials unlock more **Special** items, shown once you've discovered what they need.
+  - A failed pot mix sometimes leaves a **Murky Brew**: drinking it might give you a short boost, or might hurt you and make you queasy.
+
+## Potions and food
+- The pot can brew **potions and meals**, each with its own colour and bottle or bowl. Like every recipe they're secret until you make them. There are healing tonics, hearty meals, drinks for speed, strength and toughness, a rare magic elixir, and a poison you coat your weapon with.
+- To use one, open **Hero**, find it under **Materials**, tap it to read what it does, then tap again to drink it (or coat your weapon).
+- Active effects show as coloured tags at the top of the screen with the seconds left.
 - **Salvage:** break down gear you own but aren't wearing (weapons, armour, ranged weapons, helmets, capes) for half its gold and materials back; logs, stone and crystal come back as gold. Anything you're wearing shows **Equipped** and can't be salvaged until you wear something else.
 - Materials are shown at the top of the forge, grouped into **Hides, Sinew, Metal, Alloys, Brewed, Gems, Magic and Junk**, each with its own icon (also used in recipe costs). The Hero screen lists your **Gear** and your **Materials** separately.
 

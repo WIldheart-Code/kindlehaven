@@ -101,6 +101,7 @@ html,body{height:100%;margin:0;background:var(--ice);color:var(--ink);overflow:h
 #dun #dunJ{background:rgba(120,200,255,.3)}#dun #dunA{background:rgba(255,120,80,.3)}
 #tameNo{position:fixed;z-index:8;left:50%;transform:translateX(-50%);bottom:calc(140px + env(safe-area-inset-bottom,0px));border:2px solid #fff;background:#b8452e;color:#fff;font:15px/1 var(--display);padding:10px 16px;border-radius:12px;cursor:pointer}
 #rejoin{position:fixed;inset:0;z-index:40;display:flex;align-items:center;justify-content:center;background:#1b2336;padding:0 16px}#rejoin .box{background:#f4f7fc;border-radius:18px;padding:22px;text-align:center;width:min(340px,100%)}#rejoin h2{margin:0 0 6px;font:26px var(--display);color:#2b4a74}#rejoin p{font:700 14px var(--body)}#rejoin button{border:2px solid #c9d6e8;background:#fff;border-radius:10px;padding:10px 14px;font:14px var(--display);color:#2b4a74;cursor:pointer}
+#buffs{position:fixed;z-index:7;left:50%;transform:translateX(-50%);top:calc(64px + env(safe-area-inset-top,0px));display:flex;gap:4px;pointer-events:none}#buffs span{color:#fff;font:800 11px var(--body);padding:3px 7px;border-radius:8px;border:1.5px solid #fff;box-shadow:0 2px 0 rgba(0,0,0,.25)}
 #forgeBtn{position:fixed;z-index:8;right:12px;bottom:calc(150px + env(safe-area-inset-bottom,0px));border:2px solid #fff;background:#8a4a2a;color:#fff;font:17px/1 var(--display);letter-spacing:.04em;padding:12px 16px;border-radius:14px;box-shadow:0 4px 0 rgba(0,0,0,.3);cursor:pointer}
 .craft .row{display:flex;gap:8px;align-items:center;background:#f4f7fb;border-radius:10px;padding:8px;margin:6px 0}.craft .row div{flex:1;font:800 12px var(--body);color:#2b4a74}.craft .row div b{display:block;font:15px var(--display);color:#1d2128}.craft .cost{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}.craft .cost span{background:#dfe6f0;border-radius:6px;padding:2px 6px}.craft .cost span.no{background:#f6d1cc;color:#a3271b}.craft .row button{border:0;border-radius:9px;padding:10px 12px;font:14px var(--display);background:#3f8a5a;color:#fff;cursor:pointer}.craft .row button:disabled{background:#aab4c2}.craft .row button.salv{background:#a3532b}.craft .row.rare{background:#e3efff;box-shadow:inset 0 0 0 2px #6fa8e8}.craft .row.legendary{background:#fff3d6;box-shadow:inset 0 0 0 2px #e8a83a}.craft .row em{font:800 10px var(--body);font-style:normal;text-transform:uppercase;padding:2px 6px;border-radius:6px;background:#2b4a74;color:#fff;vertical-align:middle}.craft .row.legendary em{background:#c07a12}
 .craft .ftut{background:#fff3d6;border:2px solid #e8a83a;border-radius:12px;padding:10px 12px;margin:4px 0 8px;font:800 12px var(--body);color:#5a3a10}.craft .ftut b{color:#3a2408}.craft .ftut>b{display:block;font:16px var(--display)}.craft .ftut ol{margin:6px 0 8px 18px;padding:0}.craft .ftut li{margin:3px 0}.craft .ftut button{width:100%;border:0;border-radius:9px;padding:10px;font:15px var(--display);background:#c07a12;color:#fff;cursor:pointer}
@@ -246,13 +247,13 @@ html,body{height:100%;margin:0;background:var(--ice);color:var(--ink);overflow:h
 <div id="res" class="hud">
   <div class="chip" id="cCash"><svg class="ico" viewBox="0 0 28 22"><circle cx="14" cy="11" r="8.5" fill="#f2c14e" stroke="#8a6410" stroke-width="2"/><circle cx="14" cy="11" r="4.5" fill="none" stroke="#c9962e" stroke-width="1.6"/></svg><span id="vCash">0</span></div>
   <div class="chip" id="cLog"><svg class="ico" viewBox="0 0 28 22"><rect x="3" y="5" width="18" height="12" rx="3" fill="#a8693f" stroke="#5b3416" stroke-width="2"/><ellipse cx="21" cy="11" rx="5" ry="6" fill="#e8c28f" stroke="#5b3416" stroke-width="2"/><circle cx="21" cy="11" r="2" fill="none" stroke="#a8693f" stroke-width="1.5"/></svg><span id="vLog">0</span></div>
-  <div class="chip" id="cMeat"><svg class="ico" viewBox="0 0 28 22"><ellipse cx="13" cy="11" rx="10" ry="7" fill="#d9524b" stroke="#7a1f1a" stroke-width="2"/><ellipse cx="11" cy="10" rx="4" ry="2.5" fill="#f6c3b6"/><rect x="21" y="9" width="6" height="4" rx="2" fill="#f4ede0" stroke="#7a1f1a" stroke-width="1.5"/></svg><span id="vMeat">0</span></div>
+  <div class="chip" id="cMeat"><svg class="ico" viewBox="0 0 28 22"><path d="M3 11 L25 11 C25 17 20 20 14 20 C8 20 3 17 3 11 Z" fill="#c98a4a" stroke="#6b4320" stroke-width="2"/><circle cx="10" cy="8" r="4" fill="#e2483f" stroke="#7a1f1a" stroke-width="1.4"/><path d="M15 9 L22 3" stroke="#e08a2a" stroke-width="3.2" stroke-linecap="round"/><path d="M10 4 Q12 1 14 3" stroke="#3f8a3a" stroke-width="1.6" fill="none"/></svg><span id="vMeat">0</span></div>
   <div class="chip" id="cStone"><svg class="ico" viewBox="0 0 28 22"><path d="M4 17 L7 6 L18 4 L25 13 L17 19 Z" fill="#9aa3ad" stroke="#4b535e" stroke-width="2" stroke-linejoin="round"/><path d="M9 8 L15 7 L12 11 Z" fill="#cfd5dc"/></svg><span id="vStone">0</span></div>
   <div class="chip" id="cOre"><svg class="ico" viewBox="0 0 28 22"><path d="M14 2 L21 9 L17 20 L11 20 L7 9 Z" fill="#7fd3f0" stroke="#2a6f8a" stroke-width="2" stroke-linejoin="round"/><path d="M14 4 L17 9 L14 17 Z" fill="#d8f4ff"/></svg><span id="vOre">0</span></div>
 </div>
 
 <div id="banner" class="hud"></div>
-<button id="forgeBtn" type="button" hidden>⚒ Forge</button><button id="chestBtn" type="button" hidden>📦 Chest</button><button id="tameBtn" type="button" hidden></button><button id="tameNo" type="button" hidden>Fight on</button>
+<div id="buffs"></div><button id="forgeBtn" type="button" hidden>⚒ Forge</button><button id="chestBtn" type="button" hidden>📦 Chest</button><button id="tameBtn" type="button" hidden></button><button id="tameNo" type="button" hidden>Fight on</button>
 <button id="giveBtn" type="button" hidden></button>
 <button id="dunBtn" type="button" hidden></button>
 <div id="dun" hidden><canvas id="dunCv"></canvas><button id="dunLeave" type="button">Leave dungeon</button>
@@ -409,7 +410,7 @@ const GEO = {
   stone: new THREE.IcosahedronGeometry(0.17, 1),
 };
 function itemMesh(t) { const m = new THREE.Mesh(GEO[t], mat(COLOR[t])); m.castShadow = true; return m; }
-const resName = t => t === 'ore' ? 'crystal' : t === 'cash' ? 'gold' : t;
+const resName = t => t === 'ore' ? 'crystal' : t === 'cash' ? 'gold' : t === 'meat' ? 'food' : t;
 
 /* ================= world constants ================= */
 const C = { x: 0, z: 10 };                // fort centre
@@ -995,7 +996,7 @@ const housing = () => [0, 8, 14, 24][S.th] + (S.castle || 0) * 16 + S.houses * (
 const warmCap = () => 30 + pop() * 3;
 const foodCap = () => 30 + pop() * 3;
 const heroMax = () => 100 + (S.lvl - 1) * 12 + S.bonusHp;
-const heroDmg = () => (1 + (S.lvl - 1) * 0.1 + S.bonusDmg) * (S.weapon >= 0 ? WEAPONS[S.weapon].m : 1);
+const heroDmg = () => (1 + (S.lvl - 1) * 0.1 + S.bonusDmg) * (S.weapon >= 0 ? WEAPONS[S.weapon].m : 1) * (1 + buffAmt('dmg') + buffAmt('venom'));
 const xpNeed = L => Math.round(40 + 25 * L * L);
 function gainXP(n) {
   if (loading) return;
@@ -1841,7 +1842,8 @@ function drawIcon(c, t, x, y) {
   c.save(); c.translate(x, y);
   if (t === 'cash') { c.fillStyle = '#f2c14e'; c.beginPath(); c.arc(0, 0, 15, 0, TAU); c.fill(); c.strokeStyle = '#c9962e'; c.lineWidth = 3; c.beginPath(); c.arc(0, 0, 8, 0, TAU); c.stroke(); }
   else if (t === 'log') { c.fillStyle = '#a8693f'; roundRect(c, -20, -11, 30, 22, 5); c.fill(); c.fillStyle = '#e8c28f'; c.beginPath(); c.ellipse(11, 0, 9, 11, 0, 0, TAU); c.fill(); }
-  else if (t === 'meat') { c.fillStyle = '#d9524b'; c.beginPath(); c.ellipse(-2, 0, 17, 12, 0, 0, TAU); c.fill(); c.fillStyle = '#f6c3b6'; c.beginPath(); c.ellipse(-5, -2, 7, 4, 0, 0, TAU); c.fill(); }
+  else if (t === 'meat') { c.fillStyle = '#c98a4a'; c.beginPath(); c.moveTo(-20, -2); c.lineTo(20, -2); c.quadraticCurveTo(18, 16, 0, 16); c.quadraticCurveTo(-18, 16, -20, -2); c.fill(); c.fillStyle = '#e2483f'; c.beginPath(); c.arc(-6, -7, 7, 0, TAU); c.fill(); c.strokeStyle = '#e08a2a'; c.lineWidth = 5; c.lineCap = 'round'; c.beginPath(); c.moveTo(4, -5); c.lineTo(15, -15); c.stroke(); }
+  else if (t === 'meat_old') { c.fillStyle = '#d9524b'; c.beginPath(); c.ellipse(-2, 0, 17, 12, 0, 0, TAU); c.fill(); c.fillStyle = '#f6c3b6'; c.beginPath(); c.ellipse(-5, -2, 7, 4, 0, 0, TAU); c.fill(); }
   else if (t === 'stone') { c.fillStyle = '#b3bbc5'; c.beginPath(); c.moveTo(-18, 10); c.lineTo(-12, -12); c.lineTo(10, -14); c.lineTo(19, 6); c.lineTo(4, 13); c.closePath(); c.fill(); }
   else { c.fillStyle = '#7fd3f0'; c.beginPath(); c.moveTo(0, -16); c.lineTo(11, -4); c.lineTo(6, 14); c.lineTo(-6, 14); c.lineTo(-11, -4); c.closePath(); c.fill(); }
   c.restore();
@@ -1941,9 +1943,9 @@ const stonePile = makePile('stone', -16.5, 23.6, 'Stone');
 const goldPile = makePile('ore', -25.5, -8.2, 'Crystal');
 const fishPile = makePile('meat', 12.8, 25.2, 'Fish');
 const gardenPile = makePile('meat', 4.6, 16.4, 'Veggies'); let garden = null, gardenT = 0;
-const ROLE_PILE = { logger: woodPile, hunter: meatPile, stonecutter: stonePile, miner: goldPile };
+const ROLE_PILE = { gatherer: meatPile, logger: woodPile, hunter: meatPile, stonecutter: stonePile, miner: goldPile };
 
-const maxWorkers = { hauler: () => [0, 1, 2, 3][S.th], mender: () => [0, 1, 2, 3][S.th], logger: () => [0, 2, 3, 4][S.th], hunter: () => [0, 0, 2, 3][S.th], stonecutter: () => [0, 0, 2, 3][S.th], miner: () => [0, 0, 0, 3][S.th] };
+const maxWorkers = { hauler: () => [0, 1, 2, 3][S.th], mender: () => [0, 1, 2, 3][S.th], logger: () => [0, 2, 3, 4][S.th], hunter: () => [0, 0, 2, 3][S.th], stonecutter: () => [0, 0, 2, 3][S.th], miner: () => [0, 0, 0, 3][S.th], gatherer: () => [0, 1, 2, 3][S.th] };
 const roleCount = r => workers.filter(w => w.role === r).length;
 const maxGuards = () => [0, 0, 3, 6][S.th] + (S.castle || 0) * 6;   // each castle level adds two battalions
 const B = {};   // which plots have been built
@@ -2038,6 +2040,8 @@ plot('barracks', { x: -16.5, z: 14, label: 'BARRACKS', cost: { log: 60, stone: 3
 const padTrain = plot('train', { x: -16.5, z: 18.4, label: 'TRAIN GUARD', cost: { meat: 8, cash: 40 }, repeat: true, xp: 10,
   requires: () => B.barracks && hireCount('guard')[0] < hireCount('guard')[1], canPay: () => hireOk('guard'), hire: 'guard', onBuy: () => { const n = S.castle ? Math.min(3, maxGuards() - guards.length) : 1; for (let i = 0; i < n; i++) spawnGuard(-16.5 + (i - 1) * 1.2, 16.2); if (n > 1) banner('A battalion musters!', true, n + ' guards join the garrison'); } });
 plot('hunt', { x: 16.5, z: 14, label: 'HUNTER LODGE', cost: { log: 40, cash: 60 }, tier: 2, onBuy: () => { modelHut(16.5, 14, 0x6b3a22, 'meat', 'hunter_lodge'); openPile(meatPile); banner('Hunter lodge built!', true, 'Hunters stack meat beside the lodge'); } });
+plot('hireGather', { x: 8.8, z: 15.2, label: 'HIRE GATHERER', cost: { cash: 40 }, repeat: true, xp: 10,
+  requires: () => B.garden && hireCount('gatherer')[0] < hireCount('gatherer')[1], canPay: () => hireOk('gatherer'), hire: 'gatherer', onBuy: () => spawnWorker('gatherer', 8.8, 16.4) });
 plot('hireHunt', { x: 13.4, z: 18.6, label: 'HIRE HUNTER', cost: { cash: 60 }, repeat: true, xp: 10,
   requires: () => B.hunt && hireCount('hunter')[0] < hireCount('hunter')[1], canPay: () => hireOk('hunter'), hire: 'hunter', onBuy: () => spawnWorker('hunter', 16.5, 16.3) });
 plot('store', { x: -10, z: 27.4, label: 'WAREHOUSE', cost: { log: 50, cash: 60 }, tier: 2, onBuy: () => { storehouse = modelStorehouse(-10, 27.4); piles.forEach(syncPile); banner('Warehouse built!', true, 'Every pile now holds 300'); } });
@@ -2103,6 +2107,7 @@ const ROLES = {
   miner: { coat: 0x4a5568, hat: 0xd9a520, item: 'ore', cap: 6, speed: 3.2, hit: 0.9, reach: 1.8 },
   hauler: { coat: 0xb07a2a, hat: 0x5b3416, item: 'log', cap: 12, speed: 3.7, hit: 0.1, reach: 1.2 },
   mender: { coat: 0x6b4a8a, hat: 0xd5dbe4, item: 'log', cap: 1, speed: 3.4, hit: 0.6, reach: 1.2 },
+  gatherer: { coat: 0x4f8a3a, hat: 0xc8384b, item: 'meat', cap: 10, speed: 3.8, hit: 0.7, reach: 1.3 },
 };
 function spawnWorker(role, x, z) {
   const R = ROLES[role]; const p = makePerson(R.coat, 0xf3e6cf, R.hat);
@@ -2118,6 +2123,7 @@ function findWork(w) {
   let list;
   if (w.role === 'logger') list = trees.filter(t => t.alive && !t.gone && t.choppable);
   else if (w.role === 'hunter') { list = yaks.filter(y => y.alive && (y.sp === 'rabbit' || y.sp === 'deer') && Math.hypot(y.x - C.x, y.z - C.z) < 95); if (!list.length) list = yaks.filter(y => y.alive && Math.hypot(y.x - C.x, y.z - C.z) < 95); }
+  else if (w.role === 'gatherer') list = plants.filter(p => p.alive && Math.hypot(p.x - C.x, p.z - C.z) < 130);
   else if (w.role === 'stonecutter') list = rocks.filter(r => r.alive && r.kind === 'stone');
   else list = rocks.filter(r => r.alive && !r.hidden && r.kind === 'gold');
   let b = null, bd = 1e9;
@@ -2125,7 +2131,7 @@ function findWork(w) {
   return b;
 }
 function workerDest(w) {
-  if (w.role === 'hunter' && cookStall.unlocked) return cookStall;
+  if ((w.role === 'hunter' || w.role === 'gatherer') && cookStall.unlocked) return cookStall;
   if (w.role === 'logger' && woodPile.n >= pileCap()) return fireStall;
   return ROLE_PILE[w.role];
 }
@@ -2176,7 +2182,7 @@ function hurtWorker(w, dmg) {
   banner('A ' + w.role + ' was killed!', false, 'Keep workers safe: raiders hunt them outside the walls'); play('alert');
 }
 // how many of each worker you have, above the building they come from
-const WORKER_TAGS = [['logger', 'Loggers', 6, 20.4, () => B.lodge], ['hunter', 'Hunters', 16.5, 14, () => B.hunt], ['stonecutter', 'Stonecutters', -16.5, 27.4, () => B.cutter],
+const WORKER_TAGS = [['gatherer', 'Gatherers', 8.8, 15.2, () => B.garden], ['logger', 'Loggers', 6, 20.4, () => B.lodge], ['hunter', 'Hunters', 16.5, 14, () => B.hunt], ['stonecutter', 'Stonecutters', -16.5, 27.4, () => B.cutter],
   ['miner', 'Miners', -25.5, -12, () => B.minerC], ['hauler', 'Haulers', 0, 18.4, () => B.cook && B.lodge], ['mender', 'Menders', 8.2, 10.2, () => B.smith], ['guard', 'Guards', -16.5, 14, () => B.barracks]].map(([role, name, x, z, on]) => {
   const el = document.createElement('div'); el.className = 'tag wtag'; el.hidden = true; ov.appendChild(el); return { role, name, x, z, on, el };
 });
@@ -2272,11 +2278,11 @@ const TUT = [
   { t: 'Move around', p: 'Drag anywhere on the screen to move (a joystick appears under your finger). On a keyboard use WASD or the arrow keys.', task: 'Walk a few steps', start: () => ({ x: player.x, z: player.z }), done: b => Math.hypot(player.x - b.x, player.z - b.z) > 4 },
   { t: 'Chop wood', p: 'Walk up to a tree: your axe swings on its own. Logs stack on your back. Trees grow back over time.', task: 'Collect 8 logs', done: () => carry.log.length >= 8 || fireStall.received > 0 },
   { t: 'Keep your people warm', p: 'Villagers burn firewood. Walk to the firewood stall (blue roof) and stand in the dashed spot behind its counter: you hand over your logs, and villagers buy them for gold.', hi: 'town', task: 'Hand logs to the firewood stall', start: () => fireStall.received, done: b => fireStall.received > b },
-  { t: 'Gold and resources', p: 'Your gold, logs, meat, stone and crystal are shown top right. Tap a counter to drop that resource or stop collecting it.', hi: 'res' },
+  { t: 'Gold and resources', p: 'Your gold, logs, food, stone and crystal are shown top right. Tap a counter to drop that resource or stop collecting it.', hi: 'res' },
   { t: 'Choose what you collect', p: 'Tap the log counter, then Stop collecting: your axe leaves trees alone until you turn it back on. On a keyboard, keys 1-4 do the same (1 wood, 2 food, 3 stone, 4 crystal, the same order as the counters). Turn it back on the same way.', hi: 'res', task: 'Turn log collecting off, then on again', start: () => ({ off: false }), done: b => { if (S.noCollect.log) b.off = true; return b.off && !S.noCollect.log; } },
   { t: 'Your goal', p: 'The GOAL card always tells you what to do next, and the orange arrow on the ground points the way. Follow it whenever you are unsure.', hi: 'quest' },
   { t: 'Build the walls', p: 'Raiders will come. Glowing build spaces show what they cost. Stand on one and you pay with what you carry: fix the broken palisade first.', task: 'Build a wall section', start: () => rings[0].segs.filter(sg => sg.built).length, done: b => rings[0].segs.filter(sg => sg.built).length > b || rings[0].complete },
-  { t: 'Warmth and food', p: 'These gauges show warmth and, once you build the cookhouse, food. If either reaches zero, villagers die. Hunt rabbits and deer near the camp for meat and sell it at the cookhouse.', hi: 'town' },
+  { t: 'Warmth and food', p: 'These gauges show warmth and, once you build the cookhouse, food. If either reaches zero, villagers die. Hunt rabbits and deer or pick berries and wild roots for food, and sell it at the cookhouse.', hi: 'town' },
   { t: 'Grow your town', p: 'Build houses, a blacksmith whose forge crafts gear from hides and sinew, and lodges to hire workers who gather on their own. Upgrade the Town Hall to unlock a bigger ring of walls.' },
   { t: 'Raids and danger', p: 'A raid comes every night at nightfall, and each day is harder. Watchtowers and guards help, and the minimap shows raiders in red (drag it to move it). The farther you explore, the tougher the monsters and the better the treasure.', hi: 'mini' },
   { t: 'Menu and more', p: 'The cog holds Help (everything about the game), this tutorial, Co-op, your Hero (gear, pets), pause and sound options. Quests, fishing, dungeons, pets and castles await. Good luck!', hi: 'cog' },
@@ -2580,6 +2586,7 @@ function hurtHero(dmg) {
   if (hasSpecial('padding')) dmg *= 0.94;
   if (hasSpecial('dragonaegis')) dmg *= 0.9;
   if (hasSpecial('moonguard')) dmg *= 0.95;
+  dmg *= 1 - buffAmt('def');
   S.hp -= dmg; S.hurtT = 3; play('hurt'); burst(player.x, 1.2, player.z, 0xd9524b, 3, 2);
   if (S.hp <= 0) {
     const team = Object.keys(NET.remotes).length > 0;
@@ -2714,7 +2721,7 @@ function tameCandidate() {
   return b;
 }
 function updateTaming(dt) {
-  $('forgeBtn').hidden = !nearForge() || DUN; checkNewRecipes(dt); updateSatchel(); updateChestBtn();
+  $('forgeBtn').hidden = !nearForge() || DUN; checkNewRecipes(dt); updateSatchel(); updateChestBtn(); updateForage(dt); updateBuffs(dt);
   const btn = $('tameBtn'), c = taming > 0 ? tameTgt : tameCandidate();
   $('tameNo').hidden = !c || !c.alive || taming > 0; $('tameNo').onclick = e => { e.stopPropagation(); if (c) c.noTame = true; };
   if (!c || !c.alive) { btn.hidden = true; taming = 0; tameTgt = null; return; }
@@ -2816,6 +2823,76 @@ function updateSatchel() {
   satchelM.g.rotation.y += 0.02; satchelM.g.position.y = Math.abs(Math.sin(time * 2)) * 0.15;
   const dd = d2(player.x, player.z, sc.x, sc.z); satchelM.tag.hidden = dd > 40 * 40; if (!satchelM.tag.hidden) place(satchelM.tag, sc.x, 1.6, sc.z);
   if (dd < 1.6 * 1.6 && S.downT <= 0 && !DUN) { gainMats(sc.m, sc.x, sc.z); S.satchel = null; banner('Materials recovered!', true); savePersonal(); }
+}
+/* ---- foraging: berry bushes, wild roots and herbs grow across the wilds ---- */
+const FORAGE = {
+  berries: { n: 'Snowberry bush', food: 2, col: 0xc8384b, r0: 24, r1: 240, count: 40, regrow: 150 },
+  roots: { n: 'Wild roots', food: 3, col: 0xe08a2a, r0: 24, r1: 240, count: 30, regrow: 180 },
+  frostmint: { n: 'Frostmint', food: 0, col: 0x7fe0c8, r0: 30, r1: 260, count: 30, regrow: 200 },
+  nightshade: { n: 'Nightshade', food: 0, col: 0x6a3a8a, r0: 80, r1: 280, count: 16, regrow: 260 },
+  emberroot: { n: 'Ember Root', food: 0, col: 0xff6a2a, r0: 110, r1: 300, count: 18, regrow: 260 },
+  moonpetal: { n: 'Moonpetal', food: 0, col: 0xdfe6ff, r0: 190, r1: 320, count: 10, regrow: 360 },
+};
+const plants = [];
+function makePlant(k) {
+  const F = FORAGE[k], g = new THREE.Group();
+  if (k === 'berries') { const b = mk(new THREE.SphereGeometry(0.6, 10, 8).scale(1, 0.75, 1), 0x3f7a3a); b.position.y = 0.45; g.add(b);
+    for (let i = 0; i < 8; i++) { const a = i * 0.8, be = mk(new THREE.SphereGeometry(0.1, 6, 5), F.col); be.position.set(Math.cos(a) * 0.5, 0.45 + Math.sin(i * 1.7) * 0.25, Math.sin(a) * 0.5); g.add(be); } }
+  else if (k === 'roots') { for (let i = 0; i < 3; i++) { const lf = mk(Cone(0.18, 0.6, 5), 0x4fae5a); lf.position.set((i - 1) * 0.25, 0.3, (i % 2) * 0.15); g.add(lf); const top = mk(Cyl(0.09, 0.05, 0.12, 6), F.col); top.position.set((i - 1) * 0.25, 0.05, (i % 2) * 0.15); g.add(top); } }
+  else { const st = mk(Cyl(0.03, 0.03, 0.55, 5), 0x3f8a3a); st.position.y = 0.28; g.add(st);
+    for (let i = 0; i < 5; i++) { const a = i / 5 * TAU, pe = mk(new THREE.SphereGeometry(0.09, 6, 5), F.col); pe.position.set(Math.cos(a) * 0.13, 0.58, Math.sin(a) * 0.13); g.add(pe); }
+    const lf = mk(new THREE.SphereGeometry(0.16, 6, 5).scale(1.4, 0.4, 0.7), 0x4fae5a); lf.position.set(0.12, 0.2, 0); g.add(lf); }
+  return g;
+}
+function spawnForage() {
+  const R = outerRing();
+  for (const k in FORAGE) { const F = FORAGE[k];
+    for (let i = 0, tries = 0; i < F.count && tries < F.count * 20; tries++) {
+      const a = rand(0, TAU), r = rand(F.r0, F.r1), x = clamp(C.x + Math.cos(a) * r, -330, 330), z = clamp(C.z + Math.sin(a) * r, -314, 346);
+      if (onLake(x, z, 3) || (R && inSquare(x, z, R.h + 4)) || plants.some(p => d2(p.x, p.z, x, z) < 9)) continue;
+      const g = makePlant(k); g.position.set(x, 0, z); g.rotation.y = rand(0, TAU); scene.add(g); plants.push({ k, x, z, g, alive: true, respawn: 0 }); i++;
+    } }
+}
+setTimeout(spawnForage, 0);
+// pick a plant: food goes to the picker, the forage itself is a crafting ingredient
+function pickPlant(p) { if (!p.alive) return { food: 0 }; p.alive = false; p.g.visible = false; p.respawn = FORAGE[p.k].regrow; burst(p.x, 0.6, p.z, FORAGE[p.k].col, 8, 2); return { food: FORAGE[p.k].food, mat: p.k }; }
+function updateForage(dt) {
+  for (const p of plants) if (!p.alive && (p.respawn -= dt) <= 0) { p.alive = true; p.g.visible = true; popIn(p.g); }
+  if (S.downT > 0 || DUN) return;
+  for (const p of plants) {
+    if (!p.alive || d2(p.x, p.z, player.x, player.z) > 1.5 * 1.5) continue;
+    if (FORAGE[p.k].food && S.noCollect.meat) continue;
+    const r = pickPlant(p); let n = 0; for (let i = 0; i < r.food && room() > 0; i++) { addToStack('meat'); n++; }
+    gainMats({ [r.mat]: 1 }, p.x, p.z); if (n) floatText('+' + n + ' food', p.x, 2, p.z, 'xp'); play('chop', 0, p.x, p.z); break;
+  }
+}
+/* ---- potions and food: brewed in the pot, drunk from Hero → Materials for timed buffs ---- */
+const BUF = {};
+const BUFF_INFO = { speed: ['Swift', '#3fbf6a'], dmg: ['Strength', '#ff8a2a'], def: ['Ironhide', '#7f93a8'], regen: ['Well fed', '#9a6538'], venom: ['Venom', '#3a5a2a'], sick: ['Queasy', '#6b6250'] };
+const buffAmt = k => BUF[k] && BUF[k].t > 0 ? BUF[k].amt : 0;
+function addBuff(k, amt, t) { const b = BUF[k]; BUF[k] = { amt: b && b.t > 0 ? Math.max(b.amt, amt) : amt, t: Math.max(t, b && b.t > 0 ? b.t : 0) }; }
+const POTIONS = {
+  p_heal: { d: 'Heals half your health', use: () => { S.hp = Math.min(heroMax(), S.hp + heroMax() * 0.5); } },
+  p_stew: { d: 'Heals fully, then you regenerate health for 2 minutes', use: () => { S.hp = heroMax(); addBuff('regen', 1, 120); } },
+  p_pie: { d: 'Heals a quarter of your health and +15% speed for 90 s', use: () => { S.hp = Math.min(heroMax(), S.hp + heroMax() * 0.25); addBuff('speed', 0.15, 90); } },
+  p_swift: { d: '+30% speed for 90 s', use: () => addBuff('speed', 0.3, 90) },
+  p_ember: { d: '+30% damage for 90 s', use: () => addBuff('dmg', 0.3, 90) },
+  p_iron: { d: 'Take 30% less damage for 90 s', use: () => addBuff('def', 0.3, 90) },
+  p_moon: { d: '+20% damage, +20% speed and regeneration for 2 minutes', use: () => { addBuff('dmg', 0.2, 120); addBuff('speed', 0.2, 120); addBuff('regen', 1, 120); } },
+  p_poison: { d: 'Coat your weapon: +40% damage for 60 s', verb: 'Coat your weapon', use: () => addBuff('venom', 0.4, 60) },
+  p_murky: { d: 'Nobody knows what this does. It might help, or it might hurt', use: () => {
+    if (Math.random() < 0.4) { const k = ['speed', 'dmg', 'def'][Math.random() * 3 | 0]; addBuff(k, 0.25, 60); banner('That actually helped!', true, BUFF_INFO[k][0] + ' for 60 s'); return 'quiet'; }
+    S.hp = Math.max(1, S.hp - heroMax() * 0.25); addBuff('sick', -0.3, 30); S.hurtT = 3; play('hurt'); banner('Ugh, that was bad', false, 'You lose health and feel queasy (slower) for 30 s'); return 'quiet'; } },
+};
+function drinkPotion(k) {
+  const P = POTIONS[k], M = S.mats || {}; if (!P || !(M[k] > 0) || S.downT > 0) return;
+  M[k]--; const r = P.use(); play('pay'); if (r !== 'quiet') banner(MATS[k] + '!', true, P.d); savePersonal();
+}
+function updateBuffs(dt) {
+  let h = ''; for (const k in BUF) { const b = BUF[k]; if (b.t <= 0) continue; b.t -= dt;
+    h += `<span style="background:${BUFF_INFO[k][1]}">${BUFF_INFO[k][0]} ${Math.ceil(b.t)}s</span>`; }
+  if (buffAmt('regen') && S.hp > 0 && S.downT <= 0) S.hp = Math.min(heroMax(), S.hp + heroMax() * 0.015 * dt);
+  const el = $('buffs'); if (el.innerHTML !== h) el.innerHTML = h;
 }
 /* ---- town chest: shared storage for resources and materials, kept by the host ---- */
 const CHEST = { x: 3, z: 7.6 };
@@ -3071,7 +3148,7 @@ function update(dt) {
     if (player.moving) {
       const deep = Math.hypot(player.x - C.x, player.z - C.z) > 300 ? 0.62 : 1;   // deep snow in the far wilds
       if (deep < 1 && !S.deepNoted) { S.deepNoted = true; note('Deep snow: the far wilds are slow going'); }
-      const sp = 6 * (1 + (S.lvl - 1) * 0.02 + S.boots * 0.15 + S.speedBonus + (S.runLv || 0) * 0.12) * Math.min(1, Math.max(0.55, mag)) * deep * (S.chillT > 0 ? 0.6 : 1) * dt;
+      const sp = 6 * (1 + (S.lvl - 1) * 0.02 + S.boots * 0.15 + S.speedBonus + (S.runLv || 0) * 0.12 + buffAmt('speed') + buffAmt('sick')) * Math.min(1, Math.max(0.55, mag)) * deep * (S.chillT > 0 ? 0.6 : 1) * dt;
       collide(player, player.x + mx / mag * sp, player.z + mz / mag * sp, 0.38);
       if (player.swingT <= 0) player.rot = turnTo(player.rot, Math.atan2(mx, mz), 0.25);
       player.walkT += dt; if ((player.walkT * 3.2 | 0) !== ((player.walkT - dt) * 3.2 | 0)) play("step");
@@ -3325,6 +3402,7 @@ function update(dt) {
           if (w.t <= 0) { w.t = R.hit;
             if (w.role === 'logger') workerTake(w, hitTree(t, 2));
             else if (w.role === 'hunter') damageYak(t, 1, w);
+            else if (w.role === 'gatherer') { const r = pickPlant(t); workerTake(w, r.food); if (r.mat) (w.herbs = w.herbs || {})[r.mat] = (w.herbs[r.mat] || 0) + 1; w.picks = (w.picks || 0) + 1; w.tgt = null; if (w.picks >= 6) w.state = 'deliver'; }
             else workerTake(w, hitRock(t, 2));
             if (w.items.length >= workerCap(w)) w.state = 'deliver'; }
         }
@@ -3335,11 +3413,12 @@ function update(dt) {
         const toStall = !!dest.drop, tx = (toStall ? dest.drop.x : dest.x) - 0.8 + (w.idx % 3) * 0.8, tz = toStall ? dest.drop.z - 0.6 : dest.z - 1.4;
         if (d2(w.x, w.z, tx, tz) > 0.3) { walkTo(w, tx, tz, R.speed, dt); moving = true; }
         else {
+          if (w.herbs) { for (const k in w.herbs) chestApply('put', k, w.herbs[k]); w.herbs = null; w.picks = 0; NET.worldT = 0; }   // gatherers put herbs and fruit in the town chest
           w.t -= dt;
           if (w.t <= 0 && w.items.length && toStall) { w.t = 0.1; const m = w.items.pop(); const wp = new THREE.Vector3(); m.getWorldPosition(wp); w.sg.remove(m); stallReceive(dest, wp); }
           else if (w.t <= 0 && w.items.length && dest.n < pileCap()) { w.t = 0.1; const m = w.items.pop(); const wp = new THREE.Vector3(); m.getWorldPosition(wp); w.sg.remove(m);
             dest.n++; syncPile(dest); const fm = itemMesh(R.item); fm.position.copy(wp); scene.add(fm); fly(fm, new THREE.Vector3(dest.x, 0.6, dest.z), 0.3, 1, () => scene.remove(fm)); }
-          if (!w.items.length) { w.state = 'seek'; w.tgt = null; }
+          if (!w.items.length) { w.state = 'seek'; w.tgt = null; w.picks = 0; }
         }
       }
     }
@@ -3511,15 +3590,22 @@ const ARMORS = [{ n: 'Fur Jerkin', a: 0.15 }, { n: 'Iron Mail', a: 0.3 }, { n: '
 const MATS = { hide1: 'Rough Hide', hide2: 'Thick Hide', hide3: 'Shaggy Pelt', hide4: 'Dragon Scale', sinew1: 'Sinew', sinew2: 'Strong Sinew', sinew3: 'Beast Sinew', sinew4: 'Ancient Sinew',
   frostgem: 'Frost Gem', emberruby: 'Ember Ruby', voidopal: 'Void Opal', spirit: 'Spirit Essence', moonsilver: 'Moonsilver', dragonheart: 'Dragon Heart', iron: 'Iron Ingot', steel: 'Steel Bar', runesteel: 'Runesteel',
   moonsteel: 'Moonsteel', dragonsteel: 'Dragonsteel', frostglass: 'Frost Glass', tallow: 'Tallow', glue: 'Hide Glue', leather: 'Hardened Leather', emberoil: 'Ember Oil', draught: 'Spirit Draught', slag: 'Slag', gunk: 'Gunk',
+  berries: 'Snowberries', roots: 'Wild Roots', frostmint: 'Frostmint', emberroot: 'Ember Root', nightshade: 'Nightshade', moonpetal: 'Moonpetal', heartbrew: 'Heartfire Brew',
+  p_heal: 'Healing Tonic', p_stew: 'Hearty Stew', p_pie: 'Berry Pie', p_swift: 'Swiftfoot Draught', p_ember: 'Ember Brew', p_iron: 'Ironhide Tonic', p_moon: 'Moonlight Elixir', p_poison: 'Nightshade Poison', p_murky: 'Murky Brew',
   a_frostgem: 'Frost Alloy', a_spirit: 'Spirit Alloy', a_moonsilver: 'Moon Alloy', a_emberruby: 'Ember Alloy', a_voidopal: 'Void Alloy', a_dragonheart: 'Heartfire Alloy' };
-const MAT_GROUPS = [['Hides', ['hide1', 'hide2', 'hide3', 'hide4']], ['Sinew', ['sinew1', 'sinew2', 'sinew3', 'sinew4']], ['Metal', ['iron', 'steel', 'runesteel', 'moonsteel', 'dragonsteel']], ['Alloys', ['a_frostgem', 'a_spirit', 'a_moonsilver', 'a_emberruby', 'a_voidopal', 'a_dragonheart']], ['Brewed', ['frostglass', 'tallow', 'glue', 'leather', 'emberoil', 'draught']], ['Junk', ['slag', 'gunk']], ['Gems', ['frostgem', 'emberruby', 'voidopal']], ['Magic', ['spirit', 'moonsilver', 'dragonheart']]];
+const MAT_GROUPS = [['Hides', ['hide1', 'hide2', 'hide3', 'hide4']], ['Sinew', ['sinew1', 'sinew2', 'sinew3', 'sinew4']], ['Metal', ['iron', 'steel', 'runesteel', 'moonsteel', 'dragonsteel']], ['Alloys', ['a_frostgem', 'a_moonsilver', 'a_emberruby', 'a_voidopal']], ['Forage', ['berries', 'roots', 'frostmint', 'emberroot', 'nightshade', 'moonpetal']], ['Potions & food', ['p_heal', 'p_stew', 'p_pie', 'p_swift', 'p_ember', 'p_iron', 'p_moon', 'p_poison', 'p_murky']], ['Brewed', ['heartbrew', 'frostglass', 'tallow', 'glue', 'leather', 'emberoil', 'draught']], ['Junk', ['slag', 'gunk']], ['Gems', ['frostgem', 'emberruby', 'voidopal']], ['Magic', ['spirit', 'moonsilver', 'dragonheart']]];
 // little pictures for each material: a pelt, a coil of sinew, a cut gem, or a magic orb / ingot / heart
 function matSvg(k, px) {
   const c = MAT_COL[k] || '#ccc', o = 'stroke="#1d2128" stroke-width="1.6"', w = px || 18;
   let b;
   if (k.startsWith('hide')) b = `<path d="M14 6 Q24 2 34 6 L40 12 L36 18 L38 34 L32 42 L24 38 L16 42 L10 34 L12 18 L8 12 Z" fill="${c}" ${o}/><path d="M18 16 Q24 20 30 16 M17 26 Q24 30 31 26" fill="none" stroke="rgba(0,0,0,.3)" stroke-width="1.5"/>`;
   else if (k.startsWith('sinew')) b = `<path d="M10 34 C4 22 18 8 26 14 C34 20 22 30 16 24 C10 18 24 6 36 12 C44 18 38 34 30 38" fill="none" stroke="#1d2128" stroke-width="6" stroke-linecap="round"/><path d="M10 34 C4 22 18 8 26 14 C34 20 22 30 16 24 C10 18 24 6 36 12 C44 18 38 34 30 38" fill="none" stroke="${c}" stroke-width="3.6" stroke-linecap="round"/>`;
-  else if (k === 'emberoil' || k === 'draught') b = `<path d="M19 6 L29 6 L29 14 C38 18 40 26 38 34 C36 42 12 42 10 34 C8 26 10 18 19 14 Z" fill="${c}" ${o}/><rect x="18" y="3" width="12" height="5" rx="1" fill="#8a5a36" ${o}/><path d="M15 28 Q24 32 33 28" stroke="#fff" stroke-width="2" fill="none" opacity=".6"/>`;
+  else if (k === 'p_stew' || k === 'p_pie') b = k === 'p_stew' ? `<path d="M4 22 L44 22 C44 34 36 42 24 42 C12 42 4 34 4 22 Z" fill="#8a5a36" ${o}/><ellipse cx="24" cy="22" rx="20" ry="5" fill="${c}" ${o}/><path d="M16 14 Q18 8 16 4 M24 14 Q26 8 24 4 M32 14 Q34 8 32 4" stroke="#aab4c2" stroke-width="2" fill="none"/>` : `<path d="M4 28 L44 28 L40 40 L8 40 Z" fill="#d9a35a" ${o}/><path d="M4 28 C8 14 40 14 44 28 Z" fill="${c}" ${o}/><path d="M12 24 L36 24 M14 20 L34 20" stroke="#f3d79a" stroke-width="2"/>`;
+  else if (k.startsWith('p_')) b = `<path d="M19 4 L29 4 L29 14 C40 18 42 30 38 37 C34 44 14 44 10 37 C6 30 8 18 19 14 Z" fill="${c}" ${o}/><rect x="17" y="2" width="14" height="5" rx="1" fill="#8a5a36" ${o}/><ellipse cx="18" cy="26" rx="3" ry="6" fill="#fff" opacity=".45"/>${k === 'p_poison' ? '<circle cx="24" cy="29" r="5" fill="#e8f0d8"/><circle cx="22" cy="28" r="1.3" fill="#1d2128"/><circle cx="26" cy="28" r="1.3" fill="#1d2128"/>' : k === 'p_murky' ? '<text x="24" y="35" text-anchor="middle" font-size="14" font-weight="800" fill="#f3e6cf">?</text>' : ''}`;
+  else if (k === 'berries') b = [[16, 26], [28, 24], [22, 34], [32, 34], [12, 36]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="7" fill="${c}" ${o}/>`).join('') + '<path d="M20 18 Q24 6 32 8" stroke="#3f8a3a" stroke-width="3" fill="none"/>';
+  else if (k === 'roots') b = `<path d="M18 16 L30 16 L25 44 Z" fill="${c}" ${o}/><path d="M24 16 L18 4 M24 16 L24 3 M24 16 L30 4" stroke="#3f8a3a" stroke-width="3" stroke-linecap="round"/>`;
+  else if (['frostmint', 'emberroot', 'nightshade', 'moonpetal'].includes(k)) b = `<path d="M24 44 L24 18" stroke="#3f8a3a" stroke-width="3"/><path d="M24 34 C14 32 10 26 12 22 C18 22 22 28 24 34 Z M24 30 C34 28 38 22 36 18 C30 18 26 24 24 30 Z" fill="#4fae5a" stroke="#1d2128" stroke-width="1.2"/>${[0, 72, 144, 216, 288].map(a => `<circle cx="${24 + Math.cos(a * Math.PI / 180) * 6}" cy="${12 + Math.sin(a * Math.PI / 180) * 6}" r="4.5" fill="${c}" ${o}/>`).join('')}<circle cx="24" cy="12" r="3" fill="#f2c14e"/>`;
+  else if (k === 'heartbrew' || k === 'emberoil' || k === 'draught') b = `<path d="M19 6 L29 6 L29 14 C38 18 40 26 38 34 C36 42 12 42 10 34 C8 26 10 18 19 14 Z" fill="${c}" ${o}/><rect x="18" y="3" width="12" height="5" rx="1" fill="#8a5a36" ${o}/><path d="M15 28 Q24 32 33 28" stroke="#fff" stroke-width="2" fill="none" opacity=".6"/>`;
   else if (k === 'glue' || k === 'tallow') b = k === 'glue' ? `<rect x="10" y="12" width="28" height="30" rx="5" fill="${c}" ${o}/><rect x="8" y="8" width="32" height="7" rx="2" fill="#8a5a36" ${o}/><path d="M16 22 L32 22" stroke="#fff" stroke-width="2" opacity=".6"/>` : `<rect x="12" y="14" width="24" height="28" rx="3" fill="${c}" ${o}/><path d="M24 14 L24 8" stroke="#1d2128" stroke-width="2"/><path d="M24 2 C28 6 27 9 24 9 C21 9 20 6 24 2 Z" fill="#ff9a3d"/>`;
   else if (k === 'slag' || k === 'gunk') b = `<path d="M8 34 C6 24 14 16 22 18 C28 10 40 14 40 24 C44 30 40 40 30 40 L14 40 C10 40 8 38 8 34 Z" fill="${c}" ${o}/><circle cx="18" cy="28" r="2.5" fill="rgba(0,0,0,.35)"/><circle cx="30" cy="25" r="2" fill="rgba(0,0,0,.35)"/>`;
   else if (k === 'leather') b = `<path d="M10 10 L38 10 L40 38 L8 38 Z" fill="${c}" ${o}/><path d="M13 14 L35 14 L36 34 L12 34 Z" fill="none" stroke="#e0b47a" stroke-width="1.5" stroke-dasharray="3 2"/>`;
@@ -3532,7 +3618,9 @@ function matSvg(k, px) {
   return `<svg class="mi" viewBox="0 0 48 48" width="${w}" height="${w}">${b}</svg>`;
 }
 const RARE_MATS = ['frostgem', 'emberruby', 'voidopal', 'spirit', 'moonsilver', 'dragonheart'];
-const MAT_COL = { hide1: '#b48a5a', hide2: '#8a5a36', hide3: '#e8e1d2', hide4: '#6fb3d9', sinew1: '#e9c9a6', sinew2: '#d29a6a', sinew3: '#c0504d', sinew4: '#9b6bd1', frostgem: '#9fe6ff', emberruby: '#ff6b5a', voidopal: '#b58cff', spirit: '#d9fff4', moonsilver: '#dfe6f0', dragonheart: '#ff9a3d', iron: '#8f99a6', steel: '#c4ccd8', runesteel: '#7fa8ff', moonsteel: '#e4ecf7', dragonsteel: '#e2683a', frostglass: '#bfeaff', tallow: '#f1e3b8', glue: '#d9b25a', leather: '#7a4a26', emberoil: '#ff8a3d', draught: '#9ff0d8', slag: '#5a5d63', gunk: '#7d8a4a', a_frostgem: '#9fe6ff', a_spirit: '#bff5e6', a_moonsilver: '#e8eef8', a_emberruby: '#ff7a5a', a_voidopal: '#c09cff', a_dragonheart: '#ffb04d' };
+const MAT_COL = { hide1: '#b48a5a', hide2: '#8a5a36', hide3: '#e8e1d2', hide4: '#6fb3d9', sinew1: '#e9c9a6', sinew2: '#d29a6a', sinew3: '#c0504d', sinew4: '#9b6bd1', frostgem: '#9fe6ff', emberruby: '#ff6b5a', voidopal: '#b58cff', spirit: '#d9fff4', moonsilver: '#dfe6f0', dragonheart: '#ff9a3d', iron: '#8f99a6', steel: '#c4ccd8', runesteel: '#7fa8ff', moonsteel: '#e4ecf7', dragonsteel: '#e2683a', frostglass: '#bfeaff', tallow: '#f1e3b8', glue: '#d9b25a', leather: '#7a4a26', emberoil: '#ff8a3d', draught: '#9ff0d8', slag: '#5a5d63', gunk: '#7d8a4a', berries: '#c8384b', roots: '#e08a2a', frostmint: '#7fe0c8', emberroot: '#ff6a2a', nightshade: '#6a3a8a', moonpetal: '#dfe6ff', heartbrew: '#ff5a3a',
+  p_heal: '#e2483f', p_stew: '#9a6538', p_pie: '#8a3a8a', p_swift: '#3fbf6a', p_ember: '#ff8a2a', p_iron: '#7f93a8', p_moon: '#b9a8ff', p_poison: '#3a5a2a', p_murky: '#6b6250',
+  a_frostgem: '#9fe6ff', a_spirit: '#bff5e6', a_moonsilver: '#e8eef8', a_emberruby: '#ff7a5a', a_voidopal: '#c09cff', a_dragonheart: '#ffb04d' };
 const DROPS = {
   rabbit: [['hide1', 0.35]], eagle: [['sinew1', 0.3]], deer: [['hide1', 0.5], ['sinew1', 0.35]], yak: [['hide2', 0.25], ['sinew1', 0.4]], boar: [['hide2', 0.3], ['sinew2', 0.2]],
   spider: [['sinew1', 0.3]], goblin: [['hide1', 0.3]], wolf: [['hide1', 0.45], ['sinew1', 0.3]], bear: [['hide2', 0.3], ['sinew2', 0.2]], troll: [['hide2', 0.25], ['sinew2', 0.2], ['iron', 0.15]],
@@ -3598,11 +3686,11 @@ SPECIALS.push(
   { id: 'dragonaegis', n: 'Dragonsteel Aegis', d: 'Legendary: take 10% less damage and +40 max health', leg: 1, brew: ['dragonsteel', 'leather', 'frostglass'], c: { dragonsteel: 2, leather: 4, frostglass: 2, cash: 3000 }, give: () => { S.bonusHp += 40; } });
 SPECIALS.push(
   { id: 'frostrivets', n: 'Frost-Alloy Rivets', d: '+30 max health', brew: ['a_frostgem'], c: { a_frostgem: 2, leather: 1, cash: 300 }, give: () => { S.bonusHp += 30; } },
-  { id: 'spiritband', n: 'Spirit-Alloy Band', d: '+6% speed and +20 max health', brew: ['a_spirit'], c: { a_spirit: 2, cash: 400 }, give: () => { S.speedBonus += 0.06; S.bonusHp += 20; } },
+  { id: 'spiritband', n: 'Spirit Band', d: '+6% speed and +20 max health', brew: ['draught', 'a_moonsilver'], c: { draught: 2, a_moonsilver: 1, cash: 400 }, give: () => { S.speedBonus += 0.06; S.bonusHp += 20; } },
   { id: 'moonguard', n: 'Moon-Alloy Guard', d: 'Take 5% less damage', brew: ['a_moonsilver'], c: { a_moonsilver: 2, leather: 1, cash: 600 } },
   { id: 'embergaunt', n: 'Ember-Alloy Gauntlets', d: '+12% damage', brew: ['a_emberruby'], c: { a_emberruby: 2, leather: 1, cash: 800 }, give: () => { S.bonusDmg += 0.12; } },
   { id: 'voidamulet', n: 'Void-Alloy Amulet', d: '+18% damage', brew: ['a_voidopal'], c: { a_voidopal: 2, cash: 1500 }, give: () => { S.bonusDmg += 0.18; } },
-  { id: 'heartcore', n: 'Heartfire Core', d: 'Legendary: +60 max health and +15% damage', leg: 1, brew: ['a_dragonheart'], c: { a_dragonheart: 1, a_voidopal: 1, cash: 3000 }, give: () => { S.bonusHp += 60; S.bonusDmg += 0.15; } });
+  { id: 'heartcore', n: 'Heartfire Core', d: 'Legendary: +60 max health and +15% damage', leg: 1, brew: ['heartbrew', 'a_voidopal'], c: { heartbrew: 1, a_voidopal: 1, cash: 3000 }, give: () => { S.bonusHp += 60; S.bonusDmg += 0.15; } });
 SPECIALS.forEach(x => { if (x.brew) { x.ok = () => x.brew.every(discovered); x.hint = 'Discover its brewed materials'; } });
 const SCROLL_DROP = { raptor: ['claws', 0.03], tiger: ['claws', 0.03], wraith: ['shroud', 0.03], mammoth: ['hidepack', 0.04], trex: ['talisman', 0.03] };
 // structure supplies: crafted for the whole town (host or solo player)
@@ -3744,21 +3832,33 @@ const timesCost = (c, n) => Object.fromEntries(Object.entries(c).map(([k, v]) =>
    Recipes stay secret until a player makes them once; then they can be made again from a list.
    A wrong mix gives junk or is simply lost. */
 const BREWS = [
-  { v: 'smelter', in: { stone: 3, log: 2 }, out: 'iron', n: 1 },
+  { v: 'smelter', in: { stone: 4 }, out: 'iron', n: 1 },
   { v: 'smelter', in: { iron: 2, ore: 2 }, out: 'steel', n: 1, th: 2 },
   { v: 'smelter', in: { steel: 1, frostgem: 1, ore: 2 }, out: 'runesteel', n: 1, th: 3 },
   { v: 'smelter', in: { ore: 2, stone: 2 }, out: 'frostglass', n: 1 },
   { v: 'smelter', in: { steel: 1, moonsilver: 1 }, out: 'moonsteel', n: 1, th: 3 },
-  { v: 'smelter', in: { runesteel: 1, emberruby: 1, hide4: 1 }, out: 'dragonsteel', n: 1, th: 3 },
-  { v: 'pot', in: { meat: 2, log: 1 }, out: 'tallow', n: 2 },
+  { v: 'smelter', in: { runesteel: 1, emberruby: 2 }, out: 'dragonsteel', n: 1, th: 3 },
+  { v: 'pot', in: { meat: 3 }, out: 'tallow', n: 2 },
   { v: 'pot', in: { hide1: 2, sinew1: 1 }, out: 'glue', n: 2 },
   { v: 'pot', in: { hide2: 1, glue: 1 }, out: 'leather', n: 1 },
-  { v: 'pot', in: { emberruby: 1, tallow: 1 }, out: 'emberoil', n: 2 },
-  { v: 'pot', in: { spirit: 1, meat: 1, ore: 1 }, out: 'draught', n: 1 },
+  { v: 'pot', in: { tallow: 1, emberroot: 1 }, out: 'emberoil', n: 2 },
+  { v: 'pot', in: { spirit: 1, frostmint: 1 }, out: 'draught', n: 1 },
+  { v: 'pot', in: { dragonheart: 1, moonpetal: 1, emberroot: 1 }, out: 'heartbrew', n: 1 },
+  { v: 'pot', in: { berries: 2, frostmint: 1 }, out: 'p_heal', n: 2 },
+  { v: 'pot', in: { meat: 2, roots: 2 }, out: 'p_stew', n: 2 },
+  { v: 'pot', in: { berries: 3, roots: 1 }, out: 'p_pie', n: 2 },
+  { v: 'pot', in: { frostmint: 2, sinew1: 1 }, out: 'p_swift', n: 1 },
+  { v: 'pot', in: { emberroot: 2, meat: 1 }, out: 'p_ember', n: 1 },
+  { v: 'pot', in: { roots: 1, hide2: 1, frostmint: 1 }, out: 'p_iron', n: 1 },
+  { v: 'pot', in: { moonpetal: 2, spirit: 1 }, out: 'p_moon', n: 1 },
+  { v: 'pot', in: { nightshade: 2, berries: 1 }, out: 'p_poison', n: 2 },
 ];
 const BREW_MAX = 6;
 // any smelter mix of metal with a gem or magic material fuses into an alloy named after the rarest one
-const METALS = ['iron', 'steel', 'runesteel', 'moonsteel', 'dragonsteel'], RARE_ORDER = ['dragonheart', 'voidopal', 'emberruby', 'moonsilver', 'spirit', 'frostgem'];
+const METALS = ['iron', 'steel', 'runesteel', 'moonsteel', 'dragonsteel'], RARE_ORDER = ['voidopal', 'emberruby', 'moonsilver', 'frostgem'];
+// the smelter takes stone, crystal, metal, gems and glass; the pot takes food, hides, sinew, forage, magic and anything brewed
+const SMELT_OK = k => k === 'stone' || k === 'ore' || METALS.includes(k) || k.startsWith('a_') || ['frostgem', 'emberruby', 'voidopal', 'moonsilver', 'frostglass'].includes(k);
+const POT_OK = k => k === 'meat' || /^hide|^sinew|^p_/.test(k) || !!FORAGE[k] || ['tallow', 'glue', 'leather', 'emberoil', 'draught', 'heartbrew', 'spirit', 'dragonheart'].includes(k);
 function alloyOf(v, o) {
   if (v !== 'smelter') return null;
   const m = METALS.filter(k => o[k] > 0), r = RARE_ORDER.find(k => o[k] > 0); if (!m.length || !r) return null;
@@ -3775,11 +3875,11 @@ const discovered = k => knownBrews().some(key => { const b = recipeOf(key); retu
 let brewV = 'smelter', brewSel = {};
 const brewUnits = () => Object.values(brewSel).reduce((a, b) => a + b, 0);
 function brewIngredients() {
-  const L = []; ['log', 'stone', 'ore', 'meat'].forEach(k => { if (carry[k].length) L.push(k); });
-  MAT_GROUPS.forEach(([g, ks]) => ks.forEach(k => { if (g !== 'Junk' && (S.mats || {})[k] > 0) L.push(k); }));
+  const L = [], ok = brewV === 'smelter' ? SMELT_OK : POT_OK; ['stone', 'ore', 'meat'].forEach(k => { if (carry[k].length && ok(k)) L.push(k); });
+  MAT_GROUPS.forEach(([g, ks]) => ks.forEach(k => { if (g !== 'Junk' && (S.mats || {})[k] > 0 && ok(k)) L.push(k); }));
   return L;
 }
-const ingName = k => MATS[k] || (k === 'ore' ? 'Crystal' : k === 'log' ? 'Log' : k === 'meat' ? 'Meat' : 'Stone');
+const ingName = k => MATS[k] || (k === 'ore' ? 'Crystal' : k === 'log' ? 'Log' : k === 'meat' ? 'Food' : 'Stone');
 const ingPic = (k, px) => MATS[k] ? matSvg(k, px) : resSvg(k).replace('width="22" height="22"', `width="${px}" height="${px}"`);
 function brewFire() {
   if (!brewUnits() || !canAfford(brewSel)) return;
@@ -3791,10 +3891,11 @@ function brewFire() {
   else { const T = S.tried = S.tried || []; if (!T.includes(key)) { T.push(key); if (T.length > 300) T.shift(); }
     TEL.brew = TEL.brew || { found: {}, junk: 0, lost: 0 };
     // precious ingredients mostly survive a failed mix: half of every metal, gem, magic, alloy and brewed material comes back
-    const back = {}; for (const k in brewSel) if (MATS[k] && !/^hide|^sinew/.test(k)) { const n = Math.ceil(brewSel[k] / 2); if (n) back[k] = n; }
+    const back = {}; for (const k in brewSel) if (MATS[k] && !/^hide|^sinew/.test(k) && !FORAGE[k]) { const n = Math.ceil(brewSel[k] / 2); if (n) back[k] = n; }
     if (Object.keys(back).length) gainMats(back, player.x, player.z);
     const saved = Object.keys(back).length ? ' You saved ' + costTxt(back) + '.' : '';
-    if (Math.random() < 0.6) { const j = brewV === 'smelter' ? 'slag' : 'gunk'; gainMats({ [j]: 1 }, player.x, player.z); TEL.brew.junk++; banner('Nothing useful', false, 'You got ' + MATS[j] + '. That mix doesn\'t work.' + saved); }
+    if (brewV === 'pot' && Math.random() < 0.4) { gainMats({ p_murky: 1 }, player.x, player.z); TEL.brew.junk++; banner('A murky brew', false, 'Who knows what it does? Drink it at your own risk.' + saved); }
+    else if (Math.random() < 0.6) { const j = brewV === 'smelter' ? 'slag' : 'gunk'; gainMats({ [j]: 1 }, player.x, player.z); TEL.brew.junk++; banner('Nothing useful', false, 'You got ' + MATS[j] + '. That mix doesn\'t work.' + saved); }
     else { TEL.brew.lost++; banner(brewV === 'smelter' ? 'It burned away' : 'It boiled away', false, 'That mix doesn\'t work.' + (saved || ' The ingredients are lost.')); }
     play('alert'); }
   brewSel = {}; savePersonal();
@@ -3806,7 +3907,7 @@ function brewMake(key, n) {
 function brewSellJunk() { const M = S.mats || {}, n = (M.slag || 0) + (M.gunk || 0); if (!n) return; M.slag = 0; M.gunk = 0; S.wallet += n * 2; bump('cash'); play('coin'); note('+' + n * 2 + ' gold for junk', 'cash'); }
 function brewHtml(near) {
   const vb = (v, n, icon) => `<button type="button" data-bv="${v}" aria-pressed="${brewV === v}">${icon} ${n}</button>`;
-  let h = '<p>Put up to ' + BREW_MAX + ' ingredients in the smelter or the pot and fire it up. The right mix makes something new; a wrong one gives junk or is lost. Recipes you find are saved below.</p>';
+  let h = '<p>' + (brewV === 'smelter' ? 'The smelter takes stone, crystal, metal, gems and glass. ' : 'The pot takes food, hides, sinew, forage, magic and anything brewed. ') + 'Put up to ' + BREW_MAX + ' ingredients in the smelter or the pot and fire it up. The right mix makes something new; a wrong one gives junk or is lost. Recipes you find are saved below.</p>';
   h += '<div class="ftabs">' + vb('smelter', 'Smelter', '🔥') + vb('pot', 'Pot', '🍲') + '</div>';
   const key = brewKey(brewV, brewSel), tried = (S.tried || []).includes(key), known = knownBrews().includes(key);
   h += `<div class="brewin"><b>In the ${brewV}</b><div class="mats">` + (brewUnits() ? Object.keys(brewSel).filter(k => brewSel[k] > 0).map(k => `<span data-brm="${k}" style="cursor:pointer">${ingPic(k, 18)}<b>${brewSel[k]}</b> ${ingName(k)} ✕</span>`).join('') : '<p>Empty. Tap ingredients below to add them.</p>') + '</div>'
@@ -4146,7 +4247,7 @@ function heroItems() {
   (S.rangedOwn || []).forEach(i => inv.push({ svg: pic('ranged', i, icon('ranged', i)), name: RANGED[i].n, on: S.rangedOn === i, eq: S.rangedOn === i, act: 'ranged:' + i, info: (RANGED[i].dmg * rangedMul()).toFixed(1) + ' damage, ' + RANGED[i].rng + ' m range. Tap to carry.' }));
   ['helm', 'cape'].forEach(sl => (W[sl] || []).filter(i => i).forEach(i => inv.push({ svg: pic(sl, i, icon(sl, i)), name: LOOKS[sl][i], on: (wear[sl] || 0) === i, eq: (wear[sl] || 0) === i, act: 'wear:' + sl + ':' + i, info: 'Tap to wear (tap again to take off).' })));
   const mats = [];
-  MAT_GROUPS.forEach(([g, ks]) => ks.forEach(k => { if ((S.mats || {})[k] > 0) mats.push({ svg: matSvg(k, 48).replace('class="mi" ', ''), name: MATS[k], count: S.mats[k], info: g + ' · crafting material. Use it at the forge by the blacksmith.' }); }));
+  MAT_GROUPS.forEach(([g, ks]) => ks.forEach(k => { if ((S.mats || {})[k] > 0) mats.push({ svg: matSvg(k, 48).replace('class="mi" ', ''), name: MATS[k], count: S.mats[k], act: POTIONS[k] ? 'drink:' + k : undefined, info: POTIONS[k] ? POTIONS[k].d + '. Tap again to ' + (POTIONS[k].verb || 'drink it').toLowerCase() + '.' : g + ' · crafting material. Use it at the forge.' }); }));
   if (S.medkits) inv.push({ svg: pic('medkit', 0, icon('medkit')), name: 'Med kit', count: S.medkits, info: 'Stand by a downed teammate to revive them.' });
   ensureOwn();
   S.ownA.slice().sort((a, b) => b - a).forEach(t => inv.unshift({ svg: itemPic('armor', t), name: ARMORS[t].n, on: S.armorLv === t, eq: S.armorLv === t, act: 'eqa:' + t, info: 'Armour: take ' + Math.round(ARMORS[t].a * 100) + '% less damage. ' + (S.armorLv === t ? 'Equipped.' : 'Tap to wear it.') }));
@@ -4244,6 +4345,7 @@ $('statsBody').addEventListener('click', e => {
   const tb = e.target.closest('[data-tab]'); if (tb) { e.stopPropagation(); heroTab = tb.dataset.tab; heroPick = null; showStats(); return; }
   const pk = e.target.closest('[data-pick]'); if (pk) { e.stopPropagation(); const v = pk.dataset.pick;
     if (v.startsWith('ranged:')) { S.rangedOn = +v.slice(7); applyMyLook(); play('pay'); }
+    else if (v.startsWith('drink:')) { if (heroPick === v) { drinkPotion(v.slice(6)); heroPick = null; showHero(); return; } }
     else if (v.startsWith('eqw:')) { S.weapon = +v.slice(4); applyMyLook(); play('pay'); savePersonal(); }
     else if (v.startsWith('eqa:')) { S.armorLv = +v.slice(4); applyMyLook(); play('pay'); savePersonal(); }
     else if (v.startsWith('wear:')) { const [, slot, i] = v.split(':'); (S.wear = S.wear || {})[slot] = S.wear[slot] === +i ? 0 : +i; applyMyLook(); play('pay'); }
@@ -4416,7 +4518,7 @@ function drawMini(dt) {
   $(id).title = 'Tap to drop ' + resName(t) + ' or stop collecting it';
   $(id).addEventListener('click', e => { e.stopPropagation(); openChipMenu(id, t); });
 });
-const PLURAL = { log: 'logs', meat: 'meat', stone: 'stone', ore: 'crystals' };
+const PLURAL = { log: 'logs', meat: 'food', stone: 'stone', ore: 'crystals' };
 const cap1 = w => w[0].toUpperCase() + w.slice(1);
 function openChipMenu(id, t) {
   let m = $('chipMenu'); if (m && m.dataset.t === t) { m.remove(); return; } if (m) m.remove();
@@ -4508,7 +4610,7 @@ const NET = { mode: 'solo', room: null, me: null, host: null, seq: 0, buf: new M
 function isGuest() { return NET.mode === 'guest'; }
 function isHost() { return NET.mode === 'host'; }
 const SYNC_KEYS = ['chest', 'braces', 'runes', 'totem', 'cleanRaids', 'castle', 'dragonWins', 'rangeLv', 'lastRaidDay', 'wallLv', 'houseLv', 'clock', 'season', 'civ', 'warm', 'food', 'th', 'cook', 'houses', 'wave', 'waveT', 'raidOn', 'blizOn', 'towerLv', 'masonry', 'guardLv', 'bank', 'carpenter', 'mine', 'gold', 'warmUp', 'foodUp', 'bell', 'priceMul', 'taxMul', 'boots', 'medic', 'sleds', 'horn', 'won', 'over'];
-const ROLE_IDS = ['logger', 'hunter', 'stonecutter', 'miner', 'hauler', 'mender'];
+const ROLE_IDS = ['logger', 'hunter', 'stonecutter', 'miner', 'hauler', 'mender', 'gatherer'];
 const R2 = v => Math.round(v * 100) / 100;
 function netAct(kind, target, a, b) {
   if (!isGuest()) return;
@@ -4927,7 +5029,7 @@ $('coop').addEventListener('click', e => {
 
 /* ================= save / load (this browser only) ================= */
 const SAVE_KEY = 'frosthold-save-v6';
-const WORKER_HOME = { hauler: [0, 17], mender: [8.2, 9], logger: [6, 18.5], hunter: [16.5, 16.3], stonecutter: [-16.5, 25.4], miner: [-25.5, -10] };
+const WORKER_HOME = { gatherer: [8.8, 16.4], hauler: [0, 17], mender: [8.2, 9], logger: [6, 18.5], hunter: [16.5, 16.3], stonecutter: [-16.5, 25.4], miner: [-25.5, -10] };
 function clearSave() { try { localStorage.removeItem(SAVE_KEY); } catch (e) {} }
 const HERO_KEYS = ['runLv', 'tamer', 'pet', 'rangedOwn', 'rangedOn', 'wardrobe', 'wear', 'axe', 'bag', 'pick', 'weapon', 'armorLv', 'mats', 'specials', 'scrolls', 'seenRecipes', 'forgeSeen', 'satchel', 'known', 'tried', 'ownW', 'ownA', 'bonusHp', 'bonusDmg', 'speedBonus', 'medkits', 'relics', 'xp', 'lvl'];
 let heroReady = false;   // only save the hero once it has been loaded, so a rejoin in progress never overwrites it
@@ -5212,6 +5314,6 @@ if (window.FROST_STAGING || /staging/.test(location.search)) {
     try { const r = ACT[b.dataset.g][b.dataset.k](); if (typeof r === 'number') m += ' (' + r + ')'; } catch (er) { m = 'Error: ' + er.message; console.error(er); }
     try { saveGame(); savePersonal(); } catch (er) {} draw(m); });
 }
-window.__frost = { TEL, telSnap, gainMats, renderer, scene, hurtHero, wilds, wildCamps, openTreasure, NET, liveSize: () => JSON.stringify(liveState()).length, piles, saveGame, waypoint, give: (t, n) => { for (let i = 0; i < n; i++) addToStack(t); }, S, player, carry, stalls, pads, trees, yaks, enemies, workers, guards, rocks, rings, B, goal, pallets, walkers, checkRings, setSegBuilt, padTH, RUINS, SCENERY, LAKES, DUNGEONS, obstacles, padCastle, padTH, raidPack, maxGuards, guards, towers, tameIt: c => tameIt(c), getPet: () => pet, stalls: stalls, enterDungeon, dunKeys, dun: () => DUN, dstep: dt => dungeonStep(dt), mshots: () => mshots, applySeason, sim: secs => { for (let t = 0; t < secs; t += 0.04) update(0.04); }, ringSecure, padHomes, roleCount, maxWorkers, housing, pop, dayNo, makeRemote, remoteExtras, PROFILE, applyCoat, P0 };
+window.__frost = { plants, TEL, telSnap, gainMats, renderer, scene, hurtHero, wilds, wildCamps, openTreasure, NET, liveSize: () => JSON.stringify(liveState()).length, piles, saveGame, waypoint, give: (t, n) => { for (let i = 0; i < n; i++) addToStack(t); }, S, player, carry, stalls, pads, trees, yaks, enemies, workers, guards, rocks, rings, B, goal, pallets, walkers, checkRings, setSegBuilt, padTH, RUINS, SCENERY, LAKES, DUNGEONS, obstacles, padCastle, padTH, raidPack, maxGuards, guards, towers, tameIt: c => tameIt(c), getPet: () => pet, stalls: stalls, enterDungeon, dunKeys, dun: () => DUN, dstep: dt => dungeonStep(dt), mshots: () => mshots, applySeason, sim: secs => { for (let t = 0; t < secs; t += 0.04) update(0.04); }, ringSecure, padHomes, roleCount, maxWorkers, housing, pop, dayNo, makeRemote, remoteExtras, PROFILE, applyCoat, P0 };
 })();
 </script>
