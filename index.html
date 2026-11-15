@@ -55,6 +55,7 @@ html,body{height:100%;margin:0;background:var(--ice);color:var(--ink);overflow:h
 #banner.good small{-webkit-text-stroke-color:#1d5a33}
 #netbar{bottom:calc(16px + env(safe-area-inset-bottom,0px));left:calc(12px + env(safe-area-inset-left,0px));display:flex;flex-wrap:wrap;gap:6px;align-items:center;max-width:70vw}
 #netTxt{background:var(--panel);color:#ffe08a;font:12px/1 var(--display);letter-spacing:.05em;padding:6px 9px;border-radius:10px}
+#miniCtl{position:fixed;z-index:12;display:flex;gap:4px}#miniCtl button{width:30px;height:26px;border:1px solid var(--panel-line);border-radius:8px;background:rgba(18,30,50,.75);color:#fff;font:800 15px/1 var(--body);cursor:pointer;padding:0}#miniCtl button:disabled{opacity:.4}
 #mini{width:118px;height:118px;right:calc(8px + env(safe-area-inset-right,0px));top:calc(196px + env(safe-area-inset-top,0px));border-radius:14px;border:1px solid var(--panel-line);background:rgba(18,30,50,.6)}
 #res .chip:not(#cCash){pointer-events:auto;cursor:pointer}
 .wtag{background:#2b4a74;color:#fff}.wtag.full{background:#5c6b80}
@@ -247,7 +248,7 @@ html,body{height:100%;margin:0;background:var(--ice);color:var(--ink);overflow:h
   </div>
 </div>
 
-<canvas id="mini" class="hud" width="240" height="240" aria-label="Map"></canvas>
+<canvas id="mini" class="hud" width="240" height="240" aria-label="Map"></canvas><div id="miniCtl"><button type="button" id="miniZoomOut" aria-label="Zoom map out">−</button><button type="button" id="miniZoomIn" aria-label="Zoom map in">+</button><button type="button" id="miniSize" aria-label="Change map size">⤢</button></div>
 <div id="res" class="hud">
   <div class="chip" id="cCash"><svg class="ico" viewBox="0 0 28 22"><circle cx="14" cy="11" r="8.5" fill="#f2c14e" stroke="#8a6410" stroke-width="2"/><circle cx="14" cy="11" r="4.5" fill="none" stroke="#c9962e" stroke-width="1.6"/></svg><span id="vCash">0</span></div>
   <div class="chip" id="cLog"><svg class="ico" viewBox="0 0 28 22"><rect x="3" y="5" width="18" height="12" rx="3" fill="#a8693f" stroke="#5b3416" stroke-width="2"/><ellipse cx="21" cy="11" rx="5" ry="6" fill="#e8c28f" stroke="#5b3416" stroke-width="2"/><circle cx="21" cy="11" r="2" fill="none" stroke="#a8693f" stroke-width="1.5"/></svg><span id="vLog">0</span></div>
@@ -2331,7 +2332,7 @@ const TUT = [
   { t: 'Build the walls', p: 'Raiders will come. Glowing build spaces show what they cost. Stand on one and you pay with what you carry: fix the broken palisade first.', task: 'Build a wall section', start: () => rings[0].segs.filter(sg => sg.built).length, done: b => rings[0].segs.filter(sg => sg.built).length > b || rings[0].complete },
   { t: 'Warmth and food', p: 'These gauges show warmth and, once you build the cookhouse, food. If either reaches zero, villagers die. Hunt rabbits and deer or pick berries and wild roots for food, and sell it at the cookhouse. Meat fills people most, berries least.', hi: 'town' },
   { t: 'Grow your town', p: 'Build houses, a blacksmith whose forge crafts gear from hides and sinew, and lodges to hire workers who gather on their own. Upgrade the Town Hall to unlock a bigger ring of walls.' },
-  { t: 'Raids and danger', p: 'A raid comes every night at nightfall, and each day is harder. Watchtowers and guards help, and the minimap shows raiders in red (drag it to move it). The farther you explore, the tougher the monsters and the better the treasure.', hi: 'mini' },
+  { t: 'Raids and danger', p: 'A raid comes every night at nightfall, and each day is harder. Watchtowers and guards help, and the minimap shows raiders in red and your workers out in the wilds (drag it to move it, and use − + ⤢ under it to zoom and resize). The farther you explore, the tougher the monsters and the better the treasure.', hi: 'mini' },
   { t: 'Menu and more', p: 'The cog holds Help (everything about the game), this tutorial, Co-op, your Hero (gear, pets), pause and sound options. Quests, fishing, dungeons, pets and castles await. Good luck!', hi: 'cog' },
 ];
 let tut = null;
@@ -4561,7 +4562,17 @@ function fogLoad(str) { if (!str) return; let cur = 0, k = 0; for (const n of st
 /* ================= minimap ================= */
 const mini = $('mini'), mctx = mini.getContext('2d');
 let miniT = 0;
-const MINI_W = 140, MSC = 240 / MINI_W;   // the map window spans 140 m around you
+// the map window spans MINI_W metres around you; players zoom it and pick its size on screen
+const MINI_ZOOMS = [70, 140, 280, 560], MINI_SIZES = [118, 170, 230];
+let miniZ = 1, miniS = 0; try { const v = JSON.parse(localStorage.getItem('frosthold-minisize')); if (v) { miniZ = v[0]; miniS = v[1]; } } catch (e) {}
+let MINI_W = MINI_ZOOMS[miniZ], MSC = 240 / MINI_W;
+function setMini(z, sz) {
+  miniZ = clamp(z, 0, MINI_ZOOMS.length - 1); miniS = clamp(sz, 0, MINI_SIZES.length - 1); MINI_W = MINI_ZOOMS[miniZ]; MSC = 240 / MINI_W; miniT = 0;
+  const m = $('mini'), px = MINI_SIZES[miniS] + 'px'; m.style.width = m.style.height = px;
+  if (m.style.left) { const r = m.getBoundingClientRect(); m.style.left = Math.min(r.left, innerWidth - r.width) + 'px'; m.style.top = Math.min(r.top, innerHeight - r.height - 34) + 'px'; }
+  $('miniZoomIn').disabled = miniZ === 0; $('miniZoomOut').disabled = miniZ === MINI_ZOOMS.length - 1;
+  try { localStorage.setItem('frosthold-minisize', JSON.stringify([miniZ, miniS])); } catch (e) {}
+}
 let mcx = 0, mcz = 0;
 const MX = x => 120 + (x - mcx) * MSC, MZ = z => 120 + (z - mcz) * MSC;
 const onMini = (x, z, m = 4) => Math.abs(x - mcx) < MINI_W / 2 + m && Math.abs(z - mcz) < MINI_W / 2 + m;
@@ -4570,6 +4581,7 @@ function star(c, x, y, R, fill, faint) {
   c.globalAlpha = faint ? 0.85 : 1; c.fillStyle = fill; c.strokeStyle = '#fff'; c.lineWidth = 2; c.fill(); c.stroke(); c.restore();
 }
 function drawMini(dt) {
+  { const r = mini.getBoundingClientRect(), ct = $('miniCtl'); ct.style.left = (r.right - 98) + 'px'; ct.style.top = (r.bottom + 4) + 'px'; ct.hidden = mini.hidden || mini.style.display === 'none'; }
   miniT -= dt; if (miniT > 0) return; miniT = 0.25;
   mcx = player.x; mcz = player.z;
   const c = mctx; c.clearRect(0, 0, 240, 240);
@@ -4595,6 +4607,13 @@ function drawMini(dt) {
   const cs = FOG_CELL * MSC, i0 = Math.max(0, Math.floor((mcx - MINI_W / 2 - FOG_X0) / FOG_CELL)), i1 = Math.min(FOG_N - 1, Math.ceil((mcx + MINI_W / 2 - FOG_X0) / FOG_CELL));
   const j0 = Math.max(0, Math.floor((mcz - MINI_W / 2 - FOG_Z0) / FOG_CELL)), j1 = Math.min(FOG_N - 1, Math.ceil((mcz + MINI_W / 2 - FOG_Z0) / FOG_CELL));
   for (let j = j0; j <= j1; j++) for (let i = i0; i <= i1; i++) if (!fog[j * FOG_N + i]) c.fillRect(MX(FOG_X0 + i * FOG_CELL) - 0.3, MZ(FOG_Z0 + j * FOG_CELL) - 0.3, cs + 0.6, cs + 0.6);
+  // everyone working or guarding outside the walls: a dot in their coat colour, or on the rim when beyond the window
+  const R0 = outerRing(), outside = (x, z) => !R0 || !inSquare(x, z, R0.h + 1);
+  const person = (x, z, col, rr) => { let px = MX(x), pz = MZ(z), on = onMini(x, z); if (!on) { const a = Math.atan2(pz - 120, px - 120); px = 120 + Math.cos(a) * 112; pz = 120 + Math.sin(a) * 112; rr *= 0.7; }
+    c.globalAlpha = on ? 1 : 0.75; c.fillStyle = col; c.strokeStyle = '#fff'; c.lineWidth = 1.5; c.beginPath(); c.arc(px, pz, rr, 0, TAU); c.fill(); c.stroke(); c.globalAlpha = 1; };
+  for (const w of workers) if (outside(w.x, w.z)) person(w.x, w.z, hex(w.R.coat), 4.5);
+  for (const g of guards) if (g.alive !== false && outside(g.x, g.z)) person(g.x, g.z, '#2f5fb8', 4.5);
+  if (pet && outside(pet.x, pet.z)) person(pet.x, pet.z, '#f2a03d', 4);
   c.fillStyle = '#e2483f'; for (const e of enemies) if (e.alive && onMini(e.x, e.z)) { c.beginPath(); c.arc(MX(e.x), MZ(e.z), 3.5, 0, TAU); c.fill(); }
   for (const r of Object.values(NET.remotes)) { const inside = onMini(r.x, r.z); let x = MX(r.x), y = MZ(r.z);
     if (!inside) { const a = Math.atan2(y - 120, x - 120); x = 120 + Math.cos(a) * 108; y = 120 + Math.sin(a) * 108; }   // teammates off the map sit on the rim
@@ -5272,8 +5291,14 @@ function applyHud() { document.querySelectorAll('.mshow input').forEach(cb => { 
 document.querySelectorAll('.mshow input').forEach(cb => cb.addEventListener('change', () => { HUD_SHOW[cb.dataset.hud] = cb.checked; try { localStorage.setItem('frosthold-hud', JSON.stringify(HUD_SHOW)); } catch (e) {} applyHud(); }));
 applyHud();
 // the minimap can be dragged anywhere on screen; its spot is remembered on this device
+$('miniZoomIn').addEventListener('click', e => { e.stopPropagation(); setMini(miniZ - 1, miniS); });
+$('miniZoomOut').addEventListener('click', e => { e.stopPropagation(); setMini(miniZ + 1, miniS); });
+$('miniSize').addEventListener('click', e => { e.stopPropagation(); setMini(miniZ, (miniS + 1) % MINI_SIZES.length); });
+['pointerdown', 'touchstart', 'mousedown'].forEach(ev => $('miniCtl').addEventListener(ev, e => e.stopPropagation()));
+$('mini').addEventListener('wheel', e => { e.preventDefault(); e.stopPropagation(); setMini(miniZ + (e.deltaY > 0 ? 1 : -1), miniS); }, { passive: false });
+setMini(miniZ, miniS);
 (() => { const m = $('mini'); m.style.pointerEvents = 'auto'; m.style.touchAction = 'none'; m.style.cursor = 'grab';
-  const place = (x, y) => { const r = m.getBoundingClientRect(); x = Math.max(0, Math.min(innerWidth - r.width, x)); y = Math.max(0, Math.min(innerHeight - r.height, y)); m.style.left = x + 'px'; m.style.top = y + 'px'; m.style.right = 'auto'; return [x, y]; };
+  const place = (x, y) => { const r = m.getBoundingClientRect(); x = Math.max(0, Math.min(innerWidth - r.width, x)); y = Math.max(0, Math.min(innerHeight - r.height - 34, y)); m.style.left = x + 'px'; m.style.top = y + 'px'; m.style.right = 'auto'; return [x, y]; };
   try { const v = JSON.parse(localStorage.getItem('frosthold-mini')); if (v) requestAnimationFrame(() => place(v[0], v[1])); } catch (e) {}
   let d = null;
   m.addEventListener('pointerdown', e => { e.stopPropagation(); e.preventDefault(); const r = m.getBoundingClientRect(); d = [e.clientX - r.left, e.clientY - r.top]; m.setPointerCapture(e.pointerId); });
