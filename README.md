@@ -82,9 +82,25 @@ Three gold-only upgrade spaces sit around the plaza: comfort (supplies last long
 ## Your hero
 ![The Hero screen](assets/help/hero.jpg)
 - **Hero levels** come from gathering, building, selling and fighting, and add damage and health.
-- **Personal blacksmith upgrades:** axes (Twin Axes, Axe III, IV), packs (100, 200, 400), the **Crystal Pick** (to mine crystal), **boots** (Fur Boots, Runner Boots, Windwalkers: +12% speed each) and **ranged weapons** (below). In co-op each player buys their own.
-- **The Hero screen** (cog → Hero): your 3D hero in their gear, equipment slots, an inventory of everything you own (tap an item to see it or equip it), plus Stats, Town and Relics tabs, and your name and coat colour.
+- **Personal blacksmith upgrades:** the **Crystal Pick** (to mine crystal) and **ranged weapons** (below). Axes, packs, boots, weapons and armour are crafted at the forge (see Crafting). In co-op each player has their own.
+- **The Hero screen** (cog → Hero): your 3D hero in their gear, equipment slots, an inventory of everything you own (tap an item to see it or equip it), plus Forge, Pet, Stats, Town and Relics tabs, and your name and coat colour.
 - New gear is equipped automatically when it's better than what you have.
+
+## Crafting
+![The forge](assets/help/forge.jpg)
+- **Materials:** animals and beasts drop **hides** and **sinew** in four tiers. Better tiers come from tougher creatures, and they drop less often, so farm and explore:
+  - **Rough Hide, Sinew:** rabbits, deer, eagles, wolves, goblins, spiders (common).
+  - **Thick Hide, Strong Sinew:** yaks, boars, bears, trolls (uncommon).
+  - **Shaggy Pelt, Beast Sinew:** yetis, wraiths, golems, raptors, sabre tigers (rare).
+  - **Dragon Scale, Ancient Sinew:** mammoths, T-rexes, dragons (very rare).
+  - Camp legends drop three times as often and give extra. In co-op, materials from your kills go to you.
+- **The forge:** stand by the blacksmith and tap **⚒ Forge** (or cog → Hero → Forge). Logs, stone and crystal come from your pack; gold from your wallet. Each item lists what it needs and how much you have.
+- **What you can craft**, one tier at a time:
+  - **Weapons:** Frostbite Axe → Ember Cleaver → Runic Greataxe (Town Hall II) → Raptor Fang Axe → Dragonbone Axe (Town Hall III).
+  - **Armour:** Fur Jerkin → Iron Mail → Runic Plate (Town Hall II) → Sabre Hide → Dragonscale Plate (Town Hall III).
+  - **Axes:** Twin Axes, Axe III, Axe IV. **Packs:** 100, 200, 400. **Boots:** Fur Boots, Runner Boots, Windwalkers (+12% speed each).
+- **Salvage:** break down gear you own (weapon, armour, ranged weapons, helmets, capes) for half its gold and materials back; logs, stone and crystal come back as gold. Salvaging a weapon or armour drops you one tier.
+- Materials are shown on the Forge tab and in your Hero inventory.
 
 ## Ranged weapons
 A ranged weapon fires on its own at the nearest threat in range, alongside your axes. **Hunting Bow** (12 m), **Crossbow** (Town Hall II) and **Rifle** (Town Hall III) are forged at the blacksmith. Magic staffs come from treasure: the **Frost Staff** slows, the **Fire Staff** explodes, and the **Storm Staff** throws lightning that jumps to two more foes.
