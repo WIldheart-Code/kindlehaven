@@ -34,7 +34,7 @@ Stand still at a lake's edge (or out on the ice in winter, where you cut a hole)
 
 ## Days, nights and seasons
 - A day lasts **6 minutes**; the last part is night: darker, colder and more dangerous.
-- Every 2 days the season turns: winter, spring, summer, autumn. Summer needs the least firewood, winter the most. Lakes block your path except in winter, when they freeze.
+- Every 2 days the season turns: winter, spring, summer, autumn. Outside winter the snow melts off trees, roofs, walls and rocks: trees turn green (or autumn orange) and roofs show their shingles. Summer needs the least firewood, winter the most. Lakes block your path except in winter, when they freeze.
 - **Every day is harder:** raiders get more health and hit harder, raids get bigger, camp monsters are tougher, and firewood and food burn faster (up to double).
 - At night, **workers drop off what they carry and go home** until morning.
 
@@ -133,7 +133,7 @@ Twelve cave entrances lie 200–315 m out (purple squares on the minimap). Tap *
 - Each player has their own hero, pack, wallet, gear and pet. Joining a new co-op room starts you at **level 1** with basic gear; your progress in that room is kept on your device, so rejoining the same room brings it back. Your solo hero is untouched. Set your name and coat colour under Co-op or Hero; teammates appear with your name, colour ring and what you carry, and as a coloured star on the minimap.
 - Stand next to a teammate and tap **Give** to hand over gold, resources or spare gear.
 - Pausing in co-op only covers your own screen: the shared world keeps running for everyone, and your hero can't be hurt while paused.
-- You get alerts when a teammate is under attack or knocked out. A phone that drops out or sleeps rejoins on its own. If the host refreshes the page, their room reopens with the same code and friends reconnect automatically within about 20 seconds, with their gear, pet, gold, pack and position just as they left them; **Leave co-op** closes the room for good.
+- You get alerts when a teammate is under attack or knocked out. A phone that drops out or sleeps rejoins on its own, behind a Reconnecting screen (with a Play solo instead button) rather than flashing back to a solo game. If the host refreshes the page, their room reopens with the same code and friends reconnect automatically within about 20 seconds, with their gear, pet, gold, pack and position just as they left them; **Leave co-op** closes the room for good.
 
 ## Saving
 Progress saves automatically every few seconds and when you leave the page, in this browser only. **New game** (tap twice) starts over.

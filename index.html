@@ -100,6 +100,7 @@ html,body{height:100%;margin:0;background:var(--ice);color:var(--ink);overflow:h
 #dun .dpad button,#dun .dact button{width:72px;height:72px;border-radius:50%;border:2px solid rgba(255,255,255,.55);background:rgba(255,255,255,.16);color:#fff;font:28px/1 sans-serif;touch-action:none}
 #dun #dunJ{background:rgba(120,200,255,.3)}#dun #dunA{background:rgba(255,120,80,.3)}
 #tameNo{position:fixed;z-index:8;left:50%;transform:translateX(-50%);bottom:calc(140px + env(safe-area-inset-bottom,0px));border:2px solid #fff;background:#b8452e;color:#fff;font:15px/1 var(--display);padding:10px 16px;border-radius:12px;cursor:pointer}
+#rejoin{position:fixed;inset:0;z-index:40;display:flex;align-items:center;justify-content:center;background:#1b2336;padding:0 16px}#rejoin .box{background:#f4f7fc;border-radius:18px;padding:22px;text-align:center;width:min(340px,100%)}#rejoin h2{margin:0 0 6px;font:26px var(--display);color:#2b4a74}#rejoin p{font:700 14px var(--body)}#rejoin button{border:2px solid #c9d6e8;background:#fff;border-radius:10px;padding:10px 14px;font:14px var(--display);color:#2b4a74;cursor:pointer}
 #tameBtn{position:fixed;z-index:8;left:50%;transform:translateX(-50%);bottom:calc(78px + env(safe-area-inset-bottom,0px));border:2px solid #fff;background:#3f8a5a;color:#fff;font:17px/1 var(--display);letter-spacing:.04em;padding:14px 20px;border-radius:14px;box-shadow:0 6px 18px rgba(0,0,0,.3);cursor:pointer;white-space:nowrap}
 #chipMenu{position:fixed;z-index:9;display:flex;flex-direction:column;gap:6px;background:var(--panel);border:1px solid var(--panel-line);border-radius:12px;padding:7px}
 #chipMenu button{border:0;border-radius:9px;padding:10px 12px;font:14px/1 var(--display);letter-spacing:.04em;color:#fff;background:rgba(255,255,255,.14);cursor:pointer;white-space:nowrap;text-align:left}
@@ -319,13 +320,23 @@ function applySkin(e) {
   e.g.add(m); e.g.userData.skin = m; if (e.after) e.after(m);
 }
 function skin(g, id, size, opts) { const e = Object.assign({ g, id, size }, opts || {}); skins.push(e); applySkin(e); return e; }
+const SNOW_AMT = { value: 0 }, SNOW_COL = { tree: { value: new THREE.Color(0x4fa955) }, roof: { value: new THREE.Color(0x6b4a34) }, rock: { value: new THREE.Color(0x86909c) } };
+const SNOW_SKIP = new Set(['hero', 'villager', 'yak', 'wolf', 'spider', 'goblin', 'bear', 'troll', 'wraith', 'golem', 'yeti', 'deer', 'rabbit', 'boar', 'eagle', 'raptor', 'sabre_tiger', 'mammoth', 'trex', 'dragon', 'ice_crystals', 'frozen_pond', 'snowdrift']);
+const SNOW_TREE = new Set(['pine_tree', 'snowball_tree', 'dead_tree', 'snowy_bush']), SNOW_ROCK = new Set(['cliff_boulder', 'stone_deposit', 'rock_small', 'ruin_stones', 'crystal_vein', 'crystal_mine']);
+function seasonMat(mt, id) {   // swaps near-white snow texels for leaves, roof shingles or bare rock
+  if (SNOW_SKIP.has(id) || mt.userData.season) return; mt.userData.season = true;
+  const cat = SNOW_TREE.has(id) ? 'tree' : SNOW_ROCK.has(id) ? 'rock' : 'roof';
+  mt.onBeforeCompile = sh => { sh.uniforms.uSnowAmt = SNOW_AMT; sh.uniforms.uSnowCol = SNOW_COL[cat];
+    sh.fragmentShader = 'uniform float uSnowAmt;\nuniform vec3 uSnowCol;\n' + sh.fragmentShader.replace('#include <map_fragment>', '#include <map_fragment>\n{ vec3 c = diffuseColor.rgb; float mx = max(c.r, max(c.g, c.b)), mn = min(c.r, min(c.g, c.b));\n  float snow = smoothstep(0.5, 0.68, mx) * (1.0 - smoothstep(0.24, 0.4, (mx - mn) / max(mx, 0.001)));\n  diffuseColor.rgb = mix(c, uSnowCol * (0.7 + 0.4 * mx), snow * uSnowAmt); }'); };
+  mt.customProgramCacheKey = () => 'season-' + cat; mt.needsUpdate = true;
+}
 function loadModels() {
   if (!THREE.GLTFLoader) return;
   const loader = new THREE.GLTFLoader();
   ['house', 'town_hall', 'watchtower', 'blacksmith', 'gate', 'wall_section', 'pine_tree', 'snowball_tree', 'stone_deposit', 'crystal_vein', 'yak', 'wolf', 'hero', 'villager', 'teepee_tent', 'treasure_chest', 'ruin_stones', 'ruin_cabin', 'ruin_tower', 'cliff_boulder', 'snowdrift', 'frozen_pond', 'snowy_bush', 'rock_small', 'ice_crystals', 'dead_tree', 'logger_lodge', 'hunter_lodge', 'quarry_lodge', 'miner_camp', 'barracks', 'warehouse', 'fishery', 'med_center', 'treasury', 'carpenter', 'crystal_mine', 'raptor', 'sabre_tiger', 'mammoth', 'trex', 'dragon', 'spider', 'goblin', 'bear', 'troll', 'wraith', 'golem', 'yeti', 'deer', 'rabbit', 'boar', 'eagle'].forEach(id =>
     loader.load('assets/game/' + id + '.json', g => {
       g.scene.traverse(o => { if (!o.isMesh) return; o.castShadow = true; o.receiveShadow = true;
-        const mt = o.material; if (mt.map) mt.map.encoding = THREE.LinearEncoding; if ('metalness' in mt) { mt.metalness = 0; mt.roughness = 0.95; } });
+        const mt = o.material; if (mt.map) mt.map.encoding = THREE.LinearEncoding; if ('metalness' in mt) { mt.metalness = 0; mt.roughness = 0.95; } seasonMat(mt, id); });
       MODELS[id] = g.scene; MODEL_BOX[id] = new THREE.Box3().setFromObject(g.scene);
       skins.forEach(applySkin); if (id === 'watchtower' && S.castle) towers.forEach(stoneTower);
       if (id === 'pine_tree' || id === 'snowball_tree') CHOP.forEach(t => { if (t.g) { hideTree(t); showTree(t); } });
@@ -2440,7 +2451,7 @@ function spawnEnemy(type, wave, px, pz, id) {
 function killEnemy(e) {
   if (!e.alive) return; e.alive = false; scene.remove(e.g); e.bar.remove();
   const meat = e.type === 'yeti' ? 8 : 2;
-  if (e.lastBy && isHost() && NET.remotes[e.lastBy]) { netGive(e.lastBy, 'cash', e.loot); netGive(e.lastBy, 'meat', meat); }
+  if (e.lastBy && isHost() && NET.remotes[e.lastBy]) { netGive(e.lastBy, 'cash', e.loot); netGive(e.lastBy, 'meat', meat); questCredit(e.lastBy, 'slay', e.type); }
   else { dropItem('cash', e.x, e.z, e.loot); dropItem('meat', e.x, e.z, meat); }
   burst(e.x, 1, e.z, e.type === 'yeti' ? 0xeef2f7 : 0x7d8794, 12); gainXP(e.xp);
 }
@@ -2468,7 +2479,7 @@ function damageYak(y, dmg, by) {
     y.alive = false; scene.remove(y.g); y.bar.remove();
     const M = y.A ? y.A.meat[0] + (Math.random() * (y.A.meat[1] - y.A.meat[0] + 1) | 0) : 5;
     if (!by) questEvent('hunt', y.sp);
-    if (by && by.remote) netGive(by.remote, 'meat', M);
+    if (by && by.remote) { netGive(by.remote, 'meat', M); questCredit(by.remote, 'hunt', y.sp); }
     else {
       const kept = by ? Math.min(M, workerCap(by) - by.items.length) : 0;
       if (by) workerTake(by, kept); else gainXP(Math.max(2, M));
@@ -3871,6 +3882,8 @@ const _c1 = new THREE.Color(), _c2 = new THREE.Color();
 let appliedSeason = -1;
 function applySeason(i) {
   const SE = SEASONS[i]; appliedSeason = i;
+  SNOW_AMT.value = i === 3 ? 0 : i === 0 ? 0.8 : 1; SNOW.color.setHex(i === 3 ? 0xffffff : 0x9a5e38); if (typeof SNOWMAT2 !== 'undefined') SNOWMAT2.color.setHex(i === 3 ? 0xffffff : 0xb8b0a4);   // snow melts off trees, roofs and rocks outside winter
+  SNOW_COL.tree.value.setHex(SE.leaf); SNOW_COL.roof.value.setHex([0x7a5a42, 0x6b4a34, 0x7a4a2a, 0x8a6a52][i]); SNOW_COL.rock.value.setHex([0x7d8794, 0x86909c, 0x8a8478, 0x8f99a6][i]);
   ground.material.color.setHex(SE.ground); groundLook(); WORN_MAT.color.setHex(i === 3 ? 0xa9b5c6 : i === 2 ? 0x8a6a44 : 0x8f7552); WORN_MAT.opacity = i === 3 ? 0.35 : 0.6; PATCH_MAT.color.setHex(SE.patch); mat(SNOWW).color.setHex(SE.snow);
   POND_OUT.color.setHex(SE.pond[0]); POND_IN.color.setHex(SE.pond[1]); LAKE_WATER.color.setHex(SE.lake); LAKE_SHORE.color.setHex(SE.shore);
   _c1.setHex(SE.leaf);
@@ -4056,6 +4069,7 @@ function onPads(msg) {
   for (const [, v] of NET.buf) if (v[0] === '$') { const pp = pads[v[1]]; if (pp) pp.paid[RES[v[2]]] = (pp.paid[RES[v[2]]] || 0) + v[3]; }
   pads.forEach(pp => { if (pp.done) { pp.g.visible = false; pp.active = false; } drawPad(pp); });
 }
+function questCredit(peer, qt, what) { if (NET.room) NET.room.emit('give', { to: peer, t: 'quest', qt, what }).catch(() => {}); }
 function onGive(msg) {
   const d = msg.data; if (!d || d.to !== NET.me) return;
   if (d.q) NET.incoming = Math.max(0, NET.incoming - d.q);
@@ -4063,6 +4077,7 @@ function onGive(msg) {
   if (d.t === 'hurt') { hurtHero(d.n); return; }
   if (d.t === 'revive') { if (S.downT > 0) reviveHere(0.5, 'A teammate used a med kit on you'); return; }
   if (d.t === 'none') return;
+  if (d.t === 'quest') { questEvent(d.qt, d.what); return; }
   if (d.t === 'gear') {
     const who = NET.remotes[msg.peer] ? remoteName(NET.remotes[msg.peer]) : 'A teammate';
     if (d.slot === 'ranged') { S.rangedOwn = S.rangedOwn || []; if (!S.rangedOwn.includes(d.id)) S.rangedOwn.push(d.id); S.rangedOn = bestRanged(); banner(who + ' gave you a ' + RANGED[d.id].n, true); }
@@ -4258,9 +4273,17 @@ function peerRoom(code, asHost) {
     });
   });
 }
+function rejoinCover(on, code) {
+  let el = $('rejoin'); if (!on) { if (el) el.remove(); return; }
+  if (el) return; el = document.createElement('div'); el.id = 'rejoin';
+  el.innerHTML = '<div class="box"><h2>Reconnecting…</h2><p>Getting you back into your friend\'s game' + (code ? ' (room ' + code + ')' : '') + '.</p><button type="button">Play solo instead</button></div>';
+  el.querySelector('button').onclick = () => { try { ['frost-coop', 'frost-code', 'frost-tries', 'frost-guest'].forEach(k => sessionStorage.removeItem(k)); } catch (e) {} location.reload(); };
+  document.body.appendChild(el);
+}
 async function startCoop(auto, code, asHost, resumeHost) {
   const btn = $('coop'); btn.disabled = true; btn.textContent = 'Connecting…';
-  const fail = msg => { if (auto && !asHost) loadGame(); btn.disabled = false; btn.textContent = 'Co-op'; banner('Co-op unavailable', false, msg); };
+  if (auto && !asHost && !ON_CLAUDE) rejoinCover(true, code);
+  const fail = msg => { rejoinCover(false); if (auto && !asHost) loadGame(); btn.disabled = false; btn.textContent = 'Co-op'; banner('Co-op unavailable', false, msg); };
   if (ON_CLAUDE) {
     const api = await window.claude.use('room');
     if (!api) return fail('Sign in to claude.ai and open the shared page to play together');
@@ -4290,7 +4313,7 @@ async function startCoop(auto, code, asHost, resumeHost) {
   if (host) {
     if (!auto) { saveGame(); NET.room.leave().catch(() => {}); try { sessionStorage.setItem('frost-coop', 'join'); sessionStorage.setItem('frost-code', ROOM_CODE); } catch (e) {} location.reload(); return; }
     try { sessionStorage.removeItem('frost-tries'); } catch (e) {}
-    becomeGuest(host.peer);
+    rejoinCover(false); becomeGuest(host.peer);
   } else if (!ON_CLAUDE && !asHost) {
     NET.room.leave().catch(() => {}); NET.room = null;
     let tries = 0; try { tries = +sessionStorage.getItem('frost-tries') || 0; } catch (e) {}
