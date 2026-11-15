@@ -3787,6 +3787,7 @@ function recipeKeys() {
 let recipeT = 1;
 function checkNewRecipes(dt) {
   if ((recipeT -= dt) > 0 || !B.smith || loading) return; recipeT = 2;
+  knownBrews();   // picks up recipes the town has just taught
   const seen = S.seenRecipes = S.seenRecipes || [], fresh = recipeKeys().filter(k => !seen.includes(k));
   if (!fresh.length) return; fresh.forEach(k => seen.push(k)); if (seen.length > 200) seen.splice(0, seen.length - 200);
   if (!S.forgeSeen) return;   // the first visit introduces them all
@@ -3940,7 +3941,14 @@ const parseBrew = key => { const [v, list] = key.split(':'), o = {}; (list || ''
 function recipeOf(key) { const b = BREWS.find(q => q.key === key); if (b) return b; const p = parseBrew(key), a = alloyOf(p.v, p.in); return a ? Object.assign(p, a) : null; }
 const brewKey = (v, o) => v + ':' + Object.keys(o).filter(k => o[k] > 0).sort().map(k => k + 'x' + o[k]).join(',');
 BREWS.forEach(b => { b.key = brewKey(b.v, b.in); });
-const knownBrews = () => { const K = S.known = S.known || []; if (!K.includes(BREWS[0].key)) K.push(BREWS[0].key); return K; };   // iron is the one recipe everyone starts with
+// basic recipes the town teaches you as it grows; everything else stays secret until you discover it
+const TAUGHT = [[() => true, ['iron', 'tallow', 'p_heal']], [() => S.th >= 2, ['steel', 'glue', 'p_stew']], [() => S.th >= 3, ['frostglass', 'leather', 'p_swift']], [() => (S.castle || 0) >= 1, ['runesteel', 'p_ember']], [() => (S.castle || 0) >= 2, ['emberoil', 'p_iron']]];
+const knownBrews = () => {
+  const K = S.known = S.known || [], fresh = [];
+  for (const [ok, outs] of TAUGHT) if (ok()) for (const o of outs) { const b = BREWS.find(q => q.out === o); if (b && !K.includes(b.key)) { K.push(b.key); fresh.push(MATS[o]); } }
+  if (fresh.length && S.step >= 1 && !loading && K.length > fresh.length) setTimeout(() => banner('New recipes learned!', true, fresh.join(', ') + ' · see Smelt & Brew at the forge'), 1500);
+  return K;
+};
 const discovered = k => knownBrews().some(key => { const b = recipeOf(key); return b && b.out === k; });
 let brewV = 'smelter', brewSel = {};
 const brewUnits = () => Object.values(brewSel).reduce((a, b) => a + b, 0);

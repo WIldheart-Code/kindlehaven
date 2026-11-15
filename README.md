@@ -156,7 +156,12 @@ Three gold-only upgrade spaces sit around the plaza: comfort (supplies last long
   - The right mix makes a new material. A wrong mix gives junk (Slag or Gunk, sell it for 2 gold each) or burns away, but **half of any metal, gem, magic, alloy or brewed material comes back**; only hides, sinew and resources are lost.
   - **Alloys:** smelting any metal together with a gem or magic material always fuses into an alloy named after the rarest one you added (Frost, Spirit, Moon, Ember, Void or Heartfire Alloy). Better metal and more of it give more alloy. Each alloy unlocks a Special item (rivets, a band, a guard, gauntlets, an amulet and the legendary Heartfire Core).
   - Recipes are secret until you discover them. Once you've made something, its recipe is saved under **Known recipes** with **Make 1** and **Make 5** buttons. Mixes you've already tried that didn't work are flagged so you don't waste ingredients twice.
-  - Everyone knows how to smelt **Iron Ingots** (3 stone, 2 logs). Steel, Runesteel, other metals and brewed materials such as tallow, glue, leather, oils and draughts are yours to find. Some need a hotter forge (a higher Town Hall).
+  - **The town teaches the basics** as it grows; their recipes appear under Known recipes with a "New recipes learned!" banner:
+    - From the start: Iron Ingot, Tallow, Healing Tonic.
+    - Town Hall II: Steel Bar, Hide Glue, Hearty Stew.
+    - Town Hall III: Frost Glass, Hardened Leather, Swiftfoot Draught.
+    - Castle I: Runesteel, Ember Brew. Castle II: Ember Oil, Ironhide Tonic.
+  - Everything else (rarer metals, magic brews, poison and more) stays secret until you discover it by experimenting.
   - Brewed materials unlock more **Special** items, shown once you've discovered what they need.
   - A failed pot mix sometimes leaves a **Murky Brew**: drinking it might give you a short boost, or might hurt you and make you queasy.
 
