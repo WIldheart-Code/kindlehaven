@@ -32,6 +32,9 @@ Open `index.html` in a browser. There is no build step; three.js r128 loads from
 ![Fishing at a lake](assets/help/fishing.jpg)
 Stand still at a lake's edge (or out on the ice in winter, where you cut a hole) and you cast automatically. After a few seconds you catch 2–4 fish, more at far lakes. Now and then you reel in a sunken treasure chest. Fishing stops if raiders are close.
 
+## Getting around obstacles
+Workers, villagers, guards, animals, pets, camp monsters and raiders all walk around trees, rocks, buildings and lakes instead of through them (flying creatures excepted).
+
 ## Days, nights and seasons
 - A day lasts **6 minutes**; the last part is night: darker, colder and more dangerous.
 - Every 2 days the season turns: winter, spring, summer, autumn. Outside winter the snow melts off trees, roofs, walls and rocks: trees turn green (or autumn orange) and roofs show their shingles. Summer needs the least firewood, winter the most. Lakes block your path except in winter, when they freeze.
