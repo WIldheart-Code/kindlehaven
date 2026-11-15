@@ -144,6 +144,7 @@ html,body{height:100%;margin:0;background:var(--ice);color:var(--ink);overflow:h
 #lobby input{width:90px;font:20px/1 var(--display);letter-spacing:.12em;text-transform:uppercase;text-align:center;padding:8px;border:2px solid #b8c6da;border-radius:10px;background:#fff;color:var(--ink);-webkit-user-select:text;user-select:text}
 #lobby #joinBtn{background:#2b4a74}
 #lobby button:focus-visible,#lobby input:focus-visible{outline:3px solid var(--ember);outline-offset:2px}
+#news{position:fixed;inset:0;z-index:24;display:flex;align-items:center;justify-content:center;background:rgba(16,26,44,.72);padding:0 16px}#news .box{background:#f4f7fc;color:var(--ink);border-radius:18px;padding:16px 18px;width:min(400px,100%);max-height:84vh;overflow:auto;box-shadow:0 20px 50px rgba(0,0,0,.35)}#news h2{margin:0 0 6px;font:26px/1 var(--display);color:#2b4a74;text-align:center}#news h3{margin:12px 0 4px;font:15px var(--display);color:var(--ember)}#news h3 small{font:800 11px var(--body);color:#8a96a8;margin-left:6px}#news ul{margin:0;padding-left:18px;font:700 13px/1.4 var(--body)}#news li{margin:3px 0}#closeNews{display:block;margin:14px auto 0;border:0;border-radius:12px;background:#2b4a74;color:#fff;font:16px/1 var(--display);padding:10px 22px;cursor:pointer}
 #help{position:fixed;inset:0;z-index:23;display:flex;align-items:center;justify-content:center;background:rgba(16,26,44,.72);padding:0 16px}
 #help .box{background:#f4f7fc;color:var(--ink);border-radius:18px;padding:16px;width:min(420px,100%);max-height:88vh;display:flex;flex-direction:column;box-shadow:0 20px 50px rgba(0,0,0,.35)}
 #help h2{margin:0 0 8px;font:24px/1 var(--display);color:#2b4a74;text-align:center}
@@ -270,7 +271,7 @@ html,body{height:100%;margin:0;background:var(--ice);color:var(--ink);overflow:h
 <div id="paused" class="hud" hidden>Paused<small>Tap to resume</small></div>
 <div id="netbar" class="hud"><button id="cog" type="button" aria-label="Menu" aria-expanded="false"><svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M19.4 13a7.5 7.5 0 0 0 0-2l2.1-1.6-2-3.5-2.5 1a7.6 7.6 0 0 0-1.7-1L15 3h-4l-.4 2.9a7.6 7.6 0 0 0-1.7 1l-2.5-1-2 3.5L6.6 11a7.5 7.5 0 0 0 0 2l-2.1 1.6 2 3.5 2.5-1a7.6 7.6 0 0 0 1.7 1L11 21h4l.4-2.9a7.6 7.6 0 0 0 1.7-1l2.5 1 2-3.5zM13 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z" transform="translate(-1 0)"/></svg></button><span id="netTxt" hidden></span></div>
 <div id="menu" hidden><div class="box"><h2>Menu</h2><p style="margin:-4px 0 8px;text-align:center;font:800 11px var(--body);color:#8a96a8">Frosthold Outpost · version 2.1</p>
-<div class="mgrid"><button id="helpBtn" type="button">Help</button><button id="reportBtn" type="button" hidden>Play report</button><button id="tutBtn" type="button">Tutorial</button><button id="coop" type="button">Co-op</button><button id="inviteBtn" type="button" hidden>Invite</button><button id="statsBtn" type="button">Hero</button><button id="pause" type="button">Pause</button><button id="mute" type="button">Sound: on</button><button id="newg" type="button">New game</button></div>
+<div class="mgrid"><button id="helpBtn" type="button">Help</button><button id="newsBtn" type="button">What's new</button><button id="reportBtn" type="button" hidden>Play report</button><button id="tutBtn" type="button">Tutorial</button><button id="coop" type="button">Co-op</button><button id="inviteBtn" type="button" hidden>Invite</button><button id="statsBtn" type="button">Hero</button><button id="pause" type="button">Pause</button><button id="mute" type="button">Sound: on</button><button id="newg" type="button">New game</button></div>
 <h3>Show on screen</h3>
 <div class="mshow"><label><input type="checkbox" data-hud="quest" checked> Goal</label><label><input type="checkbox" data-hud="qcard" checked> Quest</label><label><input type="checkbox" data-hud="town" checked> Town gauges</label><label><input type="checkbox" data-hud="res" checked> Resources</label><label><input type="checkbox" data-hud="mini" checked> Minimap</label></div>
 <h3>Sounds</h3><div class="mshow" id="sndList"></div>
@@ -280,6 +281,7 @@ html,body{height:100%;margin:0;background:var(--ice);color:var(--ink);overflow:h
 <button id="hostBtn" type="button">Host a game</button>
 <div class="joinrow"><label for="codeIn">Room code</label><input id="codeIn" maxlength="6" autocomplete="off" inputmode="text" placeholder="e.g. K7Q2"><button id="joinBtn" type="button">Join</button></div>
 <p id="lobbyMsg" class="fine"></p><button id="closeLobby" type="button" class="ghost">Cancel</button></div></div>
+<div id="news" hidden><div class="box"><h2 id="newsHead">What's new</h2><div id="newsBody"></div><button id="closeNews" type="button">Got it</button></div></div>
 <div id="help" hidden><div class="box"><h2>How to play</h2><input id="helpQ" type="search" placeholder="Search help (e.g. pets, raids, castle)"><div id="helpBody">Loading…</div><button id="closeHelp" type="button">Close</button></div></div>
 <div id="chestP" hidden><div class="box"><h2>Town Chest</h2><div id="chestBody"></div><button id="closeChest" type="button">Close</button></div></div>
 <div id="forge" hidden><div class="box"><h2>Forge</h2><div id="forgeBody"></div><button id="closeForge" type="button">Close</button></div></div>
@@ -421,7 +423,29 @@ const resName = t => t === 'ore' ? 'crystal' : t === 'cash' ? 'gold' : t === 'me
 const C = { x: 0, z: 10 };                // fort centre
 const TIERS = [12, 21, 30];               // half-size of each fort ring
 const GATE_HW = 2.5;
-const GAME_VERSION = '2.1';   // 2.0: crafting, forge, smelt & brew, potions, foraging, the 1200 m world
+const GAME_VERSION = '2.1';
+// newest first; players who come back after an update see the entries newer than the last version they played
+const CHANGELOG = [
+  ['2.1', 'November 2026', ['The minimap shows your workers, guards and pet when they are outside the walls (on the rim if they are off the map).', 'Zoom the minimap in and out with − and +, and make it small, medium or large with ⤢.', 'This "What\'s new" screen and a change log in the menu.']],
+  ['2.0', 'November 2026', ['Crafting: forge weapons, armour, axes, packs and boots from hides, sinew and metal at the blacksmith, and salvage old gear.', 'Smelt & Brew: discover secret smelter and pot recipes for metals, alloys, potions and meals. The town teaches the basics as it grows.', 'Potions and meals give timed boosts; drink them from the 🧪 drawer.', 'Foraging: pick berries, roots, herbs, stone piles and the odd ice shard. Hire gatherers.', 'Food now has fullness: meat fills people most, berries least.', 'A shared town chest, rare and legendary gear, special items, recipe scrolls and town supplies for walls and towers.', 'The world now reaches 1200 m to the mountains, with deadlier camps and epic dungeons at the edge.', 'Tame raptors and T-rexes; pets fight beasts near you.']],
+];
+const verNum = v => v.split('.').reduce((a, n) => a * 100 + (+n || 0), 0);
+function showNews(since) {
+  const list = CHANGELOG.filter(([v]) => since == null || verNum(v) > verNum(since));
+  $('newsHead').textContent = since == null ? 'Change log' : "What's new in " + GAME_VERSION;
+  $('newsBody').innerHTML = list.map(([v, d, items]) => `<h3>Version ${v}<small>${d}</small></h3><ul>${items.map(i => '<li>' + i + '</li>').join('')}</ul>`).join('');
+  $('news').hidden = false;
+}
+$('closeNews').addEventListener('click', e => { e.stopPropagation(); $('news').hidden = true; });
+['pointerdown', 'touchstart', 'mousedown', 'keydown'].forEach(ev => $('news').addEventListener(ev, e => e.stopPropagation()));
+$('newsBtn').addEventListener('click', e => { e.stopPropagation(); closeMenu(); showNews(null); });
+// returning players see what changed since their last visit; brand-new players just start
+const NEWS_SEEN = (() => { try { return [localStorage.getItem('frosthold-version'), Object.keys(localStorage).some(k => k.startsWith('frosthold-save') || k === 'frosthold-tutorial')]; } catch (e) { return [null, false]; } })();   // read before this visit saves anything
+setTimeout(() => { const [seen, played] = NEWS_SEEN;
+  try { localStorage.setItem('frosthold-version', GAME_VERSION); } catch (e) {}
+  if (seen === GAME_VERSION || !played) return;
+  showNews(seen || '1.9');
+}, 1200);   // 2.0: crafting, forge, smelt & brew, potions, foraging, the 1200 m world
 const MAP_R = 1200;   // the world: a 1200 m circle around the fort, walled in by mountains
 const BOUNDS = { x0: C.x - MAP_R - 40, x1: C.x + MAP_R + 40, z0: C.z - MAP_R - 40, z1: C.z + MAP_R + 40 };
 // a random point between r0 and r1 metres from the fort, spread evenly over the area

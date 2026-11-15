@@ -6,3 +6,4 @@
 - When publishing the claude.ai artifact, include `README.md` in `files` so Help can load it.
 - Meshy credits cost money: `tools/meshy_assets.py` only generates models whose prompt is new or changed; run `--dry-run` first.
 - Help screenshots live in `assets/help/` and are referenced from README.md as `![caption](assets/help/name.jpg)`. Retake them (daylight, no banners) when the look of that feature changes, and include them in artifact publishes.
+- **Releases:** when a change goes to the live site, bump `GAME_VERSION` (and the version line in the menu), add an entry at the top of `CHANGELOG` in index.html, and add it to the Change log section of README.md. Returning players are shown the new entries.

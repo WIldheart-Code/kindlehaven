@@ -234,6 +234,11 @@ Cave entrances lie 200–315 m out, with more scattered through the outer lands 
 - Pausing in co-op only covers your own screen: the shared world keeps running for everyone, and your hero can't be hurt while paused.
 - You get alerts when a teammate is under attack or knocked out. A phone that drops out or sleeps rejoins on its own, behind a Reconnecting screen (with a Play solo instead button) rather than flashing back to a solo game. If the host refreshes the page, their room reopens with the same code and friends reconnect automatically within about 20 seconds, with their gear, pet, gold, pack and position just as they left them; **Leave co-op** closes the room for good.
 
+## Change log
+- When you come back after an update, a **What's new** screen lists what changed since you last played. Find the full list any time under the cog: **What's new**.
+- **2.1:** the minimap shows workers, guards and your pet outside the walls; zoom (− / +) and three sizes (⤢); this change log.
+- **2.0:** crafting at the forge, Smelt & Brew with secret recipes, potions and meals with timed boosts, foraging and gatherers, food fullness, the town chest, rare/legendary/special gear and recipe scrolls, town supplies, a 1200 m world with epic dungeons, and taming raptors and T-rexes.
+
 ## Saving
 Progress saves automatically every few seconds and when you leave the page, in this browser only. **New game** (tap twice) starts over.
 
