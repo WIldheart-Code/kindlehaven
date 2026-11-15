@@ -17,7 +17,7 @@ html,body{height:100%;margin:0;background:var(--ice);color:var(--ink);overflow:h
   -webkit-user-select:none;user-select:none;-webkit-touch-callout:none;font-family:var(--body)}
 #game{position:fixed;inset:0;background:var(--ice)}
 #game canvas{display:block;width:100%;height:100%}
-#ov{position:fixed;inset:0;pointer-events:none;overflow:hidden}
+#ov{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:2}
 #nightV{position:fixed;inset:0;pointer-events:none;opacity:0;background:radial-gradient(ellipse at center,rgba(20,32,70,0) 30%,rgba(10,18,44,.75) 100%)}
 #bliz{position:fixed;inset:0;pointer-events:none;opacity:0;transition:opacity 2s;
   background:radial-gradient(ellipse at center,rgba(255,255,255,0) 35%,rgba(235,242,252,.95) 100%)}
@@ -59,7 +59,7 @@ html,body{height:100%;margin:0;background:var(--ice);color:var(--ink);overflow:h
 #res .chip:not(#cCash){pointer-events:auto;cursor:pointer}
 .wtag{background:#2b4a74;color:#fff}.wtag.full{background:#5c6b80}
 .ward{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:4px 0 8px}.ward b{width:44px;font:800 13px var(--body)}.ward button{border:2px solid #c9d6e8;background:#fff;border-radius:9px;padding:6px 9px;font:800 13px var(--body);color:var(--ink);cursor:pointer}.ward button[aria-pressed=true]{border-color:#2b4a74;background:#2b4a74;color:#fff}
-.ptag{pointer-events:auto;cursor:pointer}.ptag.locked{background:#7a2a2a}
+.ptag{pointer-events:none}.ptag.locked{background:#7a2a2a}
 .chip.off{opacity:.45}.chip.off span{text-decoration:line-through}
 #cog{pointer-events:auto;width:46px;height:46px;border-radius:50%;border:1px solid var(--panel-line);background:var(--panel);color:#fff;display:grid;place-items:center;cursor:pointer;padding:0}
 #menu{position:fixed;inset:0;z-index:21;display:flex;align-items:center;justify-content:center;background:rgba(16,26,44,.6);padding:0 16px}
@@ -1861,7 +1861,7 @@ function makePile(type, x, z, label) {
   const base = mk(Box(2, 0.1, 2), 0x6b4a2d, false, true); base.position.y = 0.05; P.g.add(base);
   for (let i = 0; i < 48; i++) { const m = itemMesh(type), layer = Math.floor(i / 12), k = i % 12; m.position.set(-0.66 + (k % 4) * 0.44, 0.18 + layer * ITEM_H[type] * 1.1, -0.5 + Math.floor(k / 4) * 0.5); m.visible = false; P.g.add(m); P.pool.push(m); }
   P.tag = document.createElement('div'); P.tag.className = 'tag ptag'; P.tag.hidden = true; ov.appendChild(P.tag);
-  P.tag.addEventListener('pointerdown', e => { e.stopPropagation(); P.locked = !P.locked; note(P.locked ? P.label + ' pile locked: haulers leave it alone' : P.label + ' pile unlocked: haulers can use it'); play('pay'); });
+  P.toggleLock = () => { P.locked = !P.locked; if (NET.room) NET.room.emit('lock', { i: piles.indexOf(P), v: P.locked }).catch(() => {}); note(P.locked ? P.label + ' pile locked: haulers leave it alone' : P.label + ' pile unlocked: haulers can use it'); play('pay'); };
   piles.push(P); return P;
 }
 function openPile(P) { P.on = true; P.g.visible = true; }
@@ -2734,7 +2734,9 @@ const joyEl = $('joy'), knob = joyEl.firstChild;
 let joyId = null, jsx = 0, jsy = 0, joyVec = { x: 0, y: 0 };
 function unlockAudio() { if (!actx) { try { actx = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { actx = null; } } if (actx && actx.state === 'suspended') actx.resume(); }
 renderer.domElement.addEventListener('pointerdown', e => {
-  unlockAudio(); if (joyId !== null) return;
+  unlockAudio();
+  for (const P of piles) { if (P.tag.hidden) continue; const r = P.tag.getBoundingClientRect(); if (e.clientX >= r.left - 8 && e.clientX <= r.right + 8 && e.clientY >= r.top - 8 && e.clientY <= r.bottom + 8) { P.toggleLock(); return; } }   // tapping a pile's label locks it
+  if (joyId !== null) return;
   joyId = e.pointerId; jsx = e.clientX; jsy = e.clientY; joyVec = { x: 0, y: 0 };
   joyEl.style.left = jsx + 'px'; joyEl.style.top = jsy + 'px'; joyEl.style.display = 'block'; knob.style.transform = '';
   $('hint').style.opacity = 0; try { renderer.domElement.setPointerCapture(e.pointerId); } catch (_) {}
@@ -3971,7 +3973,7 @@ function sendWorld() {
   NET.room.emit('w', {
     t: bits(CHOP), r: bits(rocks),
     k: rings.map(r => [r.active ? 1 : 0, r.complete ? 1 : 0, r.segs.map(sg => sg.built ? Math.round(sg.hp) : sg.broken ? -2 : -1)]),
-    pl: piles.map(P => [P.n, P.on ? 1 : 0]), pa: pallets.map(P => P.amount), st: stalls.map(st => st.stock), b: Object.keys(B),
+    pl: piles.map(P => [P.n, P.on ? 1 : 0, P.locked ? 1 : 0]), pa: pallets.map(P => P.amount), st: stalls.map(st => st.stock), b: Object.keys(B),
   }).catch(() => {});
   const pd = [];
   pads.forEach((pp, i) => { const paid = RES.map(t => pp.paid[t] || 0); if (pp.level || pp.done || paid.some(v => v)) pd.push([i, pp.level, pp.done ? 1 : 0, paid]); });
@@ -4045,7 +4047,7 @@ function onWorld(msg) {
     hp.forEach((v, j) => { const sg = r.segs[j]; if (!sg) return; sg.built = v >= 0; sg.broken = v === -2; if (sg.built) { sg.stone = S.masonry || sg.tier > 0; sg.max = segMax(sg); sg.hp = Math.min(v, sg.max); } segVisual(sg); });
     if (!r.active) r.segs.forEach(sg => { sg.g.visible = false; sg.bar.hidden = true; });
   });
-  (d.pl || []).forEach(([n, on], i) => { const P = piles[i]; if (!P) return; if (on && !P.on) openPile(P); P.n = Math.max(0, n); syncPile(P); });
+  (d.pl || []).forEach(([n, on, lk], i) => { const P = piles[i]; if (!P) return; P.locked = !!lk; if (on && !P.on) openPile(P); P.n = Math.max(0, n); syncPile(P); });
   (d.pa || []).forEach((n, i) => { if (pallets[i]) { pallets[i].amount = n; syncPallet(pallets[i]); } });
   (d.st || []).forEach((n, i) => {
     const st = stalls[i]; if (!st || st.stock === n) return; st.stock = n;
@@ -4302,7 +4304,7 @@ async function startCoop(auto, code, asHost, resumeHost) {
     }
     ROOM_CODE = code;
   }
-  NET.room.on('w', onWorld); NET.room.on('wp', onPads); NET.room.on('give', onGive);
+  NET.room.on('w', onWorld); NET.room.on('lock', m => { const P = m.data && piles[m.data.i]; if (P) P.locked = !!m.data.v; }); NET.room.on('wp', onPads); NET.room.on('give', onGive);
   let host = null;
   for (let k = 0; k < (ON_CLAUDE || asHost ? 5 : 24); k++) {   // a guest waits up to 12 s for the host to answer
     await sleep(500);
