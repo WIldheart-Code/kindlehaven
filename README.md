@@ -93,9 +93,9 @@ Three gold-only upgrade spaces sit around the plaza: comfort (supplies last long
   - **Thick Hide, Strong Sinew:** yaks, boars, bears, trolls (uncommon).
   - **Shaggy Pelt, Beast Sinew:** yetis, wraiths, golems, raptors, sabre tigers (rare).
   - **Dragon Scale, Ancient Sinew:** mammoths, T-rexes, dragons (very rare).
-  - **Metal: Iron Ingot, Steel Bar, Runesteel.** Smelt them on the forge's **Metal** tab: iron from stone and logs, steel from iron and crystal (Town Hall II), runesteel from steel, crystal and a Frost Gem (Town Hall III). Golems and trolls drop iron and steel; harder dungeons and chests give steel and runesteel. Metal goes into most weapons and armour past the first (Iron Mail, Runic Plate and up), Axe III and IV, and Iron Wall Braces.
+  - **Metal: Iron Ingot, Steel Bar, Runesteel** (and rarer metals). Make them in the smelter (see Smelt & Brew below). Golems and trolls drop iron and steel; harder dungeons and chests give steel and runesteel. Metal goes into most weapons and armour past the first (Iron Mail, Runic Plate and up), Axe III and IV, and Iron Wall Braces.
   - Camp legends drop three times as often and give extra. In co-op, materials from your kills go to you.
-- **The forge:** once the blacksmith is built, tap **⚒ Forge** anywhere inside your town walls to open the forge window. The first time, a short guide explains how it works. Recipes are grouped into tabs: **Weapons, Armour, Tools** (axes, packs, boots), **Metal** (smelting), **Special, Town** (supplies) and **Salvage**. A green number on a tab shows how many recipes there you can afford. Each recipe shows a picture of the item.
+- **The forge:** once the blacksmith is built, tap **⚒ Forge** anywhere inside your town walls to open the forge window. The first time, a short guide explains how it works. Recipes are grouped into tabs: **Weapons, Armour, Tools** (axes, packs, boots), **Smelt & Brew**, **Special, Town** (supplies) and **Salvage**. A green number on a tab shows how many recipes there you can afford. Each recipe shows a picture of the item.
 - Forged gear is equipped on your hero straight away and listed under **Gear** on the Hero screen. Logs, stone and crystal come from your pack; gold from your wallet. Each item lists what it needs and how much you have.
 - **New recipe alerts:** when a recipe becomes available (a Town Hall or castle upgrade, a special earned, a scroll found), a banner tells you and the Forge button shows **NEW** until you open it.
 - **Recipes reveal as your town grows:** the forge only shows what your Town Hall allows. New recipes appear with each Town Hall upgrade, rare gear at **Castle I** and legendary gear at **Castle II**. The forge tells you when the next ones unlock.
@@ -133,7 +133,12 @@ Three gold-only upgrade spaces sit around the plaza: comfort (supplies last long
   - **Iron Wall Braces I–III** (Town Hall II): +20% wall health each.
   - **Tower Runes I–III** (Town Hall II): +20% tower damage each.
   - **Warding Totem I–II** (Town Hall III): towers shoot 3 m farther each.
-- **Salvage:** break down gear you own (weapon, armour, ranged weapons, helmets, capes) for half its gold and materials back; logs, stone and crystal come back as gold. Salvaging a weapon or armour drops you one tier.
+- **Smelt & Brew:** a forge tab with a **smelter** and a **pot**. Tap ingredients (logs, stone, crystal, meat from your pack, or any material) to put up to six in, then **Fire the smelter** or **Stir the pot**.
+  - The right mix makes a new material. A wrong mix gives junk (Slag or Gunk, sell it for 2 gold each) or is simply lost.
+  - Recipes are secret until you discover them. Once you've made something, its recipe is saved under **Known recipes** with **Make 1** and **Make 5** buttons. Mixes you've already tried that didn't work are flagged so you don't waste ingredients twice.
+  - Everyone knows how to smelt **Iron Ingots** (3 stone, 2 logs). Steel, Runesteel, other metals and brewed materials such as tallow, glue, leather, oils and draughts are yours to find. Some need a hotter forge (a higher Town Hall).
+  - Brewed materials unlock more **Special** items, shown once you've discovered what they need.
+ break down gear you own (weapon, armour, ranged weapons, helmets, capes) for half its gold and materials back; logs, stone and crystal come back as gold. Salvaging a weapon or armour drops you one tier.
 - Materials are shown at the top of the forge, grouped into **Hides, Sinew, Gems and Magic**, each with its own icon (also used in recipe costs). The Hero screen lists your **Gear** and your **Materials** separately.
 
 ## Town chest
