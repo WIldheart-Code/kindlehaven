@@ -197,5 +197,8 @@ Twelve cave entrances lie 200–315 m out (purple squares on the minimap). Tap *
 ## Saving
 Progress saves automatically every few seconds and when you leave the page, in this browser only. **New game** (tap twice) starts over.
 
+## Play stats
+When you play on claude.ai, the game records a summary of each session to help balance it: your hero name, how long you played, how far your town got, raids, knockouts, kills, crafting and materials. It does not record anything else about you. The game's owner sees these in the **Play report** (cog menu), which shows how players are doing and suggests balance changes.
+
 ## Art
 Models come from Meshy (`tools/meshy_assets.py`, cached so nothing is paid for twice) and the painted ground from OpenAI images (`tools/openai_texture.py`).
