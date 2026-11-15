@@ -132,7 +132,7 @@ Three gold-only upgrade spaces sit around the plaza: comfort (supplies last long
   - **Tower Runes I–III** (Town Hall II): +20% tower damage each.
   - **Warding Totem I–II** (Town Hall III): towers shoot 3 m farther each.
 - **Salvage:** break down gear you own (weapon, armour, ranged weapons, helmets, capes) for half its gold and materials back; logs, stone and crystal come back as gold. Salvaging a weapon or armour drops you one tier.
-- Materials are shown on the Forge tab and in your Hero inventory.
+- Materials are shown on the Forge tab, grouped into **Hides, Sinew, Gems and Magic**, each with its own icon (also used in recipe costs), and in your Hero inventory.
 
 ## Ranged weapons
 A ranged weapon fires on its own at the nearest threat in range, alongside your axes. **Hunting Bow** (12 m), **Crossbow** (Town Hall II) and **Rifle** (Town Hall III) are forged at the blacksmith. Magic staffs come from treasure: the **Frost Staff** slows, the **Fire Staff** explodes, and the **Storm Staff** throws lightning that jumps to two more foes.
