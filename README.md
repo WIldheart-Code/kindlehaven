@@ -24,6 +24,16 @@ Open `index.html` in a browser. There is no build step; three.js r128 loads from
 
 ## Food sources
 All food counts as one resource, **food** (the bowl counter): meat you hunt, veggies you grow, fish and fruit and roots you forage all fill it and feed the town at the cookhouse.
+- **Fullness:** not all food is equal. Each piece you bring to the cookhouse fills your people by a different amount:
+
+  | Food | Fullness per piece |
+  |---|---|
+  | Meat (hunted animals, hunters, the meat pile) | 4 |
+  | Fish (fishing, the fishery) | 3 |
+  | Vegetables and wild roots (garden, foraging) | 2.5 |
+  | Berries | 1.5 |
+
+  So a pack of meat keeps the town fed far longer than the same number of berries. The food counter still counts pieces.
 - **Foraging:** berry bushes (red berries, 2 food) and wild roots (orange tops, 3 food) grow all over the wilds; walk into one to pick it. Each also gives the plant as an ingredient (Snowberries, Wild Roots). They grow back after a few minutes.
 - **Herbs** grow in the wilds too: **Frostmint** (pale green, everywhere), **Nightshade** (purple, 80 m and out), **Ember Root** (orange, 110 m and out) and **Moonpetal** (white, rare, 190 m and out). They're potion ingredients, not food.
 - **Rabbits** (1 food) and **deer** (2–3 food) graze in large numbers around the settlement.
