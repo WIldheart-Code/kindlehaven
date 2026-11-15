@@ -175,13 +175,13 @@ A ranged weapon fires on its own at the nearest threat in range, alongside your 
 
 ## The wilds
 ![Ice spires and beast lairs in the far wilds](assets/help/beast.jpg)
-- The valley spans about 690 m. The minimap starts dark and reveals what you and teammates explore; drag it to move it anywhere on screen.
+- The world is a huge circle about **1200 m** in every direction from the fort, walled in by snowy mountains with boulder foothills you can't cross. The inner valley (about 340 m out) is where the town grows; beyond it the **outer lands** stretch to the mountains with more woods, lakes, ruins, herds, forage and quarries. The minimap starts dark and reveals what you and teammates explore; drag it to move it anywhere on screen.
 - **Monster camps** guard treasure chests (orange easy, red medium, purple dangerous, gold once cleared). Spiders, goblins and wolves near the fort; bears and trolls farther out; wraiths and golems at the edges. Goblins throw spears, trolls hurl rocks and wraiths cast chilling frost orbs: keep moving to dodge.
 - **Beast lairs** past 250 m: raptors and sabre tigers, then mammoths, T-rexes and giant ice dragons past 300 m. They prowl and spot you from far away, but give the best loot.
-- **Deadly camps** (☠ on the tag) fill the outskirts past 290 m: bigger packs, sometimes mixed beasts, each 40% tougher and harder-hitting.
+- **Deadly camps** (☠ on the tag) fill the outer lands past 600 m: bigger packs, sometimes mixed beasts, each 40% tougher and harder-hitting. Everything keeps getting tougher the farther out you go.
 - Past 300 m the land is rough: boulder fields, ice spires and deep snow that slows you.
 - About 70 **unguarded chests** are scattered across the valley (gold diamonds on the minimap), and **ruins** each hide a cache you can search once.
-- **Crystal veins** lie 255–345 m out and need a Crystal Pick.
+- **Crystal veins** lie 255 m out and beyond, scattered through the outer lands, and need a Crystal Pick.
 
 ## Treasure
 Chests mostly give **crafting materials** (hides, sinew and metal for the camp's tier, with a chance of gems, magic and, in the farthest lairs, a Dragon Heart). Finished weapons and armour are now rare finds (the forge makes them). Chests can also hold heart stones (+health), war runes (+damage), wind charms (+speed), storage charms (bigger piles), ember totems, yak totems, staffs, helmets, capes, med kits, the Beast Charm, gold and materials. Farther out means better loot.
@@ -192,7 +192,7 @@ The Town Hall offers one quest at a time (the Quest card): hunt animals, collect
 ## Dungeons
 ![A dungeon entrance](assets/help/dungeon_door.jpg)
 ![Inside a dungeon](assets/help/dungeon.jpg)
-Twelve cave entrances lie 200–315 m out (purple squares on the minimap). Tap **Enter dungeon** to play a 2D side-scrolling level: run, jump over pits and ice spikes, stomp or axe slimes, skeletons and bats, and reach the chest at the end. Dungeons are drawn in a chunky pixel-block style, hero included. You can jump about four blocks high, enough to reach every ledge. You have **three hearts** (top left): every hit, spike or fall costs one, and losing all three sends you back to the entrance. Your gear and looks come with you. Controls: on-screen arrows, attack and jump buttons (or A/D, W/Space, J). Reach the chest for a treasure chest. A cleared dungeon refills after two days.
+Cave entrances lie 200–315 m out, with more scattered through the outer lands (purple squares on the minimap). Eight **☠ Epic dungeons** sit right under the mountains at the very edge of the world: the longest, deadliest levels, but they always give a Dragon Heart, Void Opals, Ember Rubies, Moonsilver, Runesteel, top hides and sinew and 1500 gold, and often an **epic** weapon (Glacierfall) or armour (Aurora Aegis) that can't be forged anywhere.  Tap **Enter dungeon** to play a 2D side-scrolling level: run, jump over pits and ice spikes, stomp or axe slimes, skeletons and bats, and reach the chest at the end. Dungeons are drawn in a chunky pixel-block style, hero included. You can jump about four blocks high, enough to reach every ledge. You have **three hearts** (top left): every hit, spike or fall costs one, and losing all three sends you back to the entrance. Your gear and looks come with you. Controls: on-screen arrows, attack and jump buttons (or A/D, W/Space, J). Reach the chest for a treasure chest. A cleared dungeon refills after two days.
 
 ## Knockouts and revives
 - You respawn at the Town Hall a few seconds after being knocked out; your pack spills where you fell, and your crafting materials drop in a **satchel** marked "Your materials". Walk over it to get them all back (only you can pick it up, and it stays until you do).
