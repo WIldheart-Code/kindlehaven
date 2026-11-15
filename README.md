@@ -1,5 +1,7 @@
 # Frosthold Outpost
 
+**Version 2.0**: crafting at the forge, smelting and brewing, potions and meals, foraging and gatherers, the town chest, and a world that now stretches 1200 m to the mountains.
+
 An original survival and town-building game for phones and desktop browsers. Lead a frozen settlement: gather wood, food, stone and crystal, keep your people warm and fed, wall in the fort, and grow it from a camp into a castle while raiders strike each night and monsters roam the wilds.
 
 Open `index.html` in a browser. There is no build step; three.js r128 loads from cdnjs. This file is also the in-game **Help** (cog menu), so keep it up to date with every change.
