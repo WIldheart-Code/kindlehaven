@@ -195,7 +195,7 @@ A ranged weapon fires on its own at the nearest threat in range, alongside your 
 
 ## The wilds
 ![Ice spires and beast lairs in the far wilds](assets/help/beast.jpg)
-- The world is a huge circle about **1200 m** in every direction from the fort, walled in by snowy mountains with boulder foothills you can't cross. The inner valley (about 340 m out) is where the town grows; beyond it the **outer lands** stretch to the mountains with more woods, lakes, ruins, herds, forage and quarries. The minimap starts dark and reveals what you and teammates explore; drag it to move it anywhere on screen. Under it, **− / +** zoom out and in (70, 140, 280 or 560 m across; a mouse wheel works too) and **⤢** switches between small, medium and large.
+- The world is a huge circle about **1200 m** in every direction from the fort, walled in by snowy mountains with boulder foothills you can't cross. The inner valley (about 340 m out) is where the town grows; beyond it the **outer lands** stretch to the mountains with more woods, lakes, ruins, herds, forage and quarries. The minimap starts dark and reveals what you and teammates explore; drag it to move it anywhere on screen. Under it, **− / +** zoom out and in (70, 140, 280 or 560 m across; a mouse wheel works too) and dragging **⤡** resizes the map to any size you like.
 - **People outside the walls** show on the minimap as dots in their coat colour: workers out gathering, guards (blue) and your pet (orange). Anyone beyond the map's edge sits as a smaller dot on the rim, pointing the way.
 - **Monster camps** guard treasure chests (orange easy, red medium, purple dangerous, gold once cleared). Spiders, goblins and wolves near the fort; bears and trolls farther out; wraiths and golems at the edges. Goblins throw spears, trolls hurl rocks and wraiths cast chilling frost orbs: keep moving to dodge.
 - **Beast lairs** past 250 m: raptors and sabre tigers, then mammoths, T-rexes and giant ice dragons past 300 m. They prowl and spot you from far away, but give the best loot.
@@ -236,6 +236,7 @@ Cave entrances lie 200–315 m out, with more scattered through the outer lands 
 
 ## Change log
 - When you come back after an update, a **What's new** screen lists what changed since you last played. Find the full list any time under the cog: **What's new**.
+- **2.2:** drag ⤡ under the minimap to make it any size; the What's new screen shows for every returning player.
 - **2.1:** the minimap shows workers, guards and your pet outside the walls; zoom (− / +) and three sizes (⤢); this change log.
 - **2.0:** crafting at the forge, Smelt & Brew with secret recipes, potions and meals with timed boosts, foraging and gatherers, food fullness, the town chest, rare/legendary/special gear and recipe scrolls, town supplies, a 1200 m world with epic dungeons, and taming raptors and T-rexes.
 
