@@ -1276,9 +1276,16 @@ function detour(x, z, tx, tz) {
 }
 function turnTo(cur, target, k) { let d = target - cur; d = Math.atan2(Math.sin(d), Math.cos(d)); return cur + d * k; }
 function walkTo(e, tx, tz, speed, dt, direct) {
-  const [wx, wz] = direct ? [tx, tz] : waypoint(e.x, e.z, tx, tz);
+  let [wx, wz] = direct ? [tx, tz] : waypoint(e.x, e.z, tx, tz);
+  // unstick: if barely moved in a second while still far from the goal, back off and sidestep for a moment
+  e.chkT = (e.chkT || 0) + dt;
+  if (e.chkT > 1) { const far = Math.hypot(wx - e.x, wz - e.z);
+    if (e.cx !== undefined && Math.hypot(e.x - e.cx, e.z - e.cz) < 0.25 && far > 0.6 && !(e.detourT > 0)) { const ux = (wx - e.x) / far, uz = (wz - e.z) / far, sd = e.dside = -(e.dside || 1);
+      e.detour = [e.x - ux * 1.5 - uz * 2.5 * sd, e.z - uz * 1.5 + ux * 2.5 * sd]; e.detourT = 1.1; }
+    e.chkT = 0; e.cx = e.x; e.cz = e.z; }
+  if (e.detourT > 0) { e.detourT -= dt; [wx, wz] = e.detour; }
   const dx = wx - e.x, dz = wz - e.z, L = Math.hypot(dx, dz);
-  if (L < 0.05) return wx === tx && wz === tz;
+  if (L < 0.05) { if (e.detourT > 0) e.detourT = 0; return wx === tx && wz === tz; }
   const st = Math.min(L, speed * dt); stepNPC(e, dx / L * st, dz / L * st, 0.3);
   e.rot = turnTo(e.rot || 0, Math.atan2(dx, dz), 0.2);
   return wx === tx && wz === tz && L < 0.25;
@@ -2110,7 +2117,13 @@ function workerDest(w) {
 const workerCap = w => w.R.cap * (S.sleds ? 2 : 1);
 // Haulers carry wood and food from the piles to the stalls that need them; menders patch damaged walls.
 function specialWorker(w, dt) {
-  const home = WORKER_HOME[w.role], go = (x, z) => { if (d2(w.x, w.z, x, z) > 0.3) { walkTo(w, x, z, w.R.speed, dt); return true; } return false; };
+  // walk to a spot; if a stall, pile or building blocks the exact spot, count as arrived once close and no longer making progress
+  const home = WORKER_HOME[w.role], go = (x, z) => {
+    const d = d2(w.x, w.z, x, z); if (d <= 0.3) { w.stuckT = 0; return false; }
+    w.stuckT = (w.lastD !== undefined && d > w.lastD - 0.002) ? (w.stuckT || 0) + dt : 0; w.lastD = d;
+    if (w.stuckT > 0.7 && d < 20) { w.stuckT = 0; w.lastD = undefined; return false; }   // e.g. wedged behind the cookhouse stall: hand items over from here
+    if (w.stuckT > 2.5) { w.side = -(w.side || 1); w.stuckT = 0; stepNPC(w, (Math.random() - 0.5) * 1.2, (Math.random() - 0.5) * 1.2, 0.3); }
+    walkTo(w, x, z, w.R.speed, dt); return true; };
   if (w.role === 'hauler') {
     if (!w.items.length) {
       const jobs = [[woodPile, fireStall]].concat(cookStall.unlocked ? [[meatPile, cookStall], [fishPile, cookStall], [gardenPile, cookStall]] : []).filter(([P]) => P.on && P.n > 0 && !P.locked);
