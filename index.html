@@ -1610,6 +1610,7 @@ function leaveDungeon(won) {
     (S.dungeons = S.dungeons || {})[D.d.i] = dayNo(); gainXP(40 * D.d.tier); questEvent('clear', 1);
     { const t = D.d.tier, o = {}; o[Math.random() < 0.5 ? 'spirit' : 'frostgem'] = 1;
       if (t >= 3 && Math.random() < 0.5) o.moonsilver = 1; if (t >= 4 && Math.random() < 0.35) o.voidopal = 1; if (t >= 4 && Math.random() < 0.3) o.emberruby = 1;
+      if (t >= 3 && Math.random() < 0.4) o.steel = 1 + (Math.random() < 0.3 ? 1 : 0); if (t >= 4 && Math.random() < 0.3) o.runesteel = 1;
       if (Math.random() < 0.25) o['scroll_' + (t >= 4 && Math.random() < 0.5 ? 'talisman' : 'greaves')] = 1;
       gainMats(o, player.x, player.z); }
     banner('Dungeon cleared!', true, (D.gold ? '+' + D.gold + ' gold collected · ' : '') + 'the treasure is yours'); play('treasure');
@@ -2269,7 +2270,7 @@ const TUT = [
   { t: 'Chop wood', p: 'Walk up to a tree: your axe swings on its own. Logs stack on your back. Trees grow back over time.', task: 'Collect 8 logs', done: () => carry.log.length >= 8 || fireStall.received > 0 },
   { t: 'Keep your people warm', p: 'Villagers burn firewood. Walk to the firewood stall (blue roof) and stand in the dashed spot behind its counter: you hand over your logs, and villagers buy them for gold.', hi: 'town', task: 'Hand logs to the firewood stall', start: () => fireStall.received, done: b => fireStall.received > b },
   { t: 'Gold and resources', p: 'Your gold, logs, meat, stone and crystal are shown top right. Tap a counter to drop that resource or stop collecting it.', hi: 'res' },
-  { t: 'Choose what you collect', p: 'Tap the log counter, then Stop collecting: your axe leaves trees alone until you turn it back on. On a keyboard, keys 1-4 do the same (1 wood, 2 stone, 3 food, 4 crystal). Turn it back on the same way.', hi: 'res', task: 'Turn log collecting off, then on again', start: () => ({ off: false }), done: b => { if (S.noCollect.log) b.off = true; return b.off && !S.noCollect.log; } },
+  { t: 'Choose what you collect', p: 'Tap the log counter, then Stop collecting: your axe leaves trees alone until you turn it back on. On a keyboard, keys 1-4 do the same (1 wood, 2 food, 3 stone, 4 crystal, the same order as the counters). Turn it back on the same way.', hi: 'res', task: 'Turn log collecting off, then on again', start: () => ({ off: false }), done: b => { if (S.noCollect.log) b.off = true; return b.off && !S.noCollect.log; } },
   { t: 'Your goal', p: 'The GOAL card always tells you what to do next, and the orange arrow on the ground points the way. Follow it whenever you are unsure.', hi: 'quest' },
   { t: 'Build the walls', p: 'Raiders will come. Glowing build spaces show what they cost. Stand on one and you pay with what you carry: fix the broken palisade first.', task: 'Build a wall section', start: () => rings[0].segs.filter(sg => sg.built).length, done: b => rings[0].segs.filter(sg => sg.built).length > b || rings[0].complete },
   { t: 'Warmth and food', p: 'These gauges show warmth and, once you build the cookhouse, food. If either reaches zero, villagers die. Hunt rabbits and deer near the camp for meat and sell it at the cookhouse.', hi: 'town' },
@@ -2532,7 +2533,7 @@ function killEnemy(e) {
   else { dropItem('cash', e.x, e.z, e.loot); dropItem('meat', e.x, e.z, meat); }
   burst(e.x, 1, e.z, e.type === 'yeti' ? 0xeef2f7 : 0x7d8794, 12); gainXP(e.xp);
 }
-function damageEnemy(e, dmg, by) { if (!e.alive) return; e.lastBy = by || null; e.hp -= dmg; e.shake = 0.25; burst(e.x, 1, e.z, 0x9aa4b1, 3, 2); play('hit'); if (e.hp <= 0) { if (!by) questEvent('slay', e.type); killEnemy(e); } }
+function damageEnemy(e, dmg, by) { if (!e.alive || (taming > 0 && e === tameTgt)) return; e.lastBy = by || null; e.hp -= dmg; e.shake = 0.25; burst(e.x, 1, e.z, 0x9aa4b1, 3, 2); play('hit'); if (e.hp <= 0) { if (!by) questEvent('slay', e.type); killEnemy(e); } }
 
 /* ================= combat helpers ================= */
 function hitTree(t, dmg) {
@@ -2549,6 +2550,7 @@ function hitRock(r, dmg) {
   return n;
 }
 function damageYak(y, dmg, by) {
+  if (taming > 0 && y === tameTgt) return;
   y.hp -= dmg; y.shake = 0.25; y.flee = 1.4; burst(y.x, 1, y.z, 0xd9524b, 3, 2); if (!by) play('hit');
   const src = by || player, a = Math.atan2(y.x - src.x, y.z - src.z);
   y.tx = clamp(y.x + Math.sin(a) * 6, BOUNDS.x0, BOUNDS.x1); y.tz = clamp(y.z + Math.cos(a) * 6, BOUNDS.z0, BOUNDS.z1);
@@ -2690,14 +2692,15 @@ const TAME = {
   eagle: { n: 'Eagle', at: 0.5, odds: 0.6, hp: 90, dmg: 9, speed: 7, size: 1, fly: true, make: () => makeEagle(1.6) },
   wolf: { n: 'Wolf', at: 0.3, odds: 0.6, hp: 120, dmg: 8, speed: 5.5, size: 1, make: () => makeWolf() },
   bear: { n: 'Bear', at: 0.25, odds: 0.45, hp: 260, dmg: 16, speed: 4.6, size: 1.4, make: () => makeBear() },
-  raptor: { n: 'Raptor', at: 0.25, odds: 0.4, hp: 280, dmg: 22, speed: 7, size: 1.3, make: () => makeRaptor() },
+  raptor: { n: 'Raptor', at: 0.35, odds: 0.4, hp: 280, dmg: 22, speed: 7, size: 1.3, make: () => makeRaptor() },
   tiger: { n: 'Sabre Tiger', at: 0.25, odds: 0.35, hp: 360, dmg: 26, speed: 6, size: 1.5, make: () => makeTiger() },
+  trex: { n: 'T-Rex', at: 0.2, odds: 0.25, hp: 700, dmg: 48, speed: 4.6, size: 2.0, make: () => makeTrex() },
   dragon: { n: 'Ice Dragon', at: 0.2, odds: 0.22, hp: 800, dmg: 45, speed: 4.6, size: 2.2, breath: true, make: () => makeDragon() },
 };
 const PET_NAMES = ['Ember', 'Frost', 'Ash', 'Pip', 'Nova', 'Bramble', 'Sleet', 'Kodi', 'Rune', 'Thistle', 'Blizz', 'Juniper'];
 function tameKind(e) { const k = e.sp || e.type; return TAME[k] ? k : null; }
 function isWeakTame(e) { const k = tameKind(e); return !!(S.tamer && k && !e.noTame && e.alive && e.hp > 0 && e.hp / e.max <= TAME[k].at); }
-function grantCharm(why) { if (S.tamer) return; S.tamer = true; banner('Beast Charm!', true, (why ? why + ': ' : '') + 'weaken a rabbit, wolf, bear, tiger, eagle or dragon, then tap Tame'); play('treasure'); }
+function grantCharm(why) { if (S.tamer) return; S.tamer = true; banner('Beast Charm!', true, (why ? why + ': ' : '') + 'weaken a rabbit, eagle, wolf, bear, raptor, tiger, T-rex or dragon, then tap Tame'); play('treasure'); }
 let tameTgt = null, taming = 0, pet = null;
 function tameCandidate() {
   if (!S.tamer || S.downT > 0) return null; let b = null, bd = 5 * 5;
@@ -2775,6 +2778,7 @@ $('forgeBody').addEventListener('click', e => {
   e.stopPropagation();
   if (e.target.closest('[data-ftut]')) { S.forgeSeen = true; savePersonal(); return showForge(); }
   const ft = e.target.closest('[data-ftab]'); if (ft) { forgeTab = ft.dataset.ftab; return showForge(); }
+  const sm = e.target.closest('[data-smelt]'); if (sm) { const [id, n] = sm.dataset.smelt.split(':'); doSmelt(id, +n); return showForge(); }
   const su = e.target.closest('[data-supply]'); if (su) { doSupply(su.dataset.supply); return showForge(); }
   const cf = e.target.closest('[data-craft]'); if (cf) { doCraft(cf.dataset.craft); return showForge(); }
   const sv = e.target.closest('[data-salv]'); if (sv) { doSalvage(sv.dataset.salv); return showForge(); }
@@ -3490,14 +3494,15 @@ const ARMORS = [{ n: 'Fur Jerkin', a: 0.15 }, { n: 'Iron Mail', a: 0.3 }, { n: '
    Hides and sinew drop from beasts; tougher beasts give better tiers but drop them less often.
    The forge (at the blacksmith) turns them into weapons, armour, axes, packs and boots. */
 const MATS = { hide1: 'Rough Hide', hide2: 'Thick Hide', hide3: 'Shaggy Pelt', hide4: 'Dragon Scale', sinew1: 'Sinew', sinew2: 'Strong Sinew', sinew3: 'Beast Sinew', sinew4: 'Ancient Sinew',
-  frostgem: 'Frost Gem', emberruby: 'Ember Ruby', voidopal: 'Void Opal', spirit: 'Spirit Essence', moonsilver: 'Moonsilver', dragonheart: 'Dragon Heart' };
-const MAT_GROUPS = [['Hides', ['hide1', 'hide2', 'hide3', 'hide4']], ['Sinew', ['sinew1', 'sinew2', 'sinew3', 'sinew4']], ['Gems', ['frostgem', 'emberruby', 'voidopal']], ['Magic', ['spirit', 'moonsilver', 'dragonheart']]];
+  frostgem: 'Frost Gem', emberruby: 'Ember Ruby', voidopal: 'Void Opal', spirit: 'Spirit Essence', moonsilver: 'Moonsilver', dragonheart: 'Dragon Heart', iron: 'Iron Ingot', steel: 'Steel Bar', runesteel: 'Runesteel' };
+const MAT_GROUPS = [['Hides', ['hide1', 'hide2', 'hide3', 'hide4']], ['Sinew', ['sinew1', 'sinew2', 'sinew3', 'sinew4']], ['Metal', ['iron', 'steel', 'runesteel']], ['Gems', ['frostgem', 'emberruby', 'voidopal']], ['Magic', ['spirit', 'moonsilver', 'dragonheart']]];
 // little pictures for each material: a pelt, a coil of sinew, a cut gem, or a magic orb / ingot / heart
 function matSvg(k, px) {
   const c = MAT_COL[k] || '#ccc', o = 'stroke="#1d2128" stroke-width="1.6"', w = px || 18;
   let b;
   if (k.startsWith('hide')) b = `<path d="M14 6 Q24 2 34 6 L40 12 L36 18 L38 34 L32 42 L24 38 L16 42 L10 34 L12 18 L8 12 Z" fill="${c}" ${o}/><path d="M18 16 Q24 20 30 16 M17 26 Q24 30 31 26" fill="none" stroke="rgba(0,0,0,.3)" stroke-width="1.5"/>`;
   else if (k.startsWith('sinew')) b = `<path d="M10 34 C4 22 18 8 26 14 C34 20 22 30 16 24 C10 18 24 6 36 12 C44 18 38 34 30 38" fill="none" stroke="#1d2128" stroke-width="6" stroke-linecap="round"/><path d="M10 34 C4 22 18 8 26 14 C34 20 22 30 16 24 C10 18 24 6 36 12 C44 18 38 34 30 38" fill="none" stroke="${c}" stroke-width="3.6" stroke-linecap="round"/>`;
+  else if (k === 'iron' || k === 'steel' || k === 'runesteel') b = `<path d="M6 32 L12 20 L42 20 L36 32 Z" fill="${c}" ${o}/><path d="M6 32 L36 32 L36 38 L6 38 Z" fill="#5a6470" ${o}/><path d="M36 32 L42 20 L42 26 L36 38 Z" fill="#77818e" ${o}/>${k === 'runesteel' ? '<path d="M20 23 L24 29 L28 23" stroke="#dff2ff" stroke-width="2" fill="none"/>' : k === 'steel' ? '<path d="M14 24 L36 24" stroke="#fff" stroke-width="1.5" opacity=".8"/>' : ''}`;
   else if (k === 'moonsilver') b = `<path d="M8 30 L16 18 L40 18 L32 30 Z" fill="${c}" ${o}/><path d="M8 30 L32 30 L32 36 L8 36 Z" fill="#aab4c2" ${o}/><path d="M32 30 L40 18 L40 24 L32 36 Z" fill="#c4ccd8" ${o}/>`;
   else if (k === 'dragonheart') b = `<path d="M24 41 C10 30 6 22 10 14 C14 7 22 9 24 15 C26 9 34 7 38 14 C42 22 38 30 24 41 Z" fill="${c}" ${o}/><path d="M17 15 Q14 19 16 23" stroke="#fff" stroke-width="2" fill="none" opacity=".7"/>`;
   else if (k === 'spirit') b = `<circle cx="24" cy="24" r="13" fill="${c}" ${o}/><circle cx="24" cy="24" r="6" fill="#fff" opacity=".8"/><path d="M24 4 L24 9 M24 39 L24 44 M4 24 L9 24 M39 24 L44 24" stroke="#7fd8c0" stroke-width="2.5" stroke-linecap="round"/>`;
@@ -3505,11 +3510,11 @@ function matSvg(k, px) {
   return `<svg class="mi" viewBox="0 0 48 48" width="${w}" height="${w}">${b}</svg>`;
 }
 const RARE_MATS = ['frostgem', 'emberruby', 'voidopal', 'spirit', 'moonsilver', 'dragonheart'];
-const MAT_COL = { hide1: '#b48a5a', hide2: '#8a5a36', hide3: '#e8e1d2', hide4: '#6fb3d9', sinew1: '#e9c9a6', sinew2: '#d29a6a', sinew3: '#c0504d', sinew4: '#9b6bd1', frostgem: '#9fe6ff', emberruby: '#ff6b5a', voidopal: '#b58cff', spirit: '#d9fff4', moonsilver: '#dfe6f0', dragonheart: '#ff9a3d' };
+const MAT_COL = { hide1: '#b48a5a', hide2: '#8a5a36', hide3: '#e8e1d2', hide4: '#6fb3d9', sinew1: '#e9c9a6', sinew2: '#d29a6a', sinew3: '#c0504d', sinew4: '#9b6bd1', frostgem: '#9fe6ff', emberruby: '#ff6b5a', voidopal: '#b58cff', spirit: '#d9fff4', moonsilver: '#dfe6f0', dragonheart: '#ff9a3d', iron: '#8f99a6', steel: '#c4ccd8', runesteel: '#7fa8ff' };
 const DROPS = {
   rabbit: [['hide1', 0.35]], eagle: [['sinew1', 0.3]], deer: [['hide1', 0.5], ['sinew1', 0.35]], yak: [['hide2', 0.25], ['sinew1', 0.4]], boar: [['hide2', 0.3], ['sinew2', 0.2]],
-  spider: [['sinew1', 0.3]], goblin: [['hide1', 0.3]], wolf: [['hide1', 0.45], ['sinew1', 0.3]], bear: [['hide2', 0.3], ['sinew2', 0.2]], troll: [['hide2', 0.25], ['sinew2', 0.2]],
-  yeti: [['hide3', 0.15], ['sinew2', 0.25]], wraith: [['sinew3', 0.1], ['spirit', 0.12]], golem: [['sinew3', 0.08], ['frostgem', 0.15]], raptor: [['hide3', 0.12], ['sinew3', 0.1], ['emberruby', 0.04]], tiger: [['hide3', 0.14], ['sinew3', 0.1], ['emberruby', 0.04]],
+  spider: [['sinew1', 0.3]], goblin: [['hide1', 0.3]], wolf: [['hide1', 0.45], ['sinew1', 0.3]], bear: [['hide2', 0.3], ['sinew2', 0.2]], troll: [['hide2', 0.25], ['sinew2', 0.2], ['iron', 0.15]],
+  yeti: [['hide3', 0.15], ['sinew2', 0.25]], wraith: [['sinew3', 0.1], ['spirit', 0.12]], golem: [['sinew3', 0.08], ['frostgem', 0.15], ['iron', 0.35], ['steel', 0.12]], raptor: [['hide3', 0.12], ['sinew3', 0.1], ['emberruby', 0.04]], tiger: [['hide3', 0.14], ['sinew3', 0.1], ['emberruby', 0.04]],
   mammoth: [['hide4', 0.07], ['sinew3', 0.1], ['frostgem', 0.1]], trex: [['hide4', 0.06], ['sinew4', 0.05], ['emberruby', 0.08]], dragon: [['hide4', 0.08], ['sinew4', 0.06], ['dragonheart', 0.04], ['voidopal', 0.05]],
 };
 function rollMats(type, x, z, elite) {
@@ -3532,14 +3537,14 @@ function matDrop(type, x, z, peer, elite) {
 
 const RECIPES = {
   weapon: [
-    ({ log: 30, stone: 10, hide1: 3, sinew1: 2, cash: 60 }), ({ stone: 30, ore: 5, hide2: 3, sinew1: 4, cash: 150 }), ({ stone: 40, ore: 20, hide2: 4, sinew2: 4, cash: 400 }),
-    ({ ore: 40, hide3: 4, sinew3: 3, cash: 900 }), ({ ore: 60, hide4: 4, sinew4: 3, cash: 2000 }),
-    ({ ore: 80, hide4: 3, sinew4: 3, frostgem: 3, spirit: 2, moonsilver: 2, cash: 3500 }), ({ ore: 120, hide4: 4, sinew4: 4, emberruby: 3, voidopal: 2, dragonheart: 1, cash: 6000 })],
+    ({ log: 30, stone: 10, hide1: 3, sinew1: 2, cash: 60 }), ({ stone: 10, iron: 3, hide2: 3, sinew1: 4, cash: 150 }), ({ ore: 10, steel: 3, hide2: 4, sinew2: 4, cash: 400 }),
+    ({ ore: 20, steel: 3, hide3: 4, sinew3: 3, cash: 900 }), ({ ore: 30, runesteel: 2, hide4: 4, sinew4: 3, cash: 2000 }),
+    ({ ore: 40, runesteel: 3, hide4: 3, sinew4: 3, frostgem: 3, spirit: 2, moonsilver: 2, cash: 3500 }), ({ ore: 60, runesteel: 4, hide4: 4, sinew4: 4, emberruby: 3, voidopal: 2, dragonheart: 1, cash: 6000 })],
   armor: [
-    ({ log: 10, hide1: 6, sinew1: 2, cash: 40 }), ({ stone: 30, ore: 5, hide2: 3, sinew2: 2, cash: 150 }), ({ stone: 40, ore: 20, hide2: 6, sinew2: 4, cash: 400 }),
-    ({ ore: 20, hide3: 6, sinew3: 3, cash: 900 }), ({ ore: 50, hide4: 6, sinew4: 3, cash: 2000 }),
-    ({ ore: 70, hide4: 4, sinew4: 2, moonsilver: 3, frostgem: 2, spirit: 2, cash: 3500 }), ({ ore: 110, hide4: 6, voidopal: 2, emberruby: 2, dragonheart: 1, cash: 6000 })],
-  axe: [null, null, ({ log: 40, hide1: 2, sinew1: 2, cash: 90 }), ({ log: 60, stone: 40, hide2: 2, sinew2: 2, cash: 300 }), ({ ore: 40, stone: 50, hide3: 2, sinew3: 2, cash: 900 })],
+    ({ log: 10, hide1: 6, sinew1: 2, cash: 40 }), ({ iron: 6, hide2: 2, sinew2: 2, cash: 150 }), ({ steel: 5, runesteel: 1, hide2: 4, sinew2: 3, cash: 400 }),
+    ({ ore: 10, steel: 3, hide3: 6, sinew3: 3, cash: 900 }), ({ ore: 20, runesteel: 3, hide4: 6, sinew4: 3, cash: 2000 }),
+    ({ ore: 30, runesteel: 4, hide4: 4, sinew4: 2, moonsilver: 3, frostgem: 2, spirit: 2, cash: 3500 }), ({ ore: 50, runesteel: 5, hide4: 6, voidopal: 2, emberruby: 2, dragonheart: 1, cash: 6000 })],
+  axe: [null, null, ({ log: 40, hide1: 2, sinew1: 2, cash: 90 }), ({ log: 60, iron: 3, hide2: 2, sinew2: 2, cash: 300 }), ({ ore: 20, steel: 3, hide3: 2, sinew3: 2, cash: 900 })],
   bag: [null, ({ log: 20, hide1: 6, sinew1: 2, cash: 60 }), ({ stone: 20, hide2: 6, sinew2: 3, cash: 200 }), ({ ore: 20, hide3: 5, sinew3: 3, cash: 600 })],
   boots: [null, ({ hide1: 4, sinew1: 2, cash: 50 }), ({ stone: 15, hide2: 4, sinew2: 2, cash: 180 }), ({ ore: 15, hide3: 4, sinew3: 2, cash: 450 })],
 };
@@ -3566,7 +3571,7 @@ const SCROLL_DROP = { raptor: ['claws', 0.03], tiger: ['claws', 0.03], wraith: [
 // structure supplies: crafted for the whole town (host or solo player)
 const SUPPLIES = [
   { id: 'planks', n: 'Bracing Planks', d: 'Repairs every wall to full right now', c: { log: 40, sinew1: 4 }, ok: () => rings.some(r => r.segs.some(sg => sg.built || sg.broken)) },
-  { id: 'braces', n: 'Iron Wall Braces', d: 'Walls get +20% health for good', max: 3, th: 2, c: { stone: 40, ore: 10, hide2: 2, cash: 200 } },
+  { id: 'braces', n: 'Iron Wall Braces', d: 'Walls get +20% health for good', max: 3, th: 2, c: { stone: 30, iron: 4, cash: 200 } },
   { id: 'runes', n: 'Tower Runes', d: 'Towers deal +20% damage for good', max: 3, th: 2, c: { ore: 25, spirit: 1, frostgem: 1, cash: 400 } },
   { id: 'totem', n: 'Warding Totem', d: 'Towers shoot +3 m farther for good', max: 2, th: 3, c: { stone: 60, sinew3: 2, moonsilver: 1, cash: 600 } },
 ];
@@ -3669,7 +3674,18 @@ function itemPic(id, lv) {
   if (x) return S2(`<path d="M24 4 L40 14 L36 38 L24 44 L12 38 L8 14 Z" fill="${x.leg ? '#e8b23a' : '#6fa8e8'}" ${o}/><path d="M24 14 L27 21 L35 21 L29 26 L31 34 L24 29 L17 34 L19 26 L13 21 L21 21 Z" fill="#fff" opacity=".9"/>`);
   return S2(`<circle cx="24" cy="24" r="14" fill="#aab4c2" ${o}/>`);
 }
-const FORGE_TABS = [['weapon', 'Weapons'], ['armor', 'Armour'], ['tools', 'Tools'], ['special', 'Special'], ['town', 'Town'], ['salvage', 'Salvage']];
+const FORGE_TABS = [['weapon', 'Weapons'], ['armor', 'Armour'], ['tools', 'Tools'], ['metal', 'Metal'], ['special', 'Special'], ['town', 'Town'], ['salvage', 'Salvage']];
+// smelting turns stone and crystal into metal for armour, weapons, axes and wall braces
+const SMELT = [
+  { id: 'iron', d: 'Smelted from stone over a log fire', c: { stone: 8, log: 4, cash: 5 }, th: 1 },
+  { id: 'steel', d: 'Iron hardened with crystal', c: { iron: 2, ore: 3, log: 4, cash: 15 }, th: 2 },
+  { id: 'runesteel', d: 'Steel bound with a frost gem', c: { steel: 2, ore: 6, frostgem: 1, cash: 60 }, th: 3 },
+];
+const timesCost = (c, n) => Object.fromEntries(Object.entries(c).map(([k, v]) => [k, v * n]));
+function doSmelt(id, n) {
+  const x = SMELT.find(q => q.id === id); if (!x || S.th < x.th) return; const c = timesCost(x.c, n); if (!canAfford(c)) return;
+  payCost(c); gainMats({ [id]: n }, player.x, player.z); play('hammer'); savePersonal();
+}
 let forgeTab = 'weapon';
 const fRow = (img, name, tag, cls, desc, body, btn) => `<div class="row${cls ? ' ' + cls : ''}"><span class="pic">${img}</span><div><b>${name}${tag ? ' <em>' + tag + '</em>' : ''}</b>${desc}${body}</div>${btn}</div>`;
 function showForge() {
@@ -3677,7 +3693,7 @@ function showForge() {
   const near = nearForge(), M = S.mats || {}, owned = Object.keys(MATS).filter(k => M[k] > 0);
   const crafts = craftList(), sp = SPECIALS.filter(x => !hasSpecial(x.id) && x.ok()), hidden = SPECIALS.filter(x => !hasSpecial(x.id) && !x.ok()), su = supplyList(), sv = salvageList();
   const ready = { weapon: crafts.filter(r => r.g === 'weapon' && r.ok).length, armor: crafts.filter(r => r.g === 'armor' && r.ok).length, tools: crafts.filter(r => r.g === 'tools' && r.ok).length,
-    special: sp.filter(x => canAfford(x.c)).length, town: isGuest() ? 0 : su.filter(x => x.afford).length, salvage: 0 };
+    metal: SMELT.filter(x => S.th >= x.th && canAfford(x.c)).length, special: sp.filter(x => canAfford(x.c)).length, town: isGuest() ? 0 : su.filter(x => x.afford).length, salvage: 0 };
   let h = '<div class="craft">';
   if (!S.forgeSeen) h += `<div class="ftut"><b>Welcome to the forge</b><ol><li><b>Gather materials:</b> animals and beasts drop hides and sinew. Tougher beasts drop rarer ones; gems and magic come from rare beasts and dungeons.</li><li><b>Bring resources:</b> logs, stone and crystal are paid from your pack, gold from your wallet. Red chips show what you're short of.</li><li><b>Craft:</b> pick a tab (Weapons, Armour, Tools, Special, Town) and tap Craft. Your hero equips new gear straight away; see it under Hero.</li><li><b>Unlock more:</b> recipes appear as your Town Hall and castle grow, and special ones as you defend well. Recipe scrolls drop from rare beasts and dungeons.</li><li><b>Salvage</b> old gear for half its materials back.</li></ol><button type="button" data-ftut="1">Got it</button></div>`;
   h += '<h3>Materials</h3>' + (owned.length ? MAT_GROUPS.map(([g, ks]) => { const have = ks.filter(k => M[k] > 0); return have.length ? `<div class="mgrp"><i>${g}</i><div class="mats">` + have.map(k => `<span>${matSvg(k)}<b>${M[k]}</b> ${MATS[k]}</span>`).join('') + '</div></div>' : ''; }).join('') : '<p>None yet. Hunt animals and slay beasts: tougher creatures drop rarer hides and sinew, but less often.</p>');
@@ -3687,6 +3703,9 @@ function showForge() {
   if (forgeTab === 'salvage') {
     h += '<p>Break down gear you own for half its materials and gold back.</p>' + (sv.length ? sv.map(r => { const [k, i] = r.id.split(':'), img = k === 'weapon' ? itemPic('weapon', S.weapon) : k === 'armor' ? itemPic('armor', S.armorLv) : k === 'ranged' ? pic('ranged', +i, icon('ranged', +i)) : pic(k, +i, icon(k, +i));
       return fRow(img, r.n, '', '', r.d, `<span class="cost"><span>+ ${costTxt(r.r)}</span></span>`, `<button type="button" class="salv" data-salv="${r.id}" ${near ? '' : 'disabled'}>Salvage</button>`); }).join('') : '<p>Nothing to salvage yet.</p>');
+  } else if (forgeTab === 'metal') {
+    h += '<p>Smelt metal for armour, weapons, axes and wall braces. Golems and trolls drop some too.</p>' + SMELT.filter(x => S.th >= x.th).map(x => fRow(matSvg(x.id, 44), MATS[x.id], '', '', x.d + ' · you have ' + ((S.mats || {})[x.id] || 0), costChips(x.c),
+      `<span style="display:flex;flex-direction:column;gap:4px"><button type="button" data-smelt="${x.id}:1" ${canAfford(x.c) && near ? '' : 'disabled'}>Smelt 1</button><button type="button" data-smelt="${x.id}:5" ${canAfford(timesCost(x.c, 5)) && near ? '' : 'disabled'}>Smelt 5</button></span>`)).join('') + (S.th < 3 ? '<p>More metals unlock at Town Hall ' + ROMAN[S.th + 1] + '.</p>' : '');
   } else if (forgeTab === 'town') {
     h += '<p>Supplies that repair and strengthen your walls and towers.' + (isGuest() ? ' Only the host can strengthen the town.' : '') + '</p>' + (su.length ? su.map(x => fRow(itemPic(x.id), x.n, '', '', x.d, costChips(x.c), `<button type="button" data-supply="${x.id}" ${x.afford && near && !isGuest() ? '' : 'disabled'}>Craft</button>`)).join('') : '<p>More town supplies unlock at Town Hall II.</p>');
   } else if (forgeTab === 'special') {
@@ -3828,8 +3847,10 @@ function spawnCamp(far, opts) {
   glow.rotation.x = -Math.PI / 2; glow.position.y = 0.04; chest.add(glow); camp.glow = glow;
   camp.tag = document.createElement('div'); camp.tag.className = 'tag'; camp.tag.textContent = ['Treasure ★', 'Treasure ★★', 'Treasure ★★★', 'Beast lair ★★★★', 'Beast lair ★★★★★'][tier]; camp.tag.hidden = true; ov.appendChild(camp.tag);
   const kind = opts ? opts.kind : POOL[tier][Math.random() * POOL[tier].length | 0];
-  const list = Array(tier === 0 ? 3 + (Math.random() * 2 | 0) : tier === 1 ? 2 + (Math.random() * 2 | 0) : tier === 2 ? 2 : tier === 3 ? 1 + (Math.random() < 0.4 ? 1 : 0) : 2).fill(kind);
+  let list = Array(tier === 0 ? 3 + (Math.random() * 2 | 0) : tier === 1 ? 2 + (Math.random() * 2 | 0) : tier === 2 ? 2 : tier === 3 ? 1 + (Math.random() < 0.4 ? 1 : 0) : 2).fill(kind);
   if (opts || kind === 'dragon') list.length = 1;   // a beast guards its lair alone
+  const outskirts = !opts && Math.hypot(x - C.x, z - C.z) > 290;   // the far edge of the map: bigger packs, tougher beasts
+  if (outskirts) { list.push(kind); if (tier >= 3 && Math.random() < 0.5) list.push(POOL[tier][Math.random() * POOL[tier].length | 0]); camp.deadly = true; }
   camp.kind = kind; buildCampProps(chest, kind); chest.children.forEach(c => { if (c !== camp.glow) { c.updateMatrix(); c.matrixAutoUpdate = false; } });
   list.forEach((type, i) => {
     const T = WILD[type], m = MAKERS[type](); const a = i / list.length * TAU, hx = x + Math.cos(a) * 2.4, hz = z + Math.sin(a) * 2.4;
@@ -3838,6 +3859,7 @@ function spawnCamp(far, opts) {
     const dm = distMul(x, z);
     const w = { ...m, dm, type, T, camp, x: hx, z: hz, hx, hz, hp, max: hp, rot: rand(0, TAU), walkT: 0, shake: 0, atkT: 0, aggro: false, alive: true, bar: makeBar(), kind: 'wild', bob: rand(0, 6) };
     if (type === 'dragon' && !opts) { w.hp = w.max = Math.round(w.max * 1.8); w.big = 2; w.dm *= 1.3; }
+    if (outskirts) { w.hp = w.max = Math.round(w.max * 1.4); w.dm *= 1.3; }
     if (opts) { w.hp = w.max = Math.round(w.max * 2.5); w.elite = opts.name; w.big = 1.45; w.dm *= 1.6; }
     wilds.push(w); camp.guards.push(w);
   });
@@ -3845,7 +3867,7 @@ function spawnCamp(far, opts) {
   wildCamps.push(camp); return camp;
 }
 function damageWild(w, dmg) {
-  if (!w.alive) return;
+  if (!w.alive || (taming > 0 && w === tameTgt)) return;
   w.hp -= dmg; w.shake = 0.25; w.aggro = true; burst(w.x, 1, w.z, 0x9aa4b1, 3, 2); play('hit');
   w.camp.guards.forEach(o => { if (d2(o.x, o.z, w.x, w.z) < 100) o.aggro = true; });
   if (w.hp <= 0) {
@@ -3955,7 +3977,7 @@ function icon3d(kind, a) {
   const url = HV.r.domElement.toDataURL('image/png'); HV.icons[key] = url; HV.r.setSize(1, 1); return url;
 }
 let heroTab = 'gear', heroPick = null;
-const PET_COL = { raptor: '#6f8aa0', rabbit: '#f3f1ec', eagle: '#8a5a36', wolf: '#8d97a4', bear: '#6b4a33', tiger: '#e8a85a', dragon: '#8fc3e6' };
+const PET_COL = { raptor: '#6f8aa0', rabbit: '#f3f1ec', eagle: '#8a5a36', wolf: '#8d97a4', bear: '#6b4a33', tiger: '#e8a85a', trex: '#6b7d5a', dragon: '#8fc3e6' };
 const pic = (kind, a, svg) => { const u = icon3d(kind, a); return u ? `<img src="${u}" alt="">` : svg; };
 function heroItems() {
   const W = S.wardrobe || { helm: [0], cape: [0] }, wear = S.wear || {}, axeName = S.weapon >= 0 ? WEAPONS[S.weapon].n : (S.axe >= 2 ? 'Twin axes' : 'Camp axe');
@@ -4080,18 +4102,24 @@ function openTreasure(camp) {
   camp.open = true; scene.remove(camp.g); camp.tag.remove();
   const t = camp.tier, gifts = [];
   if (!camp.questReward) { const o = {}; if (t >= 2 && Math.random() < 0.2) o.moonsilver = 1; if (t >= 3 && Math.random() < 0.1) o.voidopal = 1; if (t >= 3 && Math.random() < 0.15) o.frostgem = 1; gainMats(o, camp.x, camp.z); }
-  if (S.weapon < t) gifts.push(() => { S.weapon = t; return [WEAPONS[t].n, 'New weapon: ' + Math.round((WEAPONS[t].m - 1) * 100) + '% more damage']; });
-  if (S.weapon < t + 1 && t < 2 && Math.random() < 0.3) gifts.push(() => { S.weapon = Math.min(2, Math.max(S.weapon, t) + (S.weapon >= t ? 1 : 0)); return [WEAPONS[S.weapon].n, 'A finer weapon!']; });
-  if (S.armorLv < t) gifts.push(() => { S.armorLv = t; return [ARMORS[t].n, 'Armour: take ' + Math.round(ARMORS[t].a * 100) + '% less damage']; });
+  const rareRoll = Math.random() < 0.2;   // finished weapons and armour are rare finds now; the forge makes them
+  if (rareRoll && S.weapon < t) gifts.push(() => { S.weapon = t; return [WEAPONS[t].n, 'New weapon: ' + Math.round((WEAPONS[t].m - 1) * 100) + '% more damage']; });
+  if (rareRoll && S.weapon < t + 1 && t < 2 && Math.random() < 0.3) gifts.push(() => { S.weapon = Math.min(2, Math.max(S.weapon, t) + (S.weapon >= t ? 1 : 0)); return [WEAPONS[S.weapon].n, 'A finer weapon!']; });
+  if (rareRoll && S.armorLv < t) gifts.push(() => { S.armorLv = t; return [ARMORS[t].n, 'Armour: take ' + Math.round(ARMORS[t].a * 100) + '% less damage']; });
   if (t === 2 && !S.pick) gifts.push(() => { S.pick = true; return ['Crystal Pick', 'You can now mine crystal veins']; });
-  if (!S.tamer && t >= 2 && Math.random() < 0.12) gifts.push(() => { grantCharm(); return ['Beast Charm', 'You can now tame weakened creatures']; });
+  if (!S.tamer && t >= 2 && Math.random() < 0.06) gifts.push(() => { grantCharm(); return ['Beast Charm', 'You can now tame weakened creatures']; });
   { const own = S.rangedOwn = S.rangedOwn || [], staff = [3, 4, 5].filter(i => !own.includes(i) && (i - 3) < t);
-    if (staff.length) gifts.push(() => { const i = staff[0]; own.push(i); S.rangedOn = bestRanged(); applyMyLook(); return [RANGED[i].n, 'Magic: fires on its own at threats · switch under Hero']; }); }
+    if (staff.length && Math.random() < 0.3) gifts.push(() => { const i = staff[0]; own.push(i); S.rangedOn = bestRanged(); applyMyLook(); return [RANGED[i].n, 'Magic: fires on its own at threats · switch under Hero']; }); }
   for (const slot of ['helm', 'cape']) {
     const W = S.wardrobe = S.wardrobe || { helm: [0], cape: [0] }; W[slot] = W[slot] || [0];
     const missing = LOOKS[slot].map((_, i) => i).filter(i => i && !W[slot].includes(i) && i <= t + 2);
     if (missing.length) gifts.push(() => { const i = missing[Math.random() * missing.length | 0]; W[slot].push(i); (S.wear = S.wear || {})[slot] = Math.max(...W[slot]); applyMyLook(); return [LOOKS[slot][i], 'New look: change what you wear under Hero']; });
   }
+  const bundle = () => { const o = {}, r = Math.random;
+    [[{ hide1: 3, sinew1: 2, iron: 1 }], [{ hide2: 2, sinew2: 1, iron: 2 }], [{ hide2: 2, sinew2: 2, steel: 1 }, ['frostgem', 0.3], ['spirit', 0.3]], [{ hide3: 2, sinew3: 1, steel: 2 }, ['emberruby', 0.3], ['moonsilver', 0.25]], [{ hide4: 1, sinew4: 1, runesteel: 1 }, ['voidopal', 0.3], ['dragonheart', 0.08]]][t]
+      .forEach((e, i) => { if (!i) Object.assign(o, e); else if (r() < e[1]) o[e[0]] = 1; });
+    gainMats(o, camp.x, camp.z); return ['Crafting materials', costTxt(o)]; };
+  gifts.push(bundle, bundle, bundle);
   gifts.push(() => { S.medkits = Math.min(5, S.medkits + 2); return ['Med Kits', '+2 med kits for reviving teammates']; });
   gifts.push(() => { S.bonusHp += 15 * (t + 1); S.hp = heroMax(); return ['Heart Stone', '+' + 15 * (t + 1) + ' max health']; });
   gifts.push(() => { S.bonusDmg += 0.1 * (t + 1); return ['Warrior’s Rune', '+' + 10 * (t + 1) + '% damage']; });
@@ -4109,10 +4137,10 @@ function openTreasure(camp) {
 let campT = 4; setTimeout(syncToggles, 0);
 function updateWilds(dt) {
   campT -= dt; if (campT <= 0) { campT = 100; while (wildCamps.length < 40) { const n = wildCamps.length; spawnCamp(); if (wildCamps.length === n) break; }
-    for (let k = 0, lairs = wildCamps.filter(c => c.tier >= 3).length; lairs < 36 && k < 50; k++) { const n = wildCamps.length; spawnCamp(true); if (wildCamps.length > n) lairs++; } }
+    for (let k = 0, lairs = wildCamps.filter(c => c.tier >= 3).length; lairs < 50 && k < 70; k++) { const n = wildCamps.length; spawnCamp(true); if (wildCamps.length > n) lairs++; } }
   for (const c of wildCamps) {
     c.glow.rotation.z += dt; const clear = c.guards.every(o => !o.alive);
-    c.tag.hidden = d2(c.x, c.z, player.x, player.z) > 30 * 30; if (!c.tag.hidden) { c.tag.textContent = c.elite && !clear ? '\u2620 ' + c.elite : (clear ? 'Open: ' : '') + ['Treasure ★', 'Treasure ★★', 'Treasure ★★★', 'Beast lair ★★★★', 'Beast lair ★★★★★'][c.tier]; place(c.tag, c.x, 1.9, c.z); }
+    c.tag.hidden = d2(c.x, c.z, player.x, player.z) > 30 * 30; if (!c.tag.hidden) { c.tag.textContent = c.elite && !clear ? '\u2620 ' + c.elite : (clear ? 'Open: ' : c.deadly ? '\u2620 Deadly ' : '') + ['Treasure ★', 'Treasure ★★', 'Treasure ★★★', 'Beast lair ★★★★', 'Beast lair ★★★★★'][c.tier]; place(c.tag, c.x, 1.9, c.z); }
     if (clear && !c.open && S.downT <= 0 && d2(c.x, c.z, player.x, player.z) < 2.6) openTreasure(c);
   }
   for (let i = wilds.length - 1; i >= 0; i--) {
@@ -4901,7 +4929,7 @@ SND_CATS.forEach(([k, label]) => { const l = document.createElement('label'); l.
   cb.addEventListener('change', () => { SND_ON[k] = cb.checked; try { localStorage.setItem('frosthold-sfx', JSON.stringify(SND_ON)); } catch (e) {} if (cb.checked) { unlockAudio(); } }); $('sndList').appendChild(l); });
 $('paused').addEventListener('click', () => setPaused(false));
 window.addEventListener('keydown', e => { if (e.key === 'p' || e.key === 'Escape') setPaused(!paused);
-  const t = { '1': 'log', '2': 'stone', '3': 'meat', '4': 'ore' }[e.key];
+  const t = { '1': 'log', '2': 'meat', '3': 'stone', '4': 'ore' }[e.key];   // same order as the counters on screen
   if (t && !e.target.closest('input')) { S.noCollect[t] = !S.noCollect[t]; syncToggles(); note(S.noCollect[t] ? 'Not collecting ' + PLURAL[t] : 'Collecting ' + PLURAL[t]); } });
 function frame(now) {
   let dt = Math.min(0.15, (now - last) / 1000); last = now;

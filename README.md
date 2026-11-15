@@ -93,8 +93,9 @@ Three gold-only upgrade spaces sit around the plaza: comfort (supplies last long
   - **Thick Hide, Strong Sinew:** yaks, boars, bears, trolls (uncommon).
   - **Shaggy Pelt, Beast Sinew:** yetis, wraiths, golems, raptors, sabre tigers (rare).
   - **Dragon Scale, Ancient Sinew:** mammoths, T-rexes, dragons (very rare).
+  - **Metal: Iron Ingot, Steel Bar, Runesteel.** Smelt them on the forge's **Metal** tab: iron from stone and logs, steel from iron and crystal (Town Hall II), runesteel from steel, crystal and a Frost Gem (Town Hall III). Golems and trolls drop iron and steel; harder dungeons and chests give steel and runesteel. Metal goes into most weapons and armour past the first (Iron Mail, Runic Plate and up), Axe III and IV, and Iron Wall Braces.
   - Camp legends drop three times as often and give extra. In co-op, materials from your kills go to you.
-- **The forge:** once the blacksmith is built, tap **⚒ Forge** anywhere inside your town walls to open the forge window. The first time, a short guide explains how it works. Recipes are grouped into tabs: **Weapons, Armour, Tools** (axes, packs, boots), **Special, Town** (supplies) and **Salvage**. A green number on a tab shows how many recipes there you can afford. Each recipe shows a picture of the item.
+- **The forge:** once the blacksmith is built, tap **⚒ Forge** anywhere inside your town walls to open the forge window. The first time, a short guide explains how it works. Recipes are grouped into tabs: **Weapons, Armour, Tools** (axes, packs, boots), **Metal** (smelting), **Special, Town** (supplies) and **Salvage**. A green number on a tab shows how many recipes there you can afford. Each recipe shows a picture of the item.
 - Forged gear is equipped on your hero straight away and listed under **Gear** on the Hero screen. Logs, stone and crystal come from your pack; gold from your wallet. Each item lists what it needs and how much you have.
 - **New recipe alerts:** when a recipe becomes available (a Town Hall or castle upgrade, a special earned, a scroll found), a banner tells you and the Forge button shows **NEW** until you open it.
 - **Recipes reveal as your town grows:** the forge only shows what your Town Hall allows. New recipes appear with each Town Hall upgrade, rare gear at **Castle I** and legendary gear at **Castle II**. The forge tells you when the next ones unlock.
@@ -146,8 +147,8 @@ A ranged weapon fires on its own at the nearest threat in range, alongside your 
 ## Pets
 ![A pet wolf following you](assets/help/pet.jpg)
 - Only a hero with a **Beast Charm** can tame. Earn one by slaying a quest legend, reaching hero level 10, or (rarely) from a treasure chest.
-- Weaken a rabbit, eagle, wolf, bear, raptor, sabre tiger or ice dragon. When it's weak enough, a **Tame** button appears (with your odds) and a **Fight on** button lets you finish it off instead.
-- Stand still beside it for two seconds. A failed attempt lets it recover some health.
+- Weaken a rabbit, eagle, wolf, bear, raptor, sabre tiger, T-rex or ice dragon. When it's weak enough (a third of its health for raptors, a fifth for T-rexes and dragons), a **Tame** button appears (with your odds) and a **Fight on** button lets you finish it off instead.
+- Stand still beside it for two seconds. While you tame it, nothing (your bow, pet, towers or teammates) can finish it off. A failed attempt lets it recover some health.
 - Name your pet when you tame it, and rename it from the Hero screen.
 - A pet keeps 70% of its wild health and damage and is 80% of its wild size. It follows you, fights threats, hunts nearby animals when it's quiet, heals between fights, and **levels up** (+15% damage and more health each level).
 - The **Pet** tab in the Hero screen shows your pet in 3D with its level, experience, health, damage, speed, total kills, raiders defeated, animals hunted, damage dealt and the day you tamed it.
@@ -158,12 +159,13 @@ A ranged weapon fires on its own at the nearest threat in range, alongside your 
 - The valley spans about 690 m. The minimap starts dark and reveals what you and teammates explore; drag it to move it anywhere on screen.
 - **Monster camps** guard treasure chests (orange easy, red medium, purple dangerous, gold once cleared). Spiders, goblins and wolves near the fort; bears and trolls farther out; wraiths and golems at the edges. Goblins throw spears, trolls hurl rocks and wraiths cast chilling frost orbs: keep moving to dodge.
 - **Beast lairs** past 250 m: raptors and sabre tigers, then mammoths, T-rexes and giant ice dragons past 300 m. They prowl and spot you from far away, but give the best loot.
+- **Deadly camps** (☠ on the tag) fill the outskirts past 290 m: bigger packs, sometimes mixed beasts, each 40% tougher and harder-hitting.
 - Past 300 m the land is rough: boulder fields, ice spires and deep snow that slows you.
 - About 70 **unguarded chests** are scattered across the valley (gold diamonds on the minimap), and **ruins** each hide a cache you can search once.
 - **Crystal veins** lie 255–345 m out and need a Crystal Pick.
 
 ## Treasure
-Chests give weapons (Frostbite Axe up to Dragonbone Axe), armour (Fur Jerkin up to Dragonscale Plate), heart stones (+health), war runes (+damage), wind charms (+speed), storage charms (bigger piles), ember totems, yak totems, staffs, helmets, capes, med kits, the Beast Charm, gold and materials. Farther out means better loot.
+Chests mostly give **crafting materials** (hides, sinew and metal for the camp's tier, with a chance of gems, magic and, in the farthest lairs, a Dragon Heart). Finished weapons and armour are now rare finds (the forge makes them). Chests can also hold heart stones (+health), war runes (+damage), wind charms (+speed), storage charms (bigger piles), ember totems, yak totems, staffs, helmets, capes, med kits, the Beast Charm, gold and materials. Farther out means better loot.
 
 ## Quests
 The Town Hall offers one quest at a time (the Quest card): hunt animals, collect resources, defeat a kind of monster, clear camps, or slay a named **legend** marked with a gold **!** on the minimap. Quests match your hero: at the start they stay close to home (rabbits, deer, logs, fish, wolves and goblins), and tougher monsters and the named legends only appear as your hero levels up (legends from hero level 5 or Town Hall II). Rewards grow with the quest: gold, XP and a reward chest.
@@ -180,7 +182,7 @@ Twelve cave entrances lie 200–315 m out (purple squares on the minimap). Tap *
 
 ## Screen and menu
 ![The cog menu](assets/help/menu.jpg)
-- On a keyboard, **1–4** turn collecting on or off: 1 wood, 2 stone, 3 food, 4 crystal.
+- On a keyboard, **1–4** turn collecting on or off: 1 wood, 2 food, 3 stone, 4 crystal (the same order as the counters on screen).
 - Tap a resource counter to **drop** it (all or 10) or **stop collecting** it. While collecting is off you leave that resource alone: no chopping trees (wood off), mining rocks (stone or crystal off) or hunting animals (food off, except a charging boar), and you can't load it from piles. Your pet won't hunt either while food is off.
 - The **cog** (bottom left) holds Help, Tutorial, Co-op, Hero, Pause, Sound and New game, switches to hide the goal, quest, town gauges, resources or minimap, and a switch for each kind of sound.
 
