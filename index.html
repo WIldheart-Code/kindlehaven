@@ -502,7 +502,7 @@ function flushDecor() {
 }
 const POND_OUT = new THREE.MeshLambertMaterial({ color: 0x8fd0f2 }), POND_IN = new THREE.MeshLambertMaterial({ color: 0xb9e6fb });
 const PATCH_MAT = new THREE.MeshLambertMaterial({ color: 0xf0f5fb });
-const LAKES = [], RUINS = [];
+const LAKES = [], RUINS = [], DECOR_BERRIES = [];
 (function lakesAndPatches() {
   const rnd = mulberryEarly(5150), R = (a, b) => a + rnd() * (b - a);
   // bare-ground and meadow patches that show through once the snow melts
@@ -556,10 +556,7 @@ const LAKES = [], RUINS = [];
     const x = R(-214, 214), z = R(-204, 224); if (Math.abs(x) < 15 && Math.abs(z - 10) < 15) continue;
     const t = rnd();
     if (t < 0.55) { const m = new THREE.Mesh(new THREE.SphereGeometry(R(0.6, 1.4), 14, 8).scale(1.4, 0.45, 1), moundMat); m.position.set(x, 0.05, z); m.receiveShadow = true; decor(m); }
-    else if (t < 0.8) { const b = new THREE.Group(); b.position.set(x, 0, z); decor(b);
-      for (let k = 0; k < 3; k++) { const s = new THREE.Mesh(new THREE.SphereGeometry(R(0.3, 0.45), 12, 8), bushMat); s.position.set(R(-0.35, 0.35), 0.3, R(-0.35, 0.35)); s.castShadow = true; b.add(s); }
-      const cap = new THREE.Mesh(new THREE.SphereGeometry(0.42, 12, 8).scale(1.2, 0.4, 1.2), moundMat); cap.position.y = 0.62; b.add(cap);
-      for (let k = 0; k < 4; k++) rnd(); }   /* decorative bushes stay plain so they aren't mistaken for pickable berry bushes */
+    else if (t < 0.8) DECOR_BERRIES.push([x, z]);   /* snowy berry bushes are real, pickable berry plants (built with the forage) */
     else { const c = new THREE.Group(); c.position.set(x, 0, z); decor(c);
       for (let k = 0; k < 3; k++) { const h = R(0.3, 0.8), sp = new THREE.Mesh(new THREE.ConeGeometry(0.12, h, 6), crystalMatEarly); sp.position.set(R(-0.25, 0.25), h / 2, R(-0.25, 0.25)); sp.rotation.set(R(-0.4, 0.4), 0, R(-0.4, 0.4)); c.add(sp); } }
   }
@@ -2880,9 +2877,14 @@ const FORAGE = {
   moonpetal: { n: 'Moonpetal', food: 0, col: 0xdfe6ff, r0: 190, r1: 1120, count: 35, regrow: 360 },
 };
 const plants = [];
+let BERRY_GEO = null;
 function makePlant(k) {
   const F = FORAGE[k], g = new THREE.Group();
-  if (k === 'berries') { const b = mk(new THREE.SphereGeometry(0.6, 10, 8).scale(1, 0.75, 1), 0x3f7a3a); b.position.y = 0.45; g.add(b);
+  if (k === 'berries') { if (!BERRY_GEO) { const sp = (r, sy) => new THREE.SphereGeometry(r, 10, 7).scale(1, sy || 1, 1);
+      BERRY_GEO = mergeParts([[sp(0.4), 0x2f8a5e, -0.2, 0.3, 0.1], [sp(0.36), 0x2f8a5e, 0.22, 0.3, -0.1], [sp(0.34), 0x2f8a5e, 0, 0.32, 0.25], [sp(0.5, 0.4), 0xfbfdff, 0, 0.62, 0],
+        [sp(0.11), 0xd9324b, 0.55, 0.38, 0.00], [sp(0.11), 0xd9324b, 0.20, 0.3, 0.47], [sp(0.11), 0xd9324b, -0.41, 0.42, 0.34], [sp(0.11), 0xd9324b, -0.49, 0.32, -0.22], [sp(0.11), 0xd9324b, 0.05, 0.4, -0.50], [sp(0.11), 0xd9324b, 0.45, 0.5, 0.28], [sp(0.11), 0xd9324b, -0.54, 0.5, 0.07]]); }
+    const m = new THREE.Mesh(BERRY_GEO, vcMat); m.castShadow = true; g.add(m); return g; }
+  if (k === 'berries_old') { const b = mk(new THREE.SphereGeometry(0.6, 10, 8).scale(1, 0.75, 1), 0x3f7a3a); b.position.y = 0.45; g.add(b);
     for (let i = 0; i < 8; i++) { const a = i * 0.8, be = mk(new THREE.SphereGeometry(0.1, 6, 5), F.col); be.position.set(Math.cos(a) * 0.5, 0.45 + Math.sin(i * 1.7) * 0.25, Math.sin(a) * 0.5); g.add(be); } }
   else if (k === 'roots') { for (let i = 0; i < 3; i++) { const lf = mk(Cone(0.18, 0.6, 5), 0x4fae5a); lf.position.set((i - 1) * 0.25, 0.3, (i % 2) * 0.15); g.add(lf); const top = mk(Cyl(0.09, 0.05, 0.12, 6), F.col); top.position.set((i - 1) * 0.25, 0.05, (i % 2) * 0.15); g.add(top); } }
   else { const st = mk(Cyl(0.03, 0.03, 0.55, 5), 0x3f8a3a); st.position.y = 0.28; g.add(st);
@@ -2892,6 +2894,7 @@ function makePlant(k) {
 }
 function spawnForage() {
   const R = outerRing();
+  for (const [x, z] of DECOR_BERRIES) { if (onLake(x, z, 1) || (R && inSquare(x, z, R.h + 2))) continue; const g = makePlant('berries'); g.position.set(x, 0, z); g.rotation.y = rand(0, TAU); scene.add(g); plants.push({ k: 'berries', x, z, g, alive: true, respawn: 0 }); }
   for (const k in FORAGE) { const F = FORAGE[k], near = F.near || 0;
     for (let i = 0, tries = 0; i < F.count + near && tries < (F.count + near) * 20; tries++) {
       const a = rand(0, TAU), r = i < near ? rand(R ? R.h + 6 : 20, 110) : rand(F.r0, F.r1), /* a dense ring of common plants just outside the walls */ x = C.x + Math.cos(a) * r, z = C.z + Math.sin(a) * r;
