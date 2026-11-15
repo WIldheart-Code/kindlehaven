@@ -2847,7 +2847,9 @@ $('forgeBody').addEventListener('click', e => {
   const sm = e.target.closest('[data-smelt]'); if (sm) { const [id, n] = sm.dataset.smelt.split(':'); doSmelt(id, +n); return showForge(); }
   const su = e.target.closest('[data-supply]'); if (su) { doSupply(su.dataset.supply); return showForge(); }
   const cf = e.target.closest('[data-craft]'); if (cf) { doCraft(cf.dataset.craft); return showForge(); }
-  const sv = e.target.closest('[data-salv]'); if (sv) { doSalvage(sv.dataset.salv); return showForge(); }
+  const sv = e.target.closest('[data-salv]'); if (sv) { salvAsk = sv.dataset.salv; return showForge(); }   // first tap shows what you'd get back
+  const so = e.target.closest('[data-salvok]'); if (so) { doSalvage(so.dataset.salvok); salvAsk = null; return showForge(); }
+  if (e.target.closest('[data-salvno]')) { salvAsk = null; return showForge(); }
 });
 ['pointerdown', 'touchstart', 'mousedown'].forEach(ev => $('forge').addEventListener(ev, e => e.stopPropagation()));
 /* ---- materials satchel: dropped where you're knocked out, picked up by walking over it ---- */
@@ -3974,7 +3976,7 @@ function doSmelt(id, n) {
   const x = SMELT.find(q => q.id === id); if (!x || S.th < x.th) return; const c = timesCost(x.c, n); if (!canAfford(c)) return;
   payCost(c); gainMats({ [id]: n }, player.x, player.z); play('hammer'); savePersonal();
 }
-let forgeTab = 'weapon';
+let forgeTab = 'weapon', salvAsk = null;
 // costs and ingredients stay folded away until the player taps Details (remembered while the forge is open)
 const openDetails = new Set();
 const fRow = (img, name, tag, cls, desc, body, btn) => { const k = String(name).replace(/<[^>]*>/g, '').replace(/"/g, '');
@@ -3993,8 +3995,8 @@ function showForge() {
   else if (!near) h += '<p>Come back inside the town walls to craft and salvage. Logs, stone and crystal are paid from your pack.</p>';
   h += '<div class="ftabs">' + FORGE_TABS.map(([k, n]) => `<button type="button" data-ftab="${k}" aria-pressed="${forgeTab === k}">${n}${ready[k] ? '<i>' + ready[k] + '</i>' : ''}</button>`).join('') + '</div>';
   if (forgeTab === 'salvage') {
-    h += '<p>Break down gear you own for half its materials and gold back.</p>' + (sv.length ? sv.map(r => { const [k, i] = r.id.split(':'), img = k === 'weapon' || k === 'armor' ? itemPic(k, +i) : k === 'ranged' ? pic('ranged', +i, icon('ranged', +i)) : pic(k, +i, icon(k, +i));
-      return fRow(img, r.n, r.equipped ? 'Equipped' : '', '', r.d + (r.equipped ? ' · wear something else to salvage it' : ''), r.equipped ? '' : `<span class="cost"><span>+ ${costTxt(r.r)}</span></span>`, r.equipped ? '<span class="tagx eq">Worn</span>' : `<button type="button" class="salv" data-salv="${r.id}" ${near ? '' : 'disabled'}>Salvage</button>`); }).join('') : '<p>Nothing to salvage yet.</p>');
+    h += '<p>Break down gear you own for half its materials and gold back. Tap Salvage to see what you would get.</p>' + (sv.length ? sv.map(r => { const [k, i] = r.id.split(':'), img = k === 'weapon' || k === 'armor' ? itemPic(k, +i) : k === 'ranged' ? pic('ranged', +i, icon('ranged', +i)) : pic(k, +i, icon(k, +i));
+      return fRow(img, r.n, r.equipped ? 'Equipped' : '', '', r.d + (r.equipped ? ' · wear something else to salvage it' : '') + (salvAsk === r.id ? `<p class="warn" style="color:#5a3a10">Salvage it for ${costTxt(r.r)}?</p>` : ''), '', r.equipped ? '<span class="tagx eq">Worn</span>' : salvAsk === r.id ? `<span style="display:flex;flex-direction:column;gap:4px"><button type="button" class="salv" data-salvok="${r.id}" ${near ? '' : 'disabled'}>Confirm</button><button type="button" data-salvno="1" style="background:#8a96a8">Cancel</button></span>` : `<button type="button" class="salv" data-salv="${r.id}" ${near ? '' : 'disabled'}>Salvage</button>`); }).join('') : '<p>Nothing to salvage yet.</p>');
   } else if (forgeTab === 'brew') {
     h += brewHtml(near);
   } else if (forgeTab === 'metal_old') {
