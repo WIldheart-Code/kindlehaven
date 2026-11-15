@@ -4325,9 +4325,13 @@ const WORKER_HOME = { hauler: [0, 17], mender: [8.2, 9], logger: [6, 18.5], hunt
 function clearSave() { try { localStorage.removeItem(SAVE_KEY); } catch (e) {} }
 const HERO_KEYS = ['runLv', 'tamer', 'pet', 'rangedOwn', 'rangedOn', 'wardrobe', 'wear', 'axe', 'bag', 'pick', 'weapon', 'armorLv', 'bonusHp', 'bonusDmg', 'speedBonus', 'medkits', 'relics', 'xp', 'lvl'];
 let heroReady = false;   // only save the hero once it has been loaded, so a rejoin in progress never overwrites it
+// each co-op room has its own hero: joining a new room starts at level 1, rejoining the same room picks up where you left off
+let heroLoadedKey = null;
+const heroKey = () => isGuest() ? 'frosthold-hero@' + (ROOM_CODE || 'claude') : 'frosthold-hero';
 function savePersonal() {
-  if (loading || !heroReady) return; const h = { lv: { axe: padAxe.level, bag: padBag.level, ranged: padRanged.level, run: padRun.level }, pickB: !!B.pick }; HERO_KEYS.forEach(k => { h[k] = S[k]; });
-  try { localStorage.setItem('frosthold-hero', JSON.stringify(h)); } catch (e) {}
+  if (loading || !heroReady || heroLoadedKey !== heroKey()) return;
+  const h = { lv: { axe: padAxe.level, bag: padBag.level, ranged: padRanged.level, run: padRun.level }, pickB: !!B.pick }; HERO_KEYS.forEach(k => { h[k] = S[k]; });
+  try { localStorage.setItem(heroKey(), JSON.stringify(h)); } catch (e) {}
   // a guest also keeps their gold, pack, health and spot for this room, so a rejoin puts them back where they were
   if (isGuest()) try { sessionStorage.setItem('frost-guest', JSON.stringify({ room: ROOM_CODE || 'claude', wallet: S.wallet, hp: S.hp, x: player.x, z: player.z, carry: { log: carry.log.length, meat: carry.meat.length, stone: carry.stone.length, ore: carry.ore.length } })); } catch (e) {}
 }
@@ -4339,7 +4343,7 @@ function restoreGuest() {
   banner('Welcome back!', true, 'Your gold, pack and gear are just as you left them');
 }
 function loadPersonal() {
-  heroReady = true; let h = null; try { h = JSON.parse(localStorage.getItem('frosthold-hero')); } catch (e) {} if (!h) return;
+  heroReady = true; heroLoadedKey = heroKey(); let h = null; try { h = JSON.parse(localStorage.getItem(heroKey())); } catch (e) {} if (!h) return;
   HERO_KEYS.forEach(k => { if (h[k] !== undefined) S[k] = h[k]; });
   if (h.lv) { padAxe.level = h.lv.axe || 0; padBag.level = h.lv.bag || 0; padRanged.level = h.lv.ranged || 0; padRun.level = h.lv.run || 0; padAxe.paid = {}; padBag.paid = {}; padRanged.paid = {}; }
   if (h.pickB || S.pick) { B.pick = true; const pp = pads.find(q => q.id === 'pick'); if (pp) { pp.done = true; pp.g.visible = false; } }
@@ -4360,7 +4364,7 @@ function saveGame() {
   try { localStorage.setItem(SAVE_KEY, JSON.stringify(data)); } catch (e) {}
 }
 function loadGame() {
-  heroReady = true;
+  heroReady = true; heroLoadedKey = 'frosthold-hero';
   let d = null;
   try { d = JSON.parse(localStorage.getItem(SAVE_KEY) || 'null'); } catch (e) { d = null; }
   if (!d || d.v !== 1) return false;

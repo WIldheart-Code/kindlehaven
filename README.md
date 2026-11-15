@@ -130,7 +130,7 @@ Twelve cave entrances lie 200–315 m out (purple squares on the minimap). Tap *
 ## Co-op
 - **Room code (no account):** on the GitHub Pages site, tap **Co-op → Host a game** for a 4-character code and QR; friends tap Co-op and enter the code or scan the QR.
 - **On claude.ai:** tap Co-op on the shared page; the first player hosts.
-- Each player has their own hero, pack, wallet, gear and pet. Set your name and coat colour under Co-op or Hero; teammates appear with your name, colour ring and what you carry, and as a coloured star on the minimap.
+- Each player has their own hero, pack, wallet, gear and pet. Joining a new co-op room starts you at **level 1** with basic gear; your progress in that room is kept on your device, so rejoining the same room brings it back. Your solo hero is untouched. Set your name and coat colour under Co-op or Hero; teammates appear with your name, colour ring and what you carry, and as a coloured star on the minimap.
 - Stand next to a teammate and tap **Give** to hand over gold, resources or spare gear.
 - Pausing in co-op only covers your own screen: the shared world keeps running for everyone, and your hero can't be hurt while paused.
 - You get alerts when a teammate is under attack or knocked out. A phone that drops out or sleeps rejoins on its own. If the host refreshes the page, their room reopens with the same code and friends reconnect automatically within about 20 seconds, with their gear, pet, gold, pack and position just as they left them; **Leave co-op** closes the room for good.
