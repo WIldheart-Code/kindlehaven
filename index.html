@@ -4736,6 +4736,70 @@ function frame(now) {
 }
 requestAnimationFrame(t => { last = t; frame(t); });
 
+/* ================= staging tools =================
+   Only on the staging test copy (it sets window.FROST_STAGING) or with ?staging in the URL. */
+if (window.FROST_STAGING || /staging/.test(location.search)) {
+  const st = document.createElement('style');
+  st.textContent = `#stgBtn{position:fixed;z-index:30;left:8px;top:50%;border:2px solid #fff;background:#7a2bb8;color:#fff;font:800 12px var(--body);padding:8px 10px;border-radius:10px;cursor:pointer}
+  #stg{position:fixed;z-index:31;inset:8px;max-width:460px;margin:auto;background:#1d2128ee;color:#fff;border-radius:14px;padding:12px;overflow:auto;font:800 12px var(--body)}
+  #stg h4{margin:10px 0 4px;font:15px var(--display);color:#ffd9a0}#stg button{margin:3px;border:0;border-radius:8px;padding:8px 10px;background:#3a4a66;color:#fff;font:800 12px var(--body);cursor:pointer}
+  #stg button:active{background:#7a2bb8}#stg .x{float:right;background:#a3271b}#stg .lg{color:#c9d6e8;margin-top:8px;min-height:1em}`;
+  document.head.appendChild(st);
+  const btn = document.createElement('button'); btn.id = 'stgBtn'; btn.type = 'button'; btn.textContent = '🧪 Staging'; document.body.appendChild(btn);
+  const pan = document.createElement('div'); pan.id = 'stg'; pan.hidden = true; document.body.appendChild(pan);
+  const prep = () => { S.step = Math.max(S.step, 3); if (!$('tut').hidden) $('tutSkip').click(); try { localStorage.setItem('frosthold-tutorial', 'done'); } catch (e) {} };
+  const live = q => pads.filter(p => !p.done && !p.personal && q(p));
+  const buildLoop = q => { prep(); let n = 0; for (let k = 0; k < 8; k++) { let any = false; for (const p of live(q)) if (p.requires()) { completePad(p); n++; any = true; } checkRings(); if (!any) break; } return n; };
+  const isWall = p => p.kind === 'wall', isMain = p => p === padTH || p === padCastle;
+  const walls = () => buildLoop(isWall);
+  const ACT = {
+    'Hero': {
+      '+1 level': () => { const t = S.lvl + 1; for (let i = 0; i < 2000 && S.lvl < t; i++) gainXP(25); }, '+5 levels': () => { const t = S.lvl + 5; for (let i = 0; i < 9000 && S.lvl < t; i++) gainXP(25); },
+      'Full health': () => { S.hp = heroMax(); S.downT = 0; }, '+1000 gold': () => { S.wallet += 1000; bump('cash'); }, '+10000 gold': () => { S.wallet += 10000; bump('cash'); },
+      'Fill pack': () => { const n = Math.floor(room() / 4); ['log', 'stone', 'ore', 'meat'].forEach(t => { for (let i = 0; i < n; i++) addToStack(t); }); },
+      'Beast Charm': () => grantCharm('Staging'), 'Crystal pick': () => { S.pick = true; },
+      'Weapon +1': () => { S.weapon = Math.min(WEAPONS.length - 1, S.weapon + 1); applyMyLook(); }, 'Armour +1': () => { S.armorLv = Math.min(ARMORS.length - 1, S.armorLv + 1); applyMyLook(); },
+      'Max tools': () => { S.axe = 4; S.bag = 3; S.runLv = 3; padAxe.level = 3; padBag.level = 3; padRun.level = 3; applyAxeLook(); },
+      'Reset gear': () => { S.weapon = -1; S.armorLv = -1; S.axe = 1; S.bag = 0; S.runLv = 0; padAxe.level = 0; padBag.level = 0; padRun.level = 0; applyAxeLook(); applyMyLook(); },
+    },
+    'Materials': {
+      '+10 hides & sinew': () => gainMats({ hide1: 10, hide2: 10, hide3: 10, hide4: 10, sinew1: 10, sinew2: 10, sinew3: 10, sinew4: 10 }, player.x, player.z),
+      '+5 gems & magic': () => { const o = {}; RARE_MATS.forEach(k => o[k] = 5); gainMats(o, player.x, player.z); },
+      'All recipe scrolls': () => { S.scrolls = SPECIALS.filter(x => x.scroll).map(x => x.id); },
+      'Clear materials': () => { S.mats = {}; },
+      'Replay forge tutorial': () => { S.forgeSeen = false; },
+      'Forget seen recipes': () => { S.seenRecipes = []; },
+    },
+    'Town': {
+      'Build walls': () => walls(),
+      'Build all buildings': () => buildLoop(p => !isWall(p) && !isMain(p) && !p.repeat),
+      'Hire all workers': () => buildLoop(p => p.repeat && p.hire && p.hire !== 'guard'),
+      'Train guards': () => { prep(); const t = pads.find(p => p.id === 'train'); for (let i = 0; i < 12 && guards.length < maxGuards(); i++) t.rawBuy(1); },
+      'Town Hall up': () => { prep(); walls(); if (padTH.level < 2) { if (!S.cook) buildLoop(p => p.id === 'cook'); rings[padTH.level].segs.forEach(sg => { if (!sg.built) setSegBuilt(sg, true); }); checkRings(); completePad(padTH); } },
+      'Castle up': () => { prep(); while (padTH.level < 2) ACT.Town['Town Hall up'](); walls(); rings[2].segs.forEach(sg => { if (!sg.built) setSegBuilt(sg, true); }); checkRings(); rings[2].complete = true; if (padCastle.level < 3) completePad(padCastle); },
+      'Everything for this level': () => { ACT.Town['Build walls'](); ACT.Town['Build all buildings'](); ACT.Town['Hire all workers'](); ACT.Town['Train guards'](); },
+      'Repair walls': () => repairAllWalls(), '+50 villagers': () => { S.civ += 50; }, 'Fill warmth & food': () => { S.warm = 1e4; S.food = 1e4; },
+    },
+    'World': {
+      'Skip to nightfall': () => { S.clock = (Math.floor(S.clock / DAY_LEN) + 0.74) * DAY_LEN; }, 'Next day': () => { S.clock = (Math.floor(S.clock / DAY_LEN) + 1.3) * DAY_LEN; },
+      '+5 days': () => { S.clock += DAY_LEN * 5; }, 'Next season': () => { S.clock += DAY_LEN * DAYS_PER_SEASON; },
+      'Raid now': () => { prep(); S.lastRaidDay = -1; S.clock = (Math.floor(S.clock / DAY_LEN) + 0.76) * DAY_LEN; },
+      'Kill all raiders': () => enemies.forEach(e => { if (e.alive) killEnemy(e); }),
+      '+3 clean raids': () => { S.cleanRaids = (S.cleanRaids || 0) + 3; }, 'Dragon siege won': () => { S.dragonWins = (S.dragonWins || 0) + 1; },
+    },
+  };
+  const draw = msg => {
+    pan.innerHTML = '<button type="button" class="x" data-x="1">Close</button><b style="font:18px var(--display)">Staging tools</b><div>Test copy only. Changes save like normal play.</div>' +
+      Object.keys(ACT).map(g => `<h4>${g}</h4>` + Object.keys(ACT[g]).map(k => `<button type="button" data-g="${g}" data-k="${k}">${k}</button>`).join('')).join('') +
+      `<div class="lg">Level ${S.lvl} · TH ${ROMAN[S.th]}${S.castle ? ' · Castle ' + ROMAN[S.castle] : ''} · day ${dayNo()} · ${S.wallet} gold · clean raids ${S.cleanRaids || 0}${msg ? '<br>' + msg : ''}</div>`;
+  };
+  btn.addEventListener('click', e => { e.stopPropagation(); pan.hidden = !pan.hidden; if (!pan.hidden) draw(); });
+  ['pointerdown', 'touchstart', 'mousedown'].forEach(ev => { btn.addEventListener(ev, e => e.stopPropagation()); pan.addEventListener(ev, e => e.stopPropagation()); });
+  pan.addEventListener('click', e => { e.stopPropagation(); if (e.target.dataset.x) { pan.hidden = true; return; }
+    const b = e.target.closest('[data-k]'); if (!b) return; let m = 'Done: ' + b.dataset.k;
+    try { const r = ACT[b.dataset.g][b.dataset.k](); if (typeof r === 'number') m += ' (' + r + ')'; } catch (er) { m = 'Error: ' + er.message; console.error(er); }
+    try { saveGame(); savePersonal(); } catch (er) {} draw(m); });
+}
 window.__frost = { gainMats, renderer, scene, hurtHero, wilds, wildCamps, openTreasure, NET, liveSize: () => JSON.stringify(liveState()).length, piles, saveGame, waypoint, give: (t, n) => { for (let i = 0; i < n; i++) addToStack(t); }, S, player, carry, stalls, pads, trees, yaks, enemies, workers, guards, rocks, rings, B, goal, pallets, walkers, checkRings, setSegBuilt, padTH, RUINS, SCENERY, LAKES, DUNGEONS, obstacles, padCastle, padTH, raidPack, maxGuards, guards, towers, tameIt: c => tameIt(c), getPet: () => pet, stalls: stalls, enterDungeon, dunKeys, dun: () => DUN, dstep: dt => dungeonStep(dt), mshots: () => mshots, applySeason, sim: secs => { for (let t = 0; t < secs; t += 0.04) update(0.04); }, ringSecure, padHomes, roleCount, maxWorkers, housing, pop, dayNo, makeRemote, remoteExtras, PROFILE, applyCoat, P0 };
 })();
 </script>
