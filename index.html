@@ -1861,7 +1861,7 @@ function makePile(type, x, z, label) {
   const base = mk(Box(2, 0.1, 2), 0x6b4a2d, false, true); base.position.y = 0.05; P.g.add(base);
   for (let i = 0; i < 48; i++) { const m = itemMesh(type), layer = Math.floor(i / 12), k = i % 12; m.position.set(-0.66 + (k % 4) * 0.44, 0.18 + layer * ITEM_H[type] * 1.1, -0.5 + Math.floor(k / 4) * 0.5); m.visible = false; P.g.add(m); P.pool.push(m); }
   P.tag = document.createElement('div'); P.tag.className = 'tag ptag'; P.tag.hidden = true; ov.appendChild(P.tag);
-  P.toggleLock = () => { P.locked = !P.locked; if (NET.room) NET.room.emit('lock', { i: piles.indexOf(P), v: P.locked }).catch(() => {}); note(P.locked ? P.label + ' pile locked: haulers leave it alone' : P.label + ' pile unlocked: haulers can use it'); play('pay'); };
+  P.toggleLock = () => { P.locked = !P.locked; P.lockT = performance.now(); if (isHost()) NET.worldT = 0; if (NET.room) NET.room.emit('lock', { i: piles.indexOf(P), v: P.locked }).catch(() => {}); note(P.locked ? P.label + ' pile locked: haulers leave it alone' : P.label + ' pile unlocked: haulers can use it'); play('pay'); };
   piles.push(P); return P;
 }
 function openPile(P) { P.on = true; P.g.visible = true; }
@@ -4047,7 +4047,7 @@ function onWorld(msg) {
     hp.forEach((v, j) => { const sg = r.segs[j]; if (!sg) return; sg.built = v >= 0; sg.broken = v === -2; if (sg.built) { sg.stone = S.masonry || sg.tier > 0; sg.max = segMax(sg); sg.hp = Math.min(v, sg.max); } segVisual(sg); });
     if (!r.active) r.segs.forEach(sg => { sg.g.visible = false; sg.bar.hidden = true; });
   });
-  (d.pl || []).forEach(([n, on, lk], i) => { const P = piles[i]; if (!P) return; P.locked = !!lk; if (on && !P.on) openPile(P); P.n = Math.max(0, n); syncPile(P); });
+  (d.pl || []).forEach(([n, on, lk], i) => { const P = piles[i]; if (!P) return; if (!(P.lockT && performance.now() - P.lockT < 4000)) P.locked = !!lk; /* a fresh tap beats an older update still in flight */ if (on && !P.on) openPile(P); P.n = Math.max(0, n); syncPile(P); });
   (d.pa || []).forEach((n, i) => { if (pallets[i]) { pallets[i].amount = n; syncPallet(pallets[i]); } });
   (d.st || []).forEach((n, i) => {
     const st = stalls[i]; if (!st || st.stock === n) return; st.stock = n;
@@ -4304,7 +4304,7 @@ async function startCoop(auto, code, asHost, resumeHost) {
     }
     ROOM_CODE = code;
   }
-  NET.room.on('w', onWorld); NET.room.on('lock', m => { const P = m.data && piles[m.data.i]; if (P) P.locked = !!m.data.v; }); NET.room.on('wp', onPads); NET.room.on('give', onGive);
+  NET.room.on('w', onWorld); NET.room.on('lock', m => { const P = m.data && piles[m.data.i]; if (P && m.peer !== NET.me) { P.locked = !!m.data.v; P.lockT = performance.now(); } }); NET.room.on('wp', onPads); NET.room.on('give', onGive);
   let host = null;
   for (let k = 0; k < (ON_CLAUDE || asHost ? 5 : 24); k++) {   // a guest waits up to 12 s for the host to answer
     await sleep(500);
