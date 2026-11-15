@@ -810,6 +810,7 @@ function streamTrees(dt) {
   for (const sc of SCENERY) {
     const dd = d2(sc.x, sc.z, player.x, player.z);
     const offSeason = sc.id === 'snowdrift' && S.season !== 3;   // drifts melt outside winter
+    if (sc.gone > time) continue;   // a gathered stone pile
     if (!sc.m && !offSeason && dd < 75 * 75 && MODELS[sc.id] && !inSquare(sc.x, sc.z, outerRing().h + 2) && !LAKES.some(l => d2(l.x, l.z, sc.x, sc.z) < (l.r + 2) ** 2)) {
       sc.m = fitModel(sc.id, sc.size, sc.id === 'dead_tree' ? 'y' : undefined); sc.m.position.set(sc.x, sc.id === 'frozen_pond' ? -0.05 : 0, sc.z); sc.m.rotation.y = sc.ry;
       sc.m.traverse(o => { if (o.isMesh) { o.castShadow = sc.id !== 'frozen_pond'; } }); scene.add(sc.m);
@@ -2911,7 +2912,19 @@ function spawnForage() {
 setTimeout(spawnForage, 0);
 // pick a plant: food goes to the picker, the forage itself is a crafting ingredient
 function pickPlant(p) { if (!p.alive) return { food: 0 }; p.alive = false; p.g.visible = false; p.respawn = FORAGE[p.k].regrow; burst(p.x, 0.6, p.z, FORAGE[p.k].col, 8, 2); return { food: FORAGE[p.k].food, mat: p.k }; }
+let pileT = 0;
+function gatherStonePiles(dt) {   // walk into a small grey rock mound to gather its stones
+  if ((pileT -= dt) > 0) return; pileT = 0.2;
+  if (S.noCollect.stone || room() <= 0) return;
+  for (const sc of SCENERY) {
+    if (sc.id !== 'rock_small' || !sc.m || sc.gone > time || d2(sc.x, sc.z, player.x, player.z) > 1.8 * 1.8) continue;
+    scene.remove(sc.m); sc.m = null; sc.gone = time + 300;
+    let n = 0; for (let i = 0; i < 3 && room() > 0; i++) { addToStack('stone'); n++; }
+    burst(sc.x, 0.6, sc.z, 0xb3bbc5, 10, 2); play('mine', 0, sc.x, sc.z); floatText('+' + n + ' stone', sc.x, 2, sc.z, 'xp'); break;
+  }
+}
 function updateForage(dt) {
+  if (S.downT <= 0 && !DUN) gatherStonePiles(dt);
   for (const p of plants) if (!p.alive && (p.respawn -= dt) <= 0) { p.alive = true; p.g.visible = true; popIn(p.g); }
   if (S.downT > 0 || DUN) return;
   for (const p of plants) {
