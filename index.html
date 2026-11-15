@@ -3985,7 +3985,7 @@ function showForge() {
   $('forgeBtn').classList.remove('new');
   const near = nearForge(), M = S.mats || {}, owned = Object.keys(MATS).filter(k => M[k] > 0);
   const crafts = craftList(), sp = SPECIALS.filter(x => !hasSpecial(x.id) && x.ok()), hidden = SPECIALS.filter(x => !hasSpecial(x.id) && !x.ok()), su = supplyList(), sv = salvageList();
-  const rdy = g => crafts.filter(r => r.g === g && (r.ok || r.upOk)).length;
+  const rdy = g => crafts.filter(r => r.g === g && r.ok).length;
   const ready = { weapon: rdy('weapon'), armor: rdy('armor'), tools: rdy('tools'),
     brew: knownBrews().map(recipeOf).filter(b => b && S.th >= (b.th || 1) && canAfford(b.in)).length, special: sp.filter(x => canAfford(x.c)).length, town: isGuest() ? 0 : su.filter(x => x.afford).length, salvage: 0 };
   let h = '<div class="craft"><button type="button" class="fhero" data-fhero="1">⚔ Hero gear</button>';
@@ -4013,8 +4013,8 @@ function showForge() {
     const rows = crafts.filter(r => r.g === forgeTab);
     const mini = r => `<div class="row mini"><span class="pic">${itemPic(r.kind, r.lv)}</span><div><b>${r.n}${r.r ? ' <em>' + r.r + '</em>' : ''}</b></div><span class="tagx${r.equipped ? ' eq' : ''}">${r.equipped ? 'Equipped' : r.owned ? 'Owned' : 'Weaker'}</span></div>`;
     const full = r => fRow(itemPic(r.kind, r.lv), r.n, r.r, r.r ? r.r.toLowerCase() : '', r.d,
-      (r.up ? '<span class="clab">Forge new:</span>' : r.isUp ? '<span class="clab">Upgrade (trades in your ' + TOOL_NAMES[r.kind][r.kind === 'boots' ? S.runLv || 0 : S[r.kind]] + '):</span>' : '') + costChips(r.c) + (r.up ? '<span class="clab">Upgrade from ' + (r.kind === 'weapon' ? WEAPONS : ARMORS)[r.up.from].n + ' (trades it in):</span>' + costChips(r.up.c) : ''),
-      `<span style="display:flex;flex-direction:column;gap:4px"><button type="button" data-craft="${r.id}:new" ${r.ok && near ? '' : 'disabled'}>${r.isUp ? 'Upgrade' : 'Forge'}</button>${r.up ? `<button type="button" data-craft="${r.id}:up" ${r.upOk && near ? '' : 'disabled'}>Upgrade</button>` : ''}</span>`);
+      costChips(r.c),   // just what it costs: no trade-in or salvage numbers here
+      `<button type="button" data-craft="${r.id}:new" ${r.ok && near ? '' : 'disabled'}>${r.isUp ? 'Upgrade' : 'Forge'}</button>`);
     const todo = rows.filter(r => !r.owned && !r.weaker), done = rows.filter(r => r.owned || r.weaker);
     h += todo.length ? todo.map(full).join('') : '<p class="ok">You have the best ' + (forgeTab === 'tools' ? 'tools' : forgeTab === 'weapon' ? 'weapon' : 'armour') + ' you can forge right now.</p>';
     if (done.length) h += '<h3>Owned and weaker</h3>' + done.slice().reverse().map(mini).join('');
