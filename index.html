@@ -2758,6 +2758,7 @@ function updatePet(dt) {
   if (S.pet && !pet) spawnPet(); if (!pet) return;
   const P = S.pet, T = pet.T, reach = 1.2 + T.size * 0.6;
   if (!pet.tgt || !pet.tgt.alive || d2(pet.tgt.x, pet.tgt.z, player.x, player.z) > 22 * 22) { pet.tgt = (threats(player.x, player.z, 14).find(t => !isWeakTame(t[1])) || [])[1] || null;   // threats first, then game nearby
+    if (!pet.tgt) pet.tgt = nearest(wilds, w => w.alive && !w.noTame && !isWeakTame(w) && d2(w.x, w.z, player.x, player.z) < 12 * 12) || null;   // beasts and camp monsters near you, even before they notice you
     if (!pet.tgt && !S.noCollect.meat) pet.tgt = nearest(yaks, y => y.alive && !isWeakTame(y) && d2(y.x, y.z, player.x, player.z) < 14 * 14) || null; }
   let tx, tz, moving = false; const t = pet.tgt;
   if (t) { tx = t.x; tz = t.z; } else { tx = player.x - Math.sin(player.rot) * 2.2 + 1; tz = player.z - Math.cos(player.rot) * 2.2; }

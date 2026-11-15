@@ -155,7 +155,7 @@ A ranged weapon fires on its own at the nearest threat in range, alongside your 
 - Weaken a rabbit, eagle, wolf, bear, raptor, sabre tiger, T-rex or ice dragon. When it's weak enough (a third of its health for raptors, a fifth for T-rexes and dragons), a **Tame** button appears (with your odds) and a **Fight on** button lets you finish it off instead.
 - Stand still beside it for two seconds. While you tame it, nothing (your bow, pet, towers or teammates) can finish it off. A failed attempt lets it recover some health.
 - Name your pet when you tame it, and rename it from the Hero screen.
-- A pet keeps 70% of its wild health and damage and is 80% of its wild size. It follows you, fights threats, hunts nearby animals when it's quiet, heals between fights, and **levels up** (+15% damage and more health each level).
+- A pet keeps 70% of its wild health and damage and is 80% of its wild size. It follows you, fights threats and any beast or camp monster within about 12 m of you (even before they spot you), hunts nearby animals when it's quiet, heals between fights, and **levels up** (+15% damage and more health each level).
 - The **Pet** tab in the Hero screen shows your pet in 3D with its level, experience, health, damage, speed, total kills, raiders defeated, animals hunted, damage dealt and the day you tamed it.
 - You keep one pet at a time. A pet that falls is gone for good.
 
