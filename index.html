@@ -102,7 +102,8 @@ html,body{height:100%;margin:0;background:var(--ice);color:var(--ink);overflow:h
 #tameNo{position:fixed;z-index:8;left:50%;transform:translateX(-50%);bottom:calc(140px + env(safe-area-inset-bottom,0px));border:2px solid #fff;background:#b8452e;color:#fff;font:15px/1 var(--display);padding:10px 16px;border-radius:12px;cursor:pointer}
 #rejoin{position:fixed;inset:0;z-index:40;display:flex;align-items:center;justify-content:center;background:#1b2336;padding:0 16px}#rejoin .box{background:#f4f7fc;border-radius:18px;padding:22px;text-align:center;width:min(340px,100%)}#rejoin h2{margin:0 0 6px;font:26px var(--display);color:#2b4a74}#rejoin p{font:700 14px var(--body)}#rejoin button{border:2px solid #c9d6e8;background:#fff;border-radius:10px;padding:10px 14px;font:14px var(--display);color:#2b4a74;cursor:pointer}
 #forgeBtn{position:fixed;z-index:8;right:12px;bottom:calc(150px + env(safe-area-inset-bottom,0px));border:2px solid #fff;background:#8a4a2a;color:#fff;font:17px/1 var(--display);letter-spacing:.04em;padding:12px 16px;border-radius:14px;box-shadow:0 4px 0 rgba(0,0,0,.3);cursor:pointer}
-.craft .row{display:flex;gap:8px;align-items:center;background:#f4f7fb;border-radius:10px;padding:8px;margin:6px 0}.craft .row div{flex:1;font:800 12px var(--body);color:#2b4a74}.craft .row div b{display:block;font:15px var(--display);color:#1d2128}.craft .cost{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}.craft .cost span{background:#dfe6f0;border-radius:6px;padding:2px 6px}.craft .cost span.no{background:#f6d1cc;color:#a3271b}.craft .row button{border:0;border-radius:9px;padding:10px 12px;font:14px var(--display);background:#3f8a5a;color:#fff;cursor:pointer}.craft .row button:disabled{background:#aab4c2}.craft .row button.salv{background:#a3532b}.craft .mats{display:flex;flex-wrap:wrap;gap:4px}.craft .mats span{background:#2b4a74;color:#fff;border-radius:6px;padding:3px 7px;font:800 12px var(--body)}.craft p{font:800 12px var(--body);color:#5a6b80;margin:6px 0}
+.craft .row{display:flex;gap:8px;align-items:center;background:#f4f7fb;border-radius:10px;padding:8px;margin:6px 0}.craft .row div{flex:1;font:800 12px var(--body);color:#2b4a74}.craft .row div b{display:block;font:15px var(--display);color:#1d2128}.craft .cost{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}.craft .cost span{background:#dfe6f0;border-radius:6px;padding:2px 6px}.craft .cost span.no{background:#f6d1cc;color:#a3271b}.craft .row button{border:0;border-radius:9px;padding:10px 12px;font:14px var(--display);background:#3f8a5a;color:#fff;cursor:pointer}.craft .row button:disabled{background:#aab4c2}.craft .row button.salv{background:#a3532b}.craft .row.rare{background:#e3efff;box-shadow:inset 0 0 0 2px #6fa8e8}.craft .row.legendary{background:#fff3d6;box-shadow:inset 0 0 0 2px #e8a83a}.craft .row em{font:800 10px var(--body);font-style:normal;text-transform:uppercase;padding:2px 6px;border-radius:6px;background:#2b4a74;color:#fff;vertical-align:middle}.craft .row.legendary em{background:#c07a12}
+.craft .mats{display:flex;flex-wrap:wrap;gap:4px}.craft .mats span{background:#2b4a74;color:#fff;border-radius:6px;padding:3px 7px;font:800 12px var(--body)}.craft p{font:800 12px var(--body);color:#5a6b80;margin:6px 0}
 #tameBtn{position:fixed;z-index:8;left:50%;transform:translateX(-50%);bottom:calc(78px + env(safe-area-inset-bottom,0px));border:2px solid #fff;background:#3f8a5a;color:#fff;font:17px/1 var(--display);letter-spacing:.04em;padding:14px 20px;border-radius:14px;box-shadow:0 6px 18px rgba(0,0,0,.3);cursor:pointer;white-space:nowrap}
 #chipMenu{position:fixed;z-index:9;display:flex;flex-direction:column;gap:6px;background:var(--panel);border:1px solid var(--panel-line);border-radius:12px;padding:7px}
 #chipMenu button{border:0;border-radius:9px;padding:10px 12px;font:14px/1 var(--display);letter-spacing:.04em;color:#fff;background:rgba(255,255,255,.14);cursor:pointer;white-space:nowrap;text-align:left}
@@ -901,8 +902,8 @@ trail.rotation.x = -Math.PI / 2; axePivot.add(trail);
 const heroBar = makeBar('me');
 // ---- what heroes wear: weapon colours, armour pieces, helmets and capes, all visible to teammates ----
 const LOOKS = { helm: ['None', 'Fur Hood', 'Horned Helm', 'Iron Helm', 'Frost Crown'], cape: ['None', 'Red Cape', 'Wolf Pelt Cloak', 'Royal Cape', 'Dragonwing Cape'] };
-const WEAPON_COL = [0xb9c3cf, 0x9fdcff, 0xff7a3d, 0x9a7bff, 0xf0e6c8, 0x7ff0e0];   // camp axe, then each weapon
-const ARMOR_COL = [0x8a6a4a, 0x9aa3ad, 0x6f7fa8, 0xe8a85a, 0x3fb8a8];
+const WEAPON_COL = [0xb9c3cf, 0x9fdcff, 0xff7a3d, 0x9a7bff, 0xf0e6c8, 0x7ff0e0, 0xc9e8ff, 0xffc23d];   // camp axe, then each weapon (last two: rare, legendary)
+const ARMOR_COL = [0x8a6a4a, 0x9aa3ad, 0x6f7fa8, 0xe8a85a, 0x3fb8a8, 0xd8e4f2, 0xe8b23a];
 function weaponLook(axe, w) {
   const c = WEAPON_COL[w + 1] || WEAPON_COL[0]; [axe.children[1], axe.children[2]].forEach((m, i) => { if (!m) return; m.material = m.material.clone(); m.material.color.setHex(i ? 0xffffff : c); if (m.material.emissive) m.material.emissive.setHex(w >= 1 ? c : 0).multiplyScalar(w >= 1 ? 0.35 : 0); });
   axe.children[1] && axe.children[1].scale.set(1, 1 + Math.max(0, w) * 0.12, 1 + Math.max(0, w) * 0.12);
@@ -916,7 +917,7 @@ function buildGear(g, look) {
     const c = ARMOR_COL[armor];
     [-1, 1].forEach(k => { const sp = mk(new THREE.SphereGeometry(0.2, 12, 8, 0, TAU, 0, Math.PI / 2), c); sp.position.set(k * 0.36, 1.05, 0); sp.rotation.z = -k * 0.5; G.add(sp); });
     if (armor >= 1) { const pl = mk(Box(0.46, 0.34, 0.08), c); pl.position.set(0, 0.86, 0.33); G.add(pl); }
-    if (armor >= 2) { const rune = new THREE.Mesh(Box(0.12, 0.12, 0.02), basic(armor === 4 ? 0x7ff0e0 : 0x7fb0ff)); rune.position.set(0, 0.88, 0.38); rune.rotation.z = Math.PI / 4; G.add(rune); }
+    if (armor >= 2) { const rune = new THREE.Mesh(Box(0.12, 0.12, 0.02), basic(armor >= 6 ? 0xff5a2a : armor === 5 ? 0xbfe8ff : armor === 4 ? 0x7ff0e0 : 0x7fb0ff)); rune.position.set(0, 0.88, 0.38); rune.rotation.z = Math.PI / 4; G.add(rune); }
     if (armor === 0) { const fur = mk(new THREE.TorusGeometry(0.3, 0.09, 8, 16), 0xe9dcc6); fur.rotation.x = Math.PI / 2; fur.position.y = 1.08; G.add(fur); }
   }
   if (helm) {
@@ -1574,6 +1575,9 @@ function leaveDungeon(won) {
   player.x = D.d.ex; player.z = D.d.ez + 1;
   if (won) {
     (S.dungeons = S.dungeons || {})[D.d.i] = dayNo(); gainXP(40 * D.d.tier); questEvent('clear', 1);
+    { const t = D.d.tier, o = {}; o[Math.random() < 0.5 ? 'spirit' : 'frostgem'] = 1;
+      if (t >= 3 && Math.random() < 0.5) o.moonsilver = 1; if (t >= 4 && Math.random() < 0.35) o.voidopal = 1; if (t >= 4 && Math.random() < 0.3) o.emberruby = 1;
+      gainMats(o, player.x, player.z); }
     banner('Dungeon cleared!', true, (D.gold ? '+' + D.gold + ' gold collected · ' : '') + 'the treasure is yours'); play('treasure');
     openTreasure({ x: D.d.ex + 1.5, z: D.d.ez + 1.5, tier: Math.min(4, D.d.tier), g: new THREE.Group(), tag: { remove() {} }, guards: [], questReward: true });
   } else if (won === false) { S.hp = Math.max(S.hp, heroMax() * 0.5); banner('Defeated in the dungeon', false, 'You stagger back out of the entrance'); play('alert'); }
@@ -2478,6 +2482,7 @@ function spawnEnemy(type, wave, px, pz, id) {
 function killEnemy(e) {
   if (!e.alive) return; e.alive = false; scene.remove(e.g); e.bar.remove();
   const meat = e.type === 'yeti' ? 8 : 2;
+  if (e.type === 'dragon' && Math.random() < 0.25) { const o = { dragonheart: 1 }; if (e.lastBy && isHost() && NET.remotes[e.lastBy]) NET.room.emit('give', { to: e.lastBy, t: 'mat', m: o }).catch(() => {}); else gainMats(o, e.x, e.z); }
   matDrop(e.type, e.x, e.z, e.lastBy && isHost() && NET.remotes[e.lastBy] ? e.lastBy : null);
   if (e.lastBy && isHost() && NET.remotes[e.lastBy]) { netGive(e.lastBy, 'cash', e.loot); netGive(e.lastBy, 'meat', meat); questCredit(e.lastBy, 'slay', e.type); }
   else { dropItem('cash', e.x, e.z, e.loot); dropItem('meat', e.x, e.z, meat); }
@@ -3345,18 +3350,20 @@ function update(dt) {
 /* ================= wild encounters =================
    Monster camps guard treasure chests across the wilds. The farther from the
    fort, the tougher the guards and the better the loot. */
-const WEAPONS = [{ n: 'Frostbite Axe', m: 1.35 }, { n: 'Ember Cleaver', m: 1.7 }, { n: 'Runic Greataxe', m: 2.2 }, { n: 'Raptor Fang Axe', m: 2.8 }, { n: 'Dragonbone Axe', m: 3.5 }];
-const ARMORS = [{ n: 'Fur Jerkin', a: 0.15 }, { n: 'Iron Mail', a: 0.3 }, { n: 'Runic Plate', a: 0.45 }, { n: 'Sabre Hide', a: 0.55 }, { n: 'Dragonscale Plate', a: 0.62 }];
+const WEAPONS = [{ n: 'Frostbite Axe', m: 1.35 }, { n: 'Ember Cleaver', m: 1.7 }, { n: 'Runic Greataxe', m: 2.2 }, { n: 'Raptor Fang Axe', m: 2.8 }, { n: 'Dragonbone Axe', m: 3.5 }, { n: 'Stormcaller Axe', m: 4.3, r: 'Rare' }, { n: "Wyrmking's Wrath", m: 5.5, r: 'Legendary' }];
+const ARMORS = [{ n: 'Fur Jerkin', a: 0.15 }, { n: 'Iron Mail', a: 0.3 }, { n: 'Runic Plate', a: 0.45 }, { n: 'Sabre Hide', a: 0.55 }, { n: 'Dragonscale Plate', a: 0.62 }, { n: 'Moonsilver Mail', a: 0.68, r: 'Rare' }, { n: 'Aegis of the Ancients', a: 0.75, r: 'Legendary' }];
 /* ================= crafting =================
    Hides and sinew drop from beasts; tougher beasts give better tiers but drop them less often.
    The forge (at the blacksmith) turns them into weapons, armour, axes, packs and boots. */
-const MATS = { hide1: 'Rough Hide', hide2: 'Thick Hide', hide3: 'Shaggy Pelt', hide4: 'Dragon Scale', sinew1: 'Sinew', sinew2: 'Strong Sinew', sinew3: 'Beast Sinew', sinew4: 'Ancient Sinew' };
-const MAT_COL = { hide1: '#b48a5a', hide2: '#8a5a36', hide3: '#e8e1d2', hide4: '#6fb3d9', sinew1: '#e9c9a6', sinew2: '#d29a6a', sinew3: '#c0504d', sinew4: '#9b6bd1' };
+const MATS = { hide1: 'Rough Hide', hide2: 'Thick Hide', hide3: 'Shaggy Pelt', hide4: 'Dragon Scale', sinew1: 'Sinew', sinew2: 'Strong Sinew', sinew3: 'Beast Sinew', sinew4: 'Ancient Sinew',
+  frostgem: 'Frost Gem', emberruby: 'Ember Ruby', voidopal: 'Void Opal', spirit: 'Spirit Essence', moonsilver: 'Moonsilver', dragonheart: 'Dragon Heart' };
+const RARE_MATS = ['frostgem', 'emberruby', 'voidopal', 'spirit', 'moonsilver', 'dragonheart'];
+const MAT_COL = { hide1: '#b48a5a', hide2: '#8a5a36', hide3: '#e8e1d2', hide4: '#6fb3d9', sinew1: '#e9c9a6', sinew2: '#d29a6a', sinew3: '#c0504d', sinew4: '#9b6bd1', frostgem: '#9fe6ff', emberruby: '#ff6b5a', voidopal: '#b58cff', spirit: '#d9fff4', moonsilver: '#dfe6f0', dragonheart: '#ff9a3d' };
 const DROPS = {
   rabbit: [['hide1', 0.35]], eagle: [['sinew1', 0.3]], deer: [['hide1', 0.5], ['sinew1', 0.35]], yak: [['hide2', 0.25], ['sinew1', 0.4]], boar: [['hide2', 0.3], ['sinew2', 0.2]],
   spider: [['sinew1', 0.3]], goblin: [['hide1', 0.3]], wolf: [['hide1', 0.45], ['sinew1', 0.3]], bear: [['hide2', 0.3], ['sinew2', 0.2]], troll: [['hide2', 0.25], ['sinew2', 0.2]],
-  yeti: [['hide3', 0.15], ['sinew2', 0.25]], wraith: [['sinew3', 0.1]], golem: [['sinew3', 0.08]], raptor: [['hide3', 0.12], ['sinew3', 0.1]], tiger: [['hide3', 0.14], ['sinew3', 0.1]],
-  mammoth: [['hide4', 0.07], ['sinew3', 0.1]], trex: [['hide4', 0.06], ['sinew4', 0.05]], dragon: [['hide4', 0.08], ['sinew4', 0.06]],
+  yeti: [['hide3', 0.15], ['sinew2', 0.25]], wraith: [['sinew3', 0.1], ['spirit', 0.12]], golem: [['sinew3', 0.08], ['frostgem', 0.15]], raptor: [['hide3', 0.12], ['sinew3', 0.1], ['emberruby', 0.04]], tiger: [['hide3', 0.14], ['sinew3', 0.1], ['emberruby', 0.04]],
+  mammoth: [['hide4', 0.07], ['sinew3', 0.1], ['frostgem', 0.1]], trex: [['hide4', 0.06], ['sinew4', 0.05], ['emberruby', 0.08]], dragon: [['hide4', 0.08], ['sinew4', 0.06], ['dragonheart', 0.04], ['voidopal', 0.05]],
 };
 function rollMats(type, x, z, elite) {
   const out = {}; (DROPS[type] || []).forEach(([m, c]) => { if (Math.random() < Math.min(1, c * (elite ? 3 : 1))) out[m] = (out[m] || 0) + 1 + (elite ? 1 : 0); });
@@ -3377,15 +3384,17 @@ function matDrop(type, x, z, peer, elite) {
 const RECIPES = {
   weapon: [
     ({ log: 30, stone: 10, hide1: 3, sinew1: 2, cash: 60 }), ({ stone: 30, ore: 5, hide2: 3, sinew1: 4, cash: 150 }), ({ stone: 40, ore: 20, hide2: 4, sinew2: 4, cash: 400 }),
-    ({ ore: 40, hide3: 4, sinew3: 3, cash: 900 }), ({ ore: 60, hide4: 4, sinew4: 3, cash: 2000 })],
+    ({ ore: 40, hide3: 4, sinew3: 3, cash: 900 }), ({ ore: 60, hide4: 4, sinew4: 3, cash: 2000 }),
+    ({ ore: 80, hide4: 3, sinew4: 3, frostgem: 3, spirit: 2, moonsilver: 2, cash: 3500 }), ({ ore: 120, hide4: 4, sinew4: 4, emberruby: 3, voidopal: 2, dragonheart: 1, cash: 6000 })],
   armor: [
     ({ log: 10, hide1: 6, sinew1: 2, cash: 40 }), ({ stone: 30, ore: 5, hide2: 3, sinew2: 2, cash: 150 }), ({ stone: 40, ore: 20, hide2: 6, sinew2: 4, cash: 400 }),
-    ({ ore: 20, hide3: 6, sinew3: 3, cash: 900 }), ({ ore: 50, hide4: 6, sinew4: 3, cash: 2000 })],
+    ({ ore: 20, hide3: 6, sinew3: 3, cash: 900 }), ({ ore: 50, hide4: 6, sinew4: 3, cash: 2000 }),
+    ({ ore: 70, hide4: 4, sinew4: 2, moonsilver: 3, frostgem: 2, spirit: 2, cash: 3500 }), ({ ore: 110, hide4: 6, voidopal: 2, emberruby: 2, dragonheart: 1, cash: 6000 })],
   axe: [null, null, ({ log: 40, hide1: 2, sinew1: 2, cash: 90 }), ({ log: 60, stone: 40, hide2: 2, sinew2: 2, cash: 300 }), ({ ore: 40, stone: 50, hide3: 2, sinew3: 2, cash: 900 })],
   bag: [null, ({ log: 20, hide1: 6, sinew1: 2, cash: 60 }), ({ stone: 20, hide2: 6, sinew2: 3, cash: 200 }), ({ ore: 20, hide3: 5, sinew3: 3, cash: 600 })],
   boots: [null, ({ hide1: 4, sinew1: 2, cash: 50 }), ({ stone: 15, hide2: 4, sinew2: 2, cash: 180 }), ({ ore: 15, hide3: 4, sinew3: 2, cash: 450 })],
 };
-const GEAR_TH = [1, 1, 2, 2, 3];   // town hall needed for each weapon / armour tier
+const GEAR_TH = [1, 1, 2, 2, 3, 3, 3];   // town hall needed for each weapon / armour tier
 const RANGED_COST = [{ log: 30, cash: 60 }, { log: 60, stone: 30, cash: 180 }, { ore: 30, stone: 40, cash: 500 }];
 const haveOf = k => k === 'cash' ? S.wallet : carry[k] ? carry[k].length : ((S.mats || {})[k] || 0);
 const canAfford = c => Object.keys(c).every(k => haveOf(k) >= c[k]);
@@ -3406,8 +3415,8 @@ function gainRefund(r) { S.wallet += r.cash || 0; bump('cash'); const M = S.mats
 const nearForge = () => B.smith && d2(player.x, player.z, -6, 20.4) < 49;
 function craftList() {
   const L = [], th = S.th, nw = S.weapon + 1, na = S.armorLv + 1;
-  if (nw < 5) L.push({ id: 'weapon', n: WEAPONS[nw].n, d: Math.round((WEAPONS[nw].m - 1) * 100) + '% more damage' + (S.weapon >= 0 ? ' (replaces ' + WEAPONS[S.weapon].n + ')' : ''), c: RECIPES.weapon[nw], th: GEAR_TH[nw] });
-  if (na < 5) L.push({ id: 'armor', n: ARMORS[na].n, d: 'Take ' + Math.round(ARMORS[na].a * 100) + '% less damage' + (S.armorLv >= 0 ? ' (replaces ' + ARMORS[S.armorLv].n + ')' : ''), c: RECIPES.armor[na], th: GEAR_TH[na] });
+  if (nw < WEAPONS.length) L.push({ id: 'weapon', r: WEAPONS[nw].r, n: WEAPONS[nw].n, d: Math.round((WEAPONS[nw].m - 1) * 100) + '% more damage' + (S.weapon >= 0 ? ' (replaces ' + WEAPONS[S.weapon].n + ')' : ''), c: RECIPES.weapon[nw], th: GEAR_TH[nw] });
+  if (na < ARMORS.length) L.push({ id: 'armor', r: ARMORS[na].r, n: ARMORS[na].n, d: 'Take ' + Math.round(ARMORS[na].a * 100) + '% less damage' + (S.armorLv >= 0 ? ' (replaces ' + ARMORS[S.armorLv].n + ')' : ''), c: RECIPES.armor[na], th: GEAR_TH[na] });
   if (S.axe < 4) L.push({ id: 'axe', n: ['', '', 'Twin Axes', 'Axe III', 'Axe IV'][S.axe + 1], d: AXE[S.axe + 1].dmg + ' chop damage, hits ' + AXE[S.axe + 1].max + ' at once', c: RECIPES.axe[S.axe + 1], th: S.axe });
   if (S.bag < 3) L.push({ id: 'bag', n: 'Pack ' + CAPS[S.bag + 1], d: 'Carry ' + CAPS[S.bag + 1] + ' items', c: RECIPES.bag[S.bag + 1], th: S.bag + 1 });
   const rl = S.runLv || 0; if (rl < 3) L.push({ id: 'boots', n: ['', 'Fur Boots', 'Runner Boots', 'Windwalkers'][rl + 1], d: 'Move ' + (rl + 1) * 12 + '% faster', c: RECIPES.boots[rl + 1], th: rl + 1 });
@@ -3447,7 +3456,7 @@ function showForge() {
   h += '<h3>Materials</h3><div class="mats">' + (owned.length ? owned.map(k => `<span style="background:${MAT_COL[k]};color:#1d2128">${M[k]} ${MATS[k]}</span>`).join('') : '<p>None yet. Hunt animals and slay beasts: tougher creatures drop rarer hides and sinew, but less often.</p>') + '</div>';
   if (!B.smith) h += '<p>Build the blacksmith to open the forge.</p>';
   else if (!nearForge()) h += '<p>Stand by the blacksmith to craft and salvage. Logs, stone and crystal are paid from your pack.</p>';
-  h += '<h3>Craft</h3>' + craftList().map(r => `<div class="row"><div><b>${r.n}</b>${r.d}${r.lock ? '<br>Needs Town Hall ' + ROMAN[r.th] : costChips(r.c)}</div><button type="button" data-craft="${r.id}" ${r.ok && nearForge() ? '' : 'disabled'}>Craft</button></div>`).join('');
+  h += '<h3>Craft</h3>' + craftList().map(r => `<div class="row${r.r ? ' ' + r.r.toLowerCase() : ''}"><div><b>${r.n}${r.r ? ' <em>' + r.r + '</em>' : ''}</b>${r.d}${r.lock ? '<br>Needs Town Hall ' + ROMAN[r.th] : costChips(r.c)}</div><button type="button" data-craft="${r.id}" ${r.ok && nearForge() ? '' : 'disabled'}>Craft</button></div>`).join('');
   const sv = salvageList();
   h += '<h3>Salvage</h3><p>Break down gear you own for half its materials and gold back.</p>' + (sv.length ? sv.map(r => `<div class="row"><div><b>${r.n}</b>${r.d}<span class="cost"><span>+ ${costTxt(r.r)}</span></span></div><button type="button" class="salv" data-salv="${r.id}" ${nearForge() ? '' : 'disabled'}>Salvage</button></div>`).join('') : '<p>Nothing to salvage yet.</p>');
   $('statsBody').innerHTML = h + '</div>'; $('stats').hidden = false;
@@ -3822,6 +3831,7 @@ function openTreasure(camp) {
   if (camp.guards && camp.guards.length && !camp.questReward) questEvent('clear', 1);
   camp.open = true; scene.remove(camp.g); camp.tag.remove();
   const t = camp.tier, gifts = [];
+  if (!camp.questReward) { const o = {}; if (t >= 2 && Math.random() < 0.2) o.moonsilver = 1; if (t >= 3 && Math.random() < 0.1) o.voidopal = 1; if (t >= 3 && Math.random() < 0.15) o.frostgem = 1; gainMats(o, camp.x, camp.z); }
   if (S.weapon < t) gifts.push(() => { S.weapon = t; return [WEAPONS[t].n, 'New weapon: ' + Math.round((WEAPONS[t].m - 1) * 100) + '% more damage']; });
   if (S.weapon < t + 1 && t < 2 && Math.random() < 0.3) gifts.push(() => { S.weapon = Math.min(2, Math.max(S.weapon, t) + (S.weapon >= t ? 1 : 0)); return [WEAPONS[S.weapon].n, 'A finer weapon!']; });
   if (S.armorLv < t) gifts.push(() => { S.armorLv = t; return [ARMORS[t].n, 'Armour: take ' + Math.round(ARMORS[t].a * 100) + '% less damage']; });

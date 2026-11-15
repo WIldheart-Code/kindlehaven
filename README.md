@@ -99,6 +99,18 @@ Three gold-only upgrade spaces sit around the plaza: comfort (supplies last long
   - **Weapons:** Frostbite Axe → Ember Cleaver → Runic Greataxe (Town Hall II) → Raptor Fang Axe → Dragonbone Axe (Town Hall III).
   - **Armour:** Fur Jerkin → Iron Mail → Runic Plate (Town Hall II) → Sabre Hide → Dragonscale Plate (Town Hall III).
   - **Axes:** Twin Axes, Axe III, Axe IV. **Packs:** 100, 200, 400. **Boots:** Fur Boots, Runner Boots, Windwalkers (+12% speed each).
+- **Rare and legendary gear** need precious materials as well as Dragon Scale and Ancient Sinew, and Town Hall III. Once you own the Dragonbone Axe and Dragonscale Plate, you can forge:
+  - **Rare:** **Stormcaller Axe** (+330% damage) and **Moonsilver Mail** (68% less damage).
+  - **Legendary:** **Wyrmking's Wrath** (+450% damage) and **Aegis of the Ancients** (75% less damage).
+- **Precious materials** (rare, so explore and fight for them):
+  - **Frost Gem:** golems and mammoths, star-3 dungeons and up, treasure in far camps.
+  - **Spirit Essence:** wraiths; dungeons.
+  - **Ember Ruby:** raptors and sabre tigers (rare), T-rexes; star-4 dungeons.
+  - **Moonsilver:** star-3 and star-4 dungeons, treasure chests in tougher camps.
+  - **Void Opal:** wild dragons, star-4 dungeons, treasure in the farthest camps.
+  - **Dragon Heart:** very rare from wild dragons; one in four dragons that besiege your castle drops one.
+  - Every cleared dungeon gives at least one Frost Gem or Spirit Essence.
+![Rare and legendary recipes](assets/help/legendary.jpg)
 - **Salvage:** break down gear you own (weapon, armour, ranged weapons, helmets, capes) for half its gold and materials back; logs, stone and crystal come back as gold. Salvaging a weapon or armour drops you one tier.
 - Materials are shown on the Forge tab and in your Hero inventory.
 
