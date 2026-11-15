@@ -95,11 +95,12 @@ Three gold-only upgrade spaces sit around the plaza: comfort (supplies last long
   - **Dragon Scale, Ancient Sinew:** mammoths, T-rexes, dragons (very rare).
   - Camp legends drop three times as often and give extra. In co-op, materials from your kills go to you.
 - **The forge:** stand by the blacksmith and tap **⚒ Forge** (or cog → Hero → Forge). Logs, stone and crystal come from your pack; gold from your wallet. Each item lists what it needs and how much you have.
+- **Recipes reveal as your town grows:** the forge only shows what your Town Hall allows. New recipes appear with each Town Hall upgrade, rare gear at **Castle I** and legendary gear at **Castle II**. The forge tells you when the next ones unlock.
 - **What you can craft**, one tier at a time:
   - **Weapons:** Frostbite Axe → Ember Cleaver → Runic Greataxe (Town Hall II) → Raptor Fang Axe → Dragonbone Axe (Town Hall III).
   - **Armour:** Fur Jerkin → Iron Mail → Runic Plate (Town Hall II) → Sabre Hide → Dragonscale Plate (Town Hall III).
   - **Axes:** Twin Axes, Axe III, Axe IV. **Packs:** 100, 200, 400. **Boots:** Fur Boots, Runner Boots, Windwalkers (+12% speed each).
-- **Rare and legendary gear** need precious materials as well as Dragon Scale and Ancient Sinew, and Town Hall III. Once you own the Dragonbone Axe and Dragonscale Plate, you can forge:
+- **Rare and legendary gear** need precious materials as well as Dragon Scale and Ancient Sinew; rare needs Castle I and legendary Castle II. Once you own the Dragonbone Axe and Dragonscale Plate, you can forge:
   - **Rare:** **Stormcaller Axe** (+330% damage) and **Moonsilver Mail** (68% less damage).
   - **Legendary:** **Wyrmking's Wrath** (+450% damage) and **Aegis of the Ancients** (75% less damage).
 - **Precious materials** (rare, so explore and fight for them):
@@ -111,6 +112,13 @@ Three gold-only upgrade spaces sit around the plaza: comfort (supplies last long
   - **Dragon Heart:** very rare from wild dragons; one in four dragons that besiege your castle drops one.
   - Every cleared dungeon gives at least one Frost Gem or Spirit Essence.
 ![Rare and legendary recipes](assets/help/legendary.jpg)
+- **Special items** are one of a kind and stay hidden until you earn them through your hero's growth, how long your world survives, and how well you defend your town (raids beaten with **no wall broken** count; the forge shows your tally). Each is crafted once and always active:
+  - **Hunter's Mantle** (+10% speed): reach hero level 8.
+  - **Warden's Crest** (+40 max health): beat 3 raids with no wall broken.
+  - **Veteran's Edge** (+25% damage): survive to day 20.
+  - **Bulwark Shield** (12% less damage on top of armour): beat 6 raids with no wall broken, with Town Hall III.
+  - **Heart of Frosthold** (legendary: +60 health, +30% damage): repel a dragon siege.
+  - A banner tells you when a well-defended raid reveals one.
 - **Salvage:** break down gear you own (weapon, armour, ranged weapons, helmets, capes) for half its gold and materials back; logs, stone and crystal come back as gold. Salvaging a weapon or armour drops you one tier.
 - Materials are shown on the Forge tab and in your Hero inventory.
 

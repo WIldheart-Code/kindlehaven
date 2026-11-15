@@ -2526,6 +2526,7 @@ function hurtHero(dmg) {
   if (DUN || paused) return;   // a paused co-op hero is safe while away
   if (S.downT > 0) return;
   dmg *= 1 - (S.armorLv >= 0 ? ARMORS[S.armorLv].a : 0);
+  if (hasSpecial('shield')) dmg *= 0.88;
   S.hp -= dmg; S.hurtT = 3; play('hurt'); burst(player.x, 1.2, player.z, 0xd9524b, 3, 2);
   if (S.hp <= 0) {
     const team = Object.keys(NET.remotes).length > 0;
@@ -3231,7 +3232,8 @@ function update(dt) {
     if (S.dragonWins >= 3) { S.victory = true; banner('VICTORY! Frosthold stands forever', true, 'All three dragon sieges defeated. Keep playing as long as you like'); play('fanfare'); }
     else { banner('Dragon siege ' + S.dragonWins + ' of 3 repelled!', true, 'More dragons will come next night'); play('fanfare'); }
     payToPallet(thPal, 500 * S.dragonWins, new THREE.Vector3(DOOR.x, 2, DOOR.z));
-  } else if (S.raidOn && !enemies.some(e => e.alive)) { S.raidT = 0; S.raidOn = false; S.waveT = Math.max(70, 160 - S.wave * 4 - dayNo() * 3); banner('Raid repelled!', true); gainXP(10 + S.wave * 5); }
+  } else if (S.raidOn && !enemies.some(e => e.alive)) { if (!rings.some(r => r.active && r.segs.some(sg => sg.broken))) { S.cleanRaids = (S.cleanRaids || 0) + 1; if (SPECIALS.some(x => x.cr === S.cleanRaids)) setTimeout(() => banner('Your defence is legendary', true, 'A special recipe is revealed at the forge'), 2500); }
+    S.raidT = 0; S.raidOn = false; S.waveT = Math.max(70, 160 - S.wave * 4 - dayNo() * 3); banner('Raid repelled!', true); gainXP(10 + S.wave * 5); }
   const core = coreRing();
   for (let i = enemies.length - 1; i >= 0; i--) {
     const e = enemies[i];
@@ -3394,7 +3396,17 @@ const RECIPES = {
   bag: [null, ({ log: 20, hide1: 6, sinew1: 2, cash: 60 }), ({ stone: 20, hide2: 6, sinew2: 3, cash: 200 }), ({ ore: 20, hide3: 5, sinew3: 3, cash: 600 })],
   boots: [null, ({ hide1: 4, sinew1: 2, cash: 50 }), ({ stone: 15, hide2: 4, sinew2: 2, cash: 180 }), ({ ore: 15, hide3: 4, sinew3: 2, cash: 450 })],
 };
-const GEAR_TH = [1, 1, 2, 2, 3, 3, 3];   // town hall needed for each weapon / armour tier
+const GEAR_TH = [1, 1, 2, 2, 3, 3, 3];
+const GEAR_CASTLE = [0, 0, 0, 0, 0, 1, 2];   // rare gear needs Castle I, legendary Castle II
+// special one-of-a-kind items: revealed by hero level, days survived and how well the town is defended
+const SPECIALS = [
+  { id: 'mantle', n: "Hunter's Mantle", d: '+10% speed, permanently', hint: 'Reach hero level 8', ok: () => S.lvl >= 8, c: { hide2: 6, sinew2: 4, cash: 300 }, give: () => { S.speedBonus += 0.1; } },
+  { id: 'crest', n: "Warden's Crest", d: '+40 max health', hint: 'Beat 3 raids without a wall breaking', cr: 3, ok: () => (S.cleanRaids || 0) >= 3, c: { stone: 40, hide2: 4, frostgem: 1, cash: 500 }, give: () => { S.bonusHp += 40; } },
+  { id: 'edge', n: "Veteran's Edge", d: '+25% damage', hint: 'Survive to day 20', ok: () => dayNo() >= 20, c: { ore: 30, sinew3: 3, emberruby: 1, cash: 1500 }, give: () => { S.bonusDmg += 0.25; } },
+  { id: 'shield', n: 'Bulwark Shield', d: 'Take 12% less damage on top of armour', hint: 'Beat 6 raids without a wall breaking, with Town Hall III', cr: 6, ok: () => (S.cleanRaids || 0) >= 6 && S.th >= 3, c: { stone: 80, ore: 20, moonsilver: 2, cash: 1200 } },
+  { id: 'heart', n: 'Heart of Frosthold', d: 'Legendary: +60 max health and +30% damage', hint: 'Repel a dragon siege at Castle III', leg: 1, ok: () => (S.dragonWins || 0) >= 1, c: { dragonheart: 1, voidopal: 1, moonsilver: 2, cash: 5000 }, give: () => { S.bonusHp += 60; S.bonusDmg += 0.3; } },
+];
+const hasSpecial = id => (S.specials || []).includes(id);   // town hall needed for each weapon / armour tier
 const RANGED_COST = [{ log: 30, cash: 60 }, { log: 60, stone: 30, cash: 180 }, { ore: 30, stone: 40, cash: 500 }];
 const haveOf = k => k === 'cash' ? S.wallet : carry[k] ? carry[k].length : ((S.mats || {})[k] || 0);
 const canAfford = c => Object.keys(c).every(k => haveOf(k) >= c[k]);
@@ -3415,13 +3427,13 @@ function gainRefund(r) { S.wallet += r.cash || 0; bump('cash'); const M = S.mats
 const nearForge = () => B.smith && d2(player.x, player.z, -6, 20.4) < 49;
 function craftList() {
   const L = [], th = S.th, nw = S.weapon + 1, na = S.armorLv + 1;
-  if (nw < WEAPONS.length) L.push({ id: 'weapon', r: WEAPONS[nw].r, n: WEAPONS[nw].n, d: Math.round((WEAPONS[nw].m - 1) * 100) + '% more damage' + (S.weapon >= 0 ? ' (replaces ' + WEAPONS[S.weapon].n + ')' : ''), c: RECIPES.weapon[nw], th: GEAR_TH[nw] });
-  if (na < ARMORS.length) L.push({ id: 'armor', r: ARMORS[na].r, n: ARMORS[na].n, d: 'Take ' + Math.round(ARMORS[na].a * 100) + '% less damage' + (S.armorLv >= 0 ? ' (replaces ' + ARMORS[S.armorLv].n + ')' : ''), c: RECIPES.armor[na], th: GEAR_TH[na] });
+  if (nw < WEAPONS.length && (S.castle || 0) >= GEAR_CASTLE[nw]) L.push({ id: 'weapon', r: WEAPONS[nw].r, n: WEAPONS[nw].n, d: Math.round((WEAPONS[nw].m - 1) * 100) + '% more damage' + (S.weapon >= 0 ? ' (replaces ' + WEAPONS[S.weapon].n + ')' : ''), c: RECIPES.weapon[nw], th: GEAR_TH[nw] });
+  if (na < ARMORS.length && (S.castle || 0) >= GEAR_CASTLE[na]) L.push({ id: 'armor', r: ARMORS[na].r, n: ARMORS[na].n, d: 'Take ' + Math.round(ARMORS[na].a * 100) + '% less damage' + (S.armorLv >= 0 ? ' (replaces ' + ARMORS[S.armorLv].n + ')' : ''), c: RECIPES.armor[na], th: GEAR_TH[na] });
   if (S.axe < 4) L.push({ id: 'axe', n: ['', '', 'Twin Axes', 'Axe III', 'Axe IV'][S.axe + 1], d: AXE[S.axe + 1].dmg + ' chop damage, hits ' + AXE[S.axe + 1].max + ' at once', c: RECIPES.axe[S.axe + 1], th: S.axe });
   if (S.bag < 3) L.push({ id: 'bag', n: 'Pack ' + CAPS[S.bag + 1], d: 'Carry ' + CAPS[S.bag + 1] + ' items', c: RECIPES.bag[S.bag + 1], th: S.bag + 1 });
   const rl = S.runLv || 0; if (rl < 3) L.push({ id: 'boots', n: ['', 'Fur Boots', 'Runner Boots', 'Windwalkers'][rl + 1], d: 'Move ' + (rl + 1) * 12 + '% faster', c: RECIPES.boots[rl + 1], th: rl + 1 });
   L.forEach(r => { r.lock = th < r.th; r.ok = !r.lock && canAfford(r.c); });
-  return L;
+  return L.filter(r => !r.lock);
 }
 function salvageList() {
   const L = [];
@@ -3432,6 +3444,8 @@ function salvageList() {
   return L;
 }
 function doCraft(id) {
+  if (id.startsWith('sp:')) { const x = SPECIALS.find(q => q.id === id.slice(3)); if (!x || hasSpecial(x.id) || !x.ok() || !canAfford(x.c)) return;
+    payCost(x.c); (S.specials = S.specials || []).push(x.id); if (x.give) x.give(); play('fanfare'); gainXP(80); banner('Forged: ' + x.n + '!', true, x.d); savePersonal(); return; }
   const r = craftList().find(x => x.id === id); if (!r || !r.ok) return;
   payCost(r.c); play('fanfare'); gainXP(40);
   if (id === 'weapon') { S.weapon++; applyMyLook(); }
@@ -3457,6 +3471,10 @@ function showForge() {
   if (!B.smith) h += '<p>Build the blacksmith to open the forge.</p>';
   else if (!nearForge()) h += '<p>Stand by the blacksmith to craft and salvage. Logs, stone and crystal are paid from your pack.</p>';
   h += '<h3>Craft</h3>' + craftList().map(r => `<div class="row${r.r ? ' ' + r.r.toLowerCase() : ''}"><div><b>${r.n}${r.r ? ' <em>' + r.r + '</em>' : ''}</b>${r.d}${r.lock ? '<br>Needs Town Hall ' + ROMAN[r.th] : costChips(r.c)}</div><button type="button" data-craft="${r.id}" ${r.ok && nearForge() ? '' : 'disabled'}>Craft</button></div>`).join('');
+  const sp = SPECIALS.filter(x => !hasSpecial(x.id) && x.ok()), hidden = SPECIALS.filter(x => !hasSpecial(x.id) && !x.ok());
+  if (sp.length) h += '<h3>Special</h3>' + sp.map(x => `<div class="row ${x.leg ? 'legendary' : 'rare'}"><div><b>${x.n} <em>${x.leg ? 'Legendary' : 'Special'}</em></b>${x.d}${costChips(x.c)}</div><button type="button" data-craft="sp:${x.id}" ${canAfford(x.c) && nearForge() ? '' : 'disabled'}>Craft</button></div>`).join('');
+  const nextTH = S.th < 3 ? 'Town Hall ' + ROMAN[S.th + 1] : (S.castle || 0) < 2 ? 'Castle ' + ROMAN[(S.castle || 0) + 1] : '';
+  h += '<p>' + (nextTH ? 'More recipes appear at ' + nextTH + '. ' : '') + (hidden.length ? hidden.length + ' special recipe' + (hidden.length > 1 ? 's are' : ' is') + ' still hidden: grow stronger, survive longer and defend your walls well (' + (S.cleanRaids || 0) + ' raids beaten with no wall broken).' : '') + '</p>';
   const sv = salvageList();
   h += '<h3>Salvage</h3><p>Break down gear you own for half its materials and gold back.</p>' + (sv.length ? sv.map(r => `<div class="row"><div><b>${r.n}</b>${r.d}<span class="cost"><span>+ ${costTxt(r.r)}</span></span></div><button type="button" class="salv" data-salv="${r.id}" ${nearForge() ? '' : 'disabled'}>Salvage</button></div>`).join('') : '<p>Nothing to salvage yet.</p>');
   $('statsBody').innerHTML = h + '</div>'; $('stats').hidden = false;
@@ -3732,6 +3750,7 @@ function heroItems() {
   (S.rangedOwn || []).forEach(i => inv.push({ svg: pic('ranged', i, icon('ranged', i)), name: RANGED[i].n, on: S.rangedOn === i, act: 'ranged:' + i, info: (RANGED[i].dmg * rangedMul()).toFixed(1) + ' damage, ' + RANGED[i].rng + ' m range. Tap to carry.' }));
   ['helm', 'cape'].forEach(sl => (W[sl] || []).filter(i => i).forEach(i => inv.push({ svg: pic(sl, i, icon(sl, i)), name: LOOKS[sl][i], on: (wear[sl] || 0) === i, act: 'wear:' + sl + ':' + i, info: 'Tap to wear (tap again to take off).' })));
   Object.keys(MATS).forEach(k => { if ((S.mats || {})[k] > 0) inv.push({ svg: `<svg viewBox="0 0 48 48"><path d="M10 14 Q24 4 38 14 L34 38 Q24 44 14 38 Z" fill="${MAT_COL[k]}" stroke="#1d2128" stroke-width="1.5"/></svg>`, name: MATS[k], count: S.mats[k], info: 'Crafting material. Use it at the forge by the blacksmith.' }); });
+  (S.specials || []).forEach(id => { const x = SPECIALS.find(q => q.id === id); if (x) inv.push({ svg: `<svg viewBox="0 0 48 48"><path d="M24 4 L40 14 L36 38 L24 44 L12 38 L8 14 Z" fill="${x.leg ? '#e8b23a' : '#6fa8e8'}" stroke="#1d2128" stroke-width="1.5"/></svg>`, name: x.n, info: x.d + '. Special forge item, always active.' }); });
   if (S.medkits) inv.push({ svg: pic('medkit', 0, icon('medkit')), name: 'Med kit', count: S.medkits, info: 'Stand by a downed teammate to revive them.' });
   return { slots, inv };
 }
@@ -4079,7 +4098,7 @@ const NET = { mode: 'solo', room: null, me: null, host: null, seq: 0, buf: new M
   lastSeq: {}, remotes: {}, presT: 0, flushT: 0, worldT: 0, hostSeen: 0, lastHostPres: null, padKey: '', known: new Set(), th: 1 };
 function isGuest() { return NET.mode === 'guest'; }
 function isHost() { return NET.mode === 'host'; }
-const SYNC_KEYS = ['castle', 'dragonWins', 'rangeLv', 'lastRaidDay', 'wallLv', 'houseLv', 'clock', 'season', 'civ', 'warm', 'food', 'th', 'cook', 'houses', 'wave', 'waveT', 'raidOn', 'blizOn', 'towerLv', 'masonry', 'guardLv', 'bank', 'carpenter', 'mine', 'gold', 'warmUp', 'foodUp', 'bell', 'priceMul', 'taxMul', 'boots', 'medic', 'sleds', 'horn', 'won', 'over'];
+const SYNC_KEYS = ['cleanRaids', 'castle', 'dragonWins', 'rangeLv', 'lastRaidDay', 'wallLv', 'houseLv', 'clock', 'season', 'civ', 'warm', 'food', 'th', 'cook', 'houses', 'wave', 'waveT', 'raidOn', 'blizOn', 'towerLv', 'masonry', 'guardLv', 'bank', 'carpenter', 'mine', 'gold', 'warmUp', 'foodUp', 'bell', 'priceMul', 'taxMul', 'boots', 'medic', 'sleds', 'horn', 'won', 'over'];
 const ROLE_IDS = ['logger', 'hunter', 'stonecutter', 'miner', 'hauler', 'mender'];
 const R2 = v => Math.round(v * 100) / 100;
 function netAct(kind, target, a, b) {
@@ -4500,7 +4519,7 @@ $('coop').addEventListener('click', e => {
 const SAVE_KEY = 'frosthold-save-v6';
 const WORKER_HOME = { hauler: [0, 17], mender: [8.2, 9], logger: [6, 18.5], hunter: [16.5, 16.3], stonecutter: [-16.5, 25.4], miner: [-25.5, -10] };
 function clearSave() { try { localStorage.removeItem(SAVE_KEY); } catch (e) {} }
-const HERO_KEYS = ['runLv', 'tamer', 'pet', 'rangedOwn', 'rangedOn', 'wardrobe', 'wear', 'axe', 'bag', 'pick', 'weapon', 'armorLv', 'mats', 'bonusHp', 'bonusDmg', 'speedBonus', 'medkits', 'relics', 'xp', 'lvl'];
+const HERO_KEYS = ['runLv', 'tamer', 'pet', 'rangedOwn', 'rangedOn', 'wardrobe', 'wear', 'axe', 'bag', 'pick', 'weapon', 'armorLv', 'mats', 'specials', 'bonusHp', 'bonusDmg', 'speedBonus', 'medkits', 'relics', 'xp', 'lvl'];
 let heroReady = false;   // only save the hero once it has been loaded, so a rejoin in progress never overwrites it
 // each co-op room has its own hero: joining a new room starts at level 1, rejoining the same room picks up where you left off
 let heroLoadedKey = null;
