@@ -124,7 +124,7 @@ Twelve cave entrances lie 200–315 m out (purple squares on the minimap). Tap *
 ## Screen and menu
 ![The cog menu](assets/help/menu.jpg)
 - On a keyboard, **1–4** turn collecting on or off: 1 wood, 2 stone, 3 food, 4 crystal.
-- Tap a resource counter to **drop** it (all or 10) or **stop collecting** it. While collecting is off you still chop, mine and hunt, but nothing of that kind goes into your pack, and you can't load it from piles.
+- Tap a resource counter to **drop** it (all or 10) or **stop collecting** it. While collecting is off you leave that resource alone: no chopping trees (wood off), mining rocks (stone or crystal off) or hunting animals (food off, except a charging boar), and you can't load it from piles. Your pet won't hunt either while food is off.
 - The **cog** (bottom left) holds Help, Tutorial, Co-op, Hero, Pause, Sound and New game, switches to hide the goal, quest, town gauges, resources or minimap, and a switch for each kind of sound.
 
 ## Co-op

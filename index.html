@@ -2197,7 +2197,7 @@ const TUT = [
   { t: 'Chop wood', p: 'Walk up to a tree: your axe swings on its own. Logs stack on your back. Trees grow back over time.', task: 'Collect 8 logs', done: () => carry.log.length >= 8 || fireStall.received > 0 },
   { t: 'Keep your people warm', p: 'Villagers burn firewood. Walk to the firewood stall (blue roof) and stand in the dashed spot behind its counter: you hand over your logs, and villagers buy them for gold.', hi: 'town', task: 'Hand logs to the firewood stall', start: () => fireStall.received, done: b => fireStall.received > b },
   { t: 'Gold and resources', p: 'Your gold, logs, meat, stone and crystal are shown top right. Tap a counter to drop that resource or stop collecting it.', hi: 'res' },
-  { t: 'Choose what you collect', p: 'Tap the log counter, then Stop collecting: you still chop, but logs stay on the ground. On a keyboard, keys 1-4 do the same (1 wood, 2 stone, 3 food, 4 crystal). Turn it back on the same way.', hi: 'res', task: 'Turn log collecting off, then on again', start: () => ({ off: false }), done: b => { if (S.noCollect.log) b.off = true; return b.off && !S.noCollect.log; } },
+  { t: 'Choose what you collect', p: 'Tap the log counter, then Stop collecting: your axe leaves trees alone until you turn it back on. On a keyboard, keys 1-4 do the same (1 wood, 2 stone, 3 food, 4 crystal). Turn it back on the same way.', hi: 'res', task: 'Turn log collecting off, then on again', start: () => ({ off: false }), done: b => { if (S.noCollect.log) b.off = true; return b.off && !S.noCollect.log; } },
   { t: 'Your goal', p: 'The GOAL card always tells you what to do next, and the orange arrow on the ground points the way. Follow it whenever you are unsure.', hi: 'quest' },
   { t: 'Build the walls', p: 'Raiders will come. Glowing build spaces show what they cost. Stand on one and you pay with what you carry: fix the broken palisade first.', task: 'Build a wall section', start: () => rings[0].segs.filter(sg => sg.built).length, done: b => rings[0].segs.filter(sg => sg.built).length > b || rings[0].complete },
   { t: 'Warmth and food', p: 'These gauges show warmth and, once you build the cookhouse, food. If either reaches zero, villagers die. Hunt rabbits and deer near the camp for meat and sell it at the cookhouse.', hi: 'town' },
@@ -2669,7 +2669,7 @@ function updatePet(dt) {
   if (S.pet && !pet) spawnPet(); if (!pet) return;
   const P = S.pet, T = pet.T, reach = 1.2 + T.size * 0.6;
   if (!pet.tgt || !pet.tgt.alive || d2(pet.tgt.x, pet.tgt.z, player.x, player.z) > 22 * 22) { pet.tgt = (threats(player.x, player.z, 14).find(t => !isWeakTame(t[1])) || [])[1] || null;   // threats first, then game nearby
-    if (!pet.tgt) pet.tgt = nearest(yaks, y => y.alive && !isWeakTame(y) && d2(y.x, y.z, player.x, player.z) < 14 * 14) || null; }
+    if (!pet.tgt && !S.noCollect.meat) pet.tgt = nearest(yaks, y => y.alive && !isWeakTame(y) && d2(y.x, y.z, player.x, player.z) < 14 * 14) || null; }
   let tx, tz, moving = false; const t = pet.tgt;
   if (t) { tx = t.x; tz = t.z; } else { tx = player.x - Math.sin(player.rot) * 2.2 + 1; tz = player.z - Math.cos(player.rot) * 2.2; }
   const d = Math.hypot(tx - pet.x, tz - pet.z);
@@ -2692,9 +2692,9 @@ function playerAttack() {
   const A = AXE[S.axe], R2 = A.range * A.range, cands = [], dmg = A.dmg * heroDmg();
   for (const e of enemies) if (e.alive && !isWeakTame(e) && d2(e.x, e.z, player.x, player.z) < R2 * (e.type === 'yeti' ? 1.6 : 1.1)) cands.push([0, e]);
   for (const m of wilds) if (m.alive && !isWeakTame(m) && d2(m.x, m.z, player.x, player.z) < (A.range + m.T.size * 0.6) ** 2) cands.push([4, m]);
-  for (const y of yaks) if (y.alive && !isWeakTame(y) && d2(y.x, y.z, player.x, player.z) < R2 * 1.1 + (y.A && y.A.fly ? 4 : 0)) cands.push([1, y]);
-  for (const t of trees) if (t.alive && t.choppable && d2(t.x, t.z, player.x, player.z) < R2) cands.push([2, t]);
-  for (const r of rocks) if (r.alive && !r.hidden && d2(r.x, r.z, player.x, player.z) < (Math.sqrt(R2) + 1.2) ** 2) { if (r.kind === 'gold' && !S.pick) { note('Crystal needs a crystal pick (Blacksmith, Town Hall II)'); continue; } cands.push([3, r]); }
+  for (const y of yaks) if (y.alive && !isWeakTame(y) && (!S.noCollect.meat || (y.sp === 'boar' && y.flee > 0)) && d2(y.x, y.z, player.x, player.z) < R2 * 1.1 + (y.A && y.A.fly ? 4 : 0)) cands.push([1, y]);   // food off: leave animals be (but fight off a charging boar)
+  if (!S.noCollect.log) for (const t of trees) if (t.alive && t.choppable && d2(t.x, t.z, player.x, player.z) < R2) cands.push([2, t]);
+  for (const r of rocks) if (r.alive && !r.hidden && !S.noCollect[r.item] && d2(r.x, r.z, player.x, player.z) < (Math.sqrt(R2) + 1.2) ** 2) { if (r.kind === 'gold' && !S.pick) { note('Crystal needs a crystal pick (Blacksmith, Town Hall II)'); continue; } cands.push([3, r]); }
   if (!cands.length) return false;
   cands.sort((a, b) => (a[0] % 4) - (b[0] % 4) || d2(a[1].x, a[1].z, player.x, player.z) - d2(b[1].x, b[1].z, player.x, player.z));
   const hits = cands.slice(0, A.max);
