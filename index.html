@@ -108,6 +108,8 @@ html,body{height:100%;margin:0;background:var(--ice);color:var(--ink);overflow:h
 .ftabs{display:flex;flex-wrap:wrap;gap:4px;margin:4px 0 8px}.ftabs button{flex:1 0 30%;border:0;border-radius:9px;padding:8px 4px;font:13px/1 var(--display);background:#dfe6f0;color:#2b4a74;cursor:pointer;position:relative}.ftabs button[aria-pressed=true]{background:#2b4a74;color:#fff}.ftabs button i{position:absolute;top:-4px;right:-2px;background:#3f8a5a;color:#fff;font:800 10px var(--body);font-style:normal;border-radius:8px;padding:1px 5px}
 .craft .row .pic{flex:0 0 52px;height:52px;border-radius:10px;background:#1d2a40;display:flex;align-items:center;justify-content:center;overflow:hidden}.craft .row .pic img,.craft .row .pic svg{width:48px;height:48px}.craft .ok{font:800 12px var(--body);color:#3f8a5a;margin:4px 0}
 .craft .brewin{background:#fff3e6;border:2px dashed #c07a12;border-radius:12px;padding:10px;margin:6px 0}.craft .brewin>b{display:block;font:15px var(--display);color:#5a3a10;margin-bottom:4px}.craft .brewin button{flex:1;border:0;border-radius:9px;padding:10px;font:14px var(--display);background:#c0531a;color:#fff;cursor:pointer}.craft .brewin button.salv{flex:0 0 auto;background:#8a96a8}.craft .brewin button:disabled{background:#aab4c2}.craft .warn{color:#a3271b;font:800 12px var(--body);margin:4px 0}
+.craft .fhero{display:block;width:100%;margin:0 0 8px;border:0;border-radius:10px;padding:9px;font:15px var(--display);background:#2b4a74;color:#fff;cursor:pointer}.craft .row.mini{padding:4px 8px;opacity:.75}.craft .row.mini .pic{flex-basis:32px;height:32px}.craft .row.mini .pic img,.craft .row.mini .pic svg{width:30px;height:30px}.craft .tagx{font:800 11px var(--body);color:#5a6b80;background:#dfe6f0;border-radius:8px;padding:4px 8px;white-space:nowrap}.craft .tagx.eq{background:#3f8a5a;color:#fff}.craft .clab{display:block;font:800 11px var(--body);color:#5a6b80;margin-top:4px}
+.slot em.eq{position:absolute;top:3px;left:3px;font:800 9px var(--body);font-style:normal;background:#3f8a5a;color:#fff;border-radius:6px;padding:1px 4px}
 .craft .mats{display:flex;flex-wrap:wrap;gap:4px}.craft .mats span{display:inline-flex;align-items:center;gap:4px;background:#f4f7fb;color:#2b4a74;border:1px solid #dfe6f0;border-radius:8px;padding:3px 8px 3px 4px;font:800 12px var(--body)}.craft .mats span b{color:#1d2128}.craft .mgrp{display:flex;gap:8px;align-items:flex-start;margin:4px 0}.craft .mgrp>i{flex:0 0 54px;font:800 10px var(--body);font-style:normal;text-transform:uppercase;color:#8a96a8;padding-top:7px}.craft .cost span{display:inline-flex;align-items:center;gap:3px}.mi{flex:none;vertical-align:middle}.craft p{font:800 12px var(--body);color:#5a6b80;margin:6px 0}
 #tameBtn{position:fixed;z-index:8;left:50%;transform:translateX(-50%);bottom:calc(78px + env(safe-area-inset-bottom,0px));border:2px solid #fff;background:#3f8a5a;color:#fff;font:17px/1 var(--display);letter-spacing:.04em;padding:14px 20px;border-radius:14px;box-shadow:0 6px 18px rgba(0,0,0,.3);cursor:pointer;white-space:nowrap}
 #chipMenu{position:fixed;z-index:9;display:flex;flex-direction:column;gap:6px;background:var(--panel);border:1px solid var(--panel-line);border-radius:12px;padding:7px}
@@ -2782,6 +2784,7 @@ $('closeForge').addEventListener('click', e => { e.stopPropagation(); $('forge')
 $('forgeBody').addEventListener('click', e => {
   e.stopPropagation();
   if (e.target.closest('[data-ftut]')) { S.forgeSeen = true; savePersonal(); return showForge(); }
+  if (e.target.closest('[data-fhero]')) { $('forge').hidden = true; heroTab = 'gear'; heroPick = null; return showStats(); }
   const ft = e.target.closest('[data-ftab]'); if (ft) { forgeTab = ft.dataset.ftab; return showForge(); }
   const bv = e.target.closest('[data-bv]'); if (bv) { brewV = bv.dataset.bv; brewSel = {}; return showForge(); }
   const ba = e.target.closest('[data-badd]'); if (ba) { const k = ba.dataset.badd, have = MATS[k] ? (S.mats || {})[k] || 0 : carry[k].length; if (brewUnits() < BREW_MAX && (brewSel[k] || 0) < have) brewSel[k] = (brewSel[k] || 0) + 1; return showForge(); }
@@ -3653,41 +3656,62 @@ function refundOf(c) {
 function gainRefund(r) { S.wallet += r.cash || 0; bump('cash'); const M = S.mats = S.mats || {}; for (const k in r) if (MATS[k]) M[k] = (M[k] || 0) + r[k]; }
 const inTown = () => rings.some(r => r.active && inSquare(player.x, player.z, r.h));
 const nearForge = () => B.smith && !DUN && inTown();
+// weapons and armour you own stay in your gear; the one you wear is S.weapon / S.armorLv
+function ensureOwn() {
+  const W = S.ownW = S.ownW || [], A = S.ownA = S.ownA || [];
+  if (S.weapon >= 0 && !W.includes(S.weapon)) W.push(S.weapon); if (S.armorLv >= 0 && !A.includes(S.armorLv)) A.push(S.armorLv);
+}
+// upgrading trades in your current item: you pay the new recipe minus half of what the old one cost
+const halfOff = (c, cur) => { if (!cur) return c; const o = {}; for (const k in c) { const v = c[k] - Math.floor((cur[k] || 0) / 2); if (v > 0) o[k] = v; } return o; };
+const TOOL_NAMES = { axe: ['', 'Camp Axe', 'Twin Axes', 'Axe III', 'Axe IV'], bag: [0, 1, 2, 3].map(i => 'Pack ' + CAPS[i]), boots: ['Plain Boots', 'Fur Boots', 'Runner Boots', 'Windwalkers'] };
 function craftList() {
-  const L = [], th = S.th, nw = S.weapon + 1, na = S.armorLv + 1;
-  if (nw < WEAPONS.length && (S.castle || 0) >= GEAR_CASTLE[nw]) L.push({ id: 'weapon', g: 'weapon', lv: nw, r: WEAPONS[nw].r, n: WEAPONS[nw].n, d: Math.round((WEAPONS[nw].m - 1) * 100) + '% more damage' + (S.weapon >= 0 ? ' (replaces ' + WEAPONS[S.weapon].n + ')' : ''), c: RECIPES.weapon[nw], th: GEAR_TH[nw] });
-  if (na < ARMORS.length && (S.castle || 0) >= GEAR_CASTLE[na]) L.push({ id: 'armor', g: 'armor', lv: na, r: ARMORS[na].r, n: ARMORS[na].n, d: 'Take ' + Math.round(ARMORS[na].a * 100) + '% less damage' + (S.armorLv >= 0 ? ' (replaces ' + ARMORS[S.armorLv].n + ')' : ''), c: RECIPES.armor[na], th: GEAR_TH[na] });
-  if (S.axe < 4) L.push({ id: 'axe', g: 'tools', lv: S.axe + 1, n: ['', '', 'Twin Axes', 'Axe III', 'Axe IV'][S.axe + 1], d: AXE[S.axe + 1].dmg + ' chop damage, hits ' + AXE[S.axe + 1].max + ' at once', c: RECIPES.axe[S.axe + 1], th: S.axe });
-  if (S.bag < 3) L.push({ id: 'bag', g: 'tools', lv: S.bag + 1, n: 'Pack ' + CAPS[S.bag + 1], d: 'Carry ' + CAPS[S.bag + 1] + ' items', c: RECIPES.bag[S.bag + 1], th: S.bag + 1 });
-  const rl = S.runLv || 0; if (rl < 3) L.push({ id: 'boots', g: 'tools', lv: rl + 1, n: ['', 'Fur Boots', 'Runner Boots', 'Windwalkers'][rl + 1], d: 'Move ' + (rl + 1) * 12 + '% faster', c: RECIPES.boots[rl + 1], th: rl + 1 });
-  L.forEach(r => { r.lock = th < r.th; r.ok = !r.lock && canAfford(r.c); });
-  return L.filter(r => !r.lock);
+  ensureOwn(); const L = [], th = S.th, cs = S.castle || 0;
+  [['weapon', WEAPONS, S.ownW, S.weapon, t => Math.round((WEAPONS[t].m - 1) * 100) + '% more damage'], ['armor', ARMORS, S.ownA, S.armorLv, t => 'Take ' + Math.round(ARMORS[t].a * 100) + '% less damage']].forEach(([g, T, own, eq, desc]) => {
+    const best = own.length ? Math.max(...own) : -1;
+    T.forEach((it, t) => {
+      if (th < GEAR_TH[t] || cs < GEAR_CASTLE[t]) return;   // revealed by Town Hall and castle
+      const r = { id: g + ':' + t, g, kind: g, lv: t, n: it.n, r: it.r, d: desc(t), c: RECIPES[g][t], owned: own.includes(t), equipped: eq === t, weaker: !own.includes(t) && t < best };
+      if (!r.owned && !r.weaker && best >= 0) r.up = { from: best, c: halfOff(r.c, RECIPES[g][best]) };
+      L.push(r);
+    });
+  });
+  const tool = (g, cur, from, to, thOf, desc) => { for (let lv = from; lv <= to; lv++) { if (th < thOf(lv)) continue;
+    const r = { id: g + ':' + lv, g: 'tools', kind: g, lv, n: TOOL_NAMES[g][lv], d: desc(lv), owned: cur >= lv, equipped: cur === lv, weaker: false };
+    r.c = cur > 0 && RECIPES[g][cur] ? halfOff(RECIPES[g][lv], RECIPES[g][cur]) : RECIPES[g][lv]; r.isUp = cur >= from - 1 && cur > (g === 'axe' ? 1 : 0); L.push(r); } };
+  tool('axe', S.axe, 2, 4, lv => lv - 1, lv => AXE[lv].dmg + ' chop damage, hits ' + AXE[lv].max + ' at once');
+  tool('bag', S.bag, 1, 3, lv => lv, lv => 'Carry ' + CAPS[lv] + ' items');
+  tool('boots', S.runLv || 0, 1, 3, lv => lv, lv => 'Move ' + lv * 12 + '% faster');
+  L.forEach(r => { r.ok = !r.owned && !r.weaker && canAfford(r.c); r.upOk = !!(r.up && canAfford(r.up.c)); });
+  return L;
 }
 function salvageList() {
-  const L = [];
-  if (S.weapon >= 0) L.push({ id: 'weapon', n: WEAPONS[S.weapon].n, d: S.weapon ? 'Drops back to ' + WEAPONS[S.weapon - 1].n : 'Back to your plain axe', r: refundOf(RECIPES.weapon[S.weapon]) });
-  if (S.armorLv >= 0) L.push({ id: 'armor', n: ARMORS[S.armorLv].n, d: S.armorLv ? 'Drops back to ' + ARMORS[S.armorLv - 1].n : 'Leaves you unarmoured', r: refundOf(RECIPES.armor[S.armorLv]) });
-  (S.rangedOwn || []).forEach(i => L.push({ id: 'ranged:' + i, n: RANGED[i].n, d: 'Ranged weapon', r: i < 3 ? refundOf(RANGED_COST[i]) : { cash: 150 * (i - 2), sinew3: 1 } }));
-  ['helm', 'cape'].forEach(sl => ((S.wardrobe || {})[sl] || []).filter(i => i).forEach(i => L.push({ id: sl + ':' + i, n: LOOKS[sl][i], d: 'Wardrobe item', r: { cash: 20 + i * 15, hide1: 1 + (i > 2 ? 1 : 0) } })));
+  ensureOwn(); const L = [];
+  S.ownW.slice().sort((a, b) => b - a).forEach(t => L.push({ id: 'weapon:' + t, kind: 'weapon', lv: t, n: WEAPONS[t].n, d: 'Weapon', equipped: S.weapon === t, r: refundOf(RECIPES.weapon[t]) }));
+  S.ownA.slice().sort((a, b) => b - a).forEach(t => L.push({ id: 'armor:' + t, kind: 'armor', lv: t, n: ARMORS[t].n, d: 'Armour', equipped: S.armorLv === t, r: refundOf(RECIPES.armor[t]) }));
+  (S.rangedOwn || []).forEach(i => L.push({ id: 'ranged:' + i, n: RANGED[i].n, d: 'Ranged weapon', equipped: S.rangedOn === i, r: i < 3 ? refundOf(RANGED_COST[i]) : { cash: 150 * (i - 2), sinew3: 1 } }));
+  ['helm', 'cape'].forEach(sl => ((S.wardrobe || {})[sl] || []).filter(i => i).forEach(i => L.push({ id: sl + ':' + i, n: LOOKS[sl][i], d: 'Wardrobe item', equipped: ((S.wear || {})[sl] || 0) === i, r: { cash: 20 + i * 15, hide1: 1 + (i > 2 ? 1 : 0) } })));
   return L;
 }
 function doCraft(id) {
   if (id.startsWith('sp:')) { const x = SPECIALS.find(q => q.id === id.slice(3)); if (!x || hasSpecial(x.id) || !x.ok() || !canAfford(x.c)) return;
     payCost(x.c); (S.specials = S.specials || []).push(x.id); if (x.give) x.give(); play('fanfare'); gainXP(80); banner('Forged: ' + x.n + '!', true, x.d); savePersonal(); return; }
-  const r = craftList().find(x => x.id === id); if (!r || !r.ok) return;
-  payCost(r.c); play('fanfare'); gainXP(40);
-  if (id === 'weapon') { S.weapon++; applyMyLook(); }
-  else if (id === 'armor') { S.armorLv++; applyMyLook(); }
-  else if (id === 'axe') { S.axe++; padAxe.level = S.axe - 1; applyAxeLook(); }
-  else if (id === 'bag') { S.bag++; padBag.level = S.bag; applyAxeLook(); }
-  else if (id === 'boots') { S.runLv = (S.runLv || 0) + 1; padRun.level = S.runLv; }
-  banner('Forged: ' + r.n + '!', true, r.d); savePersonal();
+  const [kind, lvS, mode] = id.split(':'), r = craftList().find(x => x.id === kind + ':' + lvS); if (!r) return;
+  const up = mode === 'up' && r.up, cost = up ? r.up.c : r.c;
+  if (r.owned || r.weaker || !canAfford(cost)) return;
+  payCost(cost); play('fanfare'); gainXP(40); const lv = +lvS;
+  if (kind === 'weapon' || kind === 'armor') { const own = kind === 'weapon' ? S.ownW : S.ownA;
+    if (up) own.splice(own.indexOf(r.up.from), 1); own.push(lv); if (kind === 'weapon') S.weapon = lv; else S.armorLv = lv; applyMyLook(); }
+  else if (kind === 'axe') { S.axe = lv; padAxe.level = lv - 1; applyAxeLook(); }
+  else if (kind === 'bag') { S.bag = lv; padBag.level = lv; applyAxeLook(); }
+  else if (kind === 'boots') { S.runLv = lv; padRun.level = lv; }
+  banner((up ? 'Upgraded to ' : 'Forged: ') + r.n + '!', true, r.d + ' · equipped'); savePersonal();
 }
 function doSalvage(id) {
-  const it = salvageList().find(x => x.id === id); if (!it) return;
-  if (id === 'weapon') S.weapon--; else if (id === 'armor') S.armorLv--;
-  else if (id.startsWith('ranged:')) { const i = +id.slice(7); S.rangedOwn = S.rangedOwn.filter(x => x !== i); if (i < 3 && padRanged.level > i) padRanged.level = i; S.rangedOn = bestRanged(); }
-  else { const [sl, i] = id.split(':'); S.wardrobe[sl] = S.wardrobe[sl].filter(x => x !== +i); if ((S.wear || {})[sl] === +i) S.wear[sl] = 0; }
+  const it = salvageList().find(x => x.id === id); if (!it || it.equipped) return;
+  const [kind, v] = id.split(':'), i = +v;
+  if (kind === 'weapon') S.ownW = S.ownW.filter(x => x !== i); else if (kind === 'armor') S.ownA = S.ownA.filter(x => x !== i);
+  else if (kind === 'ranged') { S.rangedOwn = S.rangedOwn.filter(x => x !== i); if (i < 3 && padRanged.level > i) padRanged.level = i; }
+  else { S.wardrobe[kind] = S.wardrobe[kind].filter(x => x !== i); }
   gainRefund(it.r); applyMyLook(); play('chop'); banner('Salvaged ' + it.n, false, 'Got back ' + costTxt(it.r)); savePersonal();
 }
 const costTxt = c => Object.keys(c).filter(k => c[k]).map(k => c[k] + ' ' + (MATS[k] || resName(k))).join(', ');
@@ -3810,17 +3834,18 @@ function showForge() {
   $('forgeBtn').classList.remove('new');
   const near = nearForge(), M = S.mats || {}, owned = Object.keys(MATS).filter(k => M[k] > 0);
   const crafts = craftList(), sp = SPECIALS.filter(x => !hasSpecial(x.id) && x.ok()), hidden = SPECIALS.filter(x => !hasSpecial(x.id) && !x.ok()), su = supplyList(), sv = salvageList();
-  const ready = { weapon: crafts.filter(r => r.g === 'weapon' && r.ok).length, armor: crafts.filter(r => r.g === 'armor' && r.ok).length, tools: crafts.filter(r => r.g === 'tools' && r.ok).length,
+  const rdy = g => crafts.filter(r => r.g === g && (r.ok || r.upOk)).length;
+  const ready = { weapon: rdy('weapon'), armor: rdy('armor'), tools: rdy('tools'),
     brew: knownBrews().map(recipeOf).filter(b => b && S.th >= (b.th || 1) && canAfford(b.in)).length, special: sp.filter(x => canAfford(x.c)).length, town: isGuest() ? 0 : su.filter(x => x.afford).length, salvage: 0 };
-  let h = '<div class="craft">';
+  let h = '<div class="craft"><button type="button" class="fhero" data-fhero="1">⚔ Hero gear</button>';
   if (!S.forgeSeen) h += `<div class="ftut"><b>Welcome to the forge</b><ol><li><b>Gather materials:</b> animals and beasts drop hides and sinew. Tougher beasts drop rarer ones; gems and magic come from rare beasts and dungeons.</li><li><b>Bring resources:</b> logs, stone and crystal are paid from your pack, gold from your wallet. Red chips show what you're short of.</li><li><b>Craft:</b> pick a tab (Weapons, Armour, Tools, Special, Town) and tap Craft. Your hero equips new gear straight away; see it under Hero.</li><li><b>Unlock more:</b> recipes appear as your Town Hall and castle grow, and special ones as you defend well. Recipe scrolls drop from rare beasts and dungeons.</li><li><b>Salvage</b> old gear for half its materials back.</li></ol><button type="button" data-ftut="1">Got it</button></div>`;
   h += '<h3>Materials</h3>' + (owned.length ? MAT_GROUPS.map(([g, ks]) => { const have = ks.filter(k => M[k] > 0); return have.length ? `<div class="mgrp"><i>${g}</i><div class="mats">` + have.map(k => `<span>${matSvg(k)}<b>${M[k]}</b> ${MATS[k]}</span>`).join('') + '</div></div>' : ''; }).join('') : '<p>None yet. Hunt animals and slay beasts: tougher creatures drop rarer hides and sinew, but less often.</p>');
   if (!B.smith) h += '<p>Build the blacksmith to open the forge.</p>';
   else if (!near) h += '<p>Come back inside the town walls to craft and salvage. Logs, stone and crystal are paid from your pack.</p>';
   h += '<div class="ftabs">' + FORGE_TABS.map(([k, n]) => `<button type="button" data-ftab="${k}" aria-pressed="${forgeTab === k}">${n}${ready[k] ? '<i>' + ready[k] + '</i>' : ''}</button>`).join('') + '</div>';
   if (forgeTab === 'salvage') {
-    h += '<p>Break down gear you own for half its materials and gold back.</p>' + (sv.length ? sv.map(r => { const [k, i] = r.id.split(':'), img = k === 'weapon' ? itemPic('weapon', S.weapon) : k === 'armor' ? itemPic('armor', S.armorLv) : k === 'ranged' ? pic('ranged', +i, icon('ranged', +i)) : pic(k, +i, icon(k, +i));
-      return fRow(img, r.n, '', '', r.d, `<span class="cost"><span>+ ${costTxt(r.r)}</span></span>`, `<button type="button" class="salv" data-salv="${r.id}" ${near ? '' : 'disabled'}>Salvage</button>`); }).join('') : '<p>Nothing to salvage yet.</p>');
+    h += '<p>Break down gear you own for half its materials and gold back.</p>' + (sv.length ? sv.map(r => { const [k, i] = r.id.split(':'), img = k === 'weapon' || k === 'armor' ? itemPic(k, +i) : k === 'ranged' ? pic('ranged', +i, icon('ranged', +i)) : pic(k, +i, icon(k, +i));
+      return fRow(img, r.n, r.equipped ? 'Equipped' : '', '', r.d + (r.equipped ? ' · wear something else to salvage it' : ''), r.equipped ? '' : `<span class="cost"><span>+ ${costTxt(r.r)}</span></span>`, r.equipped ? '<span class="tagx eq">Worn</span>' : `<button type="button" class="salv" data-salv="${r.id}" ${near ? '' : 'disabled'}>Salvage</button>`); }).join('') : '<p>Nothing to salvage yet.</p>');
   } else if (forgeTab === 'brew') {
     h += brewHtml(near);
   } else if (forgeTab === 'metal_old') {
@@ -3835,9 +3860,13 @@ function showForge() {
     h += '<p>' + (hidden.length ? hidden.length + ' special recipe' + (hidden.length > 1 ? 's are' : ' is') + ' still hidden: grow stronger, survive longer, defend your walls well (' + (S.cleanRaids || 0) + ' raids beaten with no wall broken) and hunt for recipe scrolls on rare beasts and in dungeons.' : 'Every special recipe found.') + '</p>';
   } else {
     const rows = crafts.filter(r => r.g === forgeTab);
-    const cur = forgeTab === 'weapon' ? (S.weapon >= 0 ? WEAPONS[S.weapon].n : 'Camp axe') : forgeTab === 'armor' ? (S.armorLv >= 0 ? ARMORS[S.armorLv].n : 'No armour') : '';
-    if (cur) h += '<p class="ok">Equipped: ' + cur + '</p>';
-    h += rows.length ? rows.map(r => fRow(itemPic(r.id, r.lv), r.n, r.r, r.r ? r.r.toLowerCase() : '', r.d, costChips(r.c), `<button type="button" data-craft="${r.id}" ${r.ok && near ? '' : 'disabled'}>Craft</button>`)).join('') : '<p>Nothing new to forge here right now.</p>';
+    const mini = r => `<div class="row mini"><span class="pic">${itemPic(r.kind, r.lv)}</span><div><b>${r.n}${r.r ? ' <em>' + r.r + '</em>' : ''}</b></div><span class="tagx${r.equipped ? ' eq' : ''}">${r.equipped ? 'Equipped' : r.owned ? 'Owned' : 'Weaker'}</span></div>`;
+    const full = r => fRow(itemPic(r.kind, r.lv), r.n, r.r, r.r ? r.r.toLowerCase() : '', r.d,
+      (r.up ? '<span class="clab">Forge new:</span>' : r.isUp ? '<span class="clab">Upgrade (trades in your ' + TOOL_NAMES[r.kind][r.kind === 'boots' ? S.runLv || 0 : S[r.kind]] + '):</span>' : '') + costChips(r.c) + (r.up ? '<span class="clab">Upgrade from ' + (r.kind === 'weapon' ? WEAPONS : ARMORS)[r.up.from].n + ' (trades it in):</span>' + costChips(r.up.c) : ''),
+      `<span style="display:flex;flex-direction:column;gap:4px"><button type="button" data-craft="${r.id}:new" ${r.ok && near ? '' : 'disabled'}>${r.isUp ? 'Upgrade' : 'Forge'}</button>${r.up ? `<button type="button" data-craft="${r.id}:up" ${r.upOk && near ? '' : 'disabled'}>Upgrade</button>` : ''}</span>`);
+    const todo = rows.filter(r => !r.owned && !r.weaker), done = rows.filter(r => r.owned || r.weaker);
+    h += todo.length ? todo.map(full).join('') : '<p class="ok">You have the best ' + (forgeTab === 'tools' ? 'tools' : forgeTab === 'weapon' ? 'weapon' : 'armour') + ' you can forge right now.</p>';
+    if (done.length) h += '<h3>Owned and weaker</h3>' + done.slice().reverse().map(mini).join('');
     const nextTH = S.th < 3 ? 'Town Hall ' + ROMAN[S.th + 1] : (S.castle || 0) < 2 ? 'Castle ' + ROMAN[(S.castle || 0) + 1] : '';
     if (nextTH) h += '<p>More recipes appear at ' + nextTH + '.</p>';
   }
@@ -4114,13 +4143,14 @@ function heroItems() {
     pet: { label: 'Pet', svg: S.pet ? pic('pet', 0, icon('pet', PET_COL[S.pet.type])) : icon('pet', '#888'), empty: !S.pet, name: S.pet ? S.pet.name + ' the ' + TAME[S.pet.type].n.toLowerCase() : 'No pet', info: S.pet ? 'Level ' + (S.pet.lvl || 1) + ' \u00b7 ' + Math.round(S.pet.hp) + '/' + Math.round(S.pet.max) + ' health. <button type="button" data-rename="1">Rename</button>' : 'Tame one with a Beast Charm.' },
   };
   const inv = [];
-  (S.rangedOwn || []).forEach(i => inv.push({ svg: pic('ranged', i, icon('ranged', i)), name: RANGED[i].n, on: S.rangedOn === i, act: 'ranged:' + i, info: (RANGED[i].dmg * rangedMul()).toFixed(1) + ' damage, ' + RANGED[i].rng + ' m range. Tap to carry.' }));
-  ['helm', 'cape'].forEach(sl => (W[sl] || []).filter(i => i).forEach(i => inv.push({ svg: pic(sl, i, icon(sl, i)), name: LOOKS[sl][i], on: (wear[sl] || 0) === i, act: 'wear:' + sl + ':' + i, info: 'Tap to wear (tap again to take off).' })));
+  (S.rangedOwn || []).forEach(i => inv.push({ svg: pic('ranged', i, icon('ranged', i)), name: RANGED[i].n, on: S.rangedOn === i, eq: S.rangedOn === i, act: 'ranged:' + i, info: (RANGED[i].dmg * rangedMul()).toFixed(1) + ' damage, ' + RANGED[i].rng + ' m range. Tap to carry.' }));
+  ['helm', 'cape'].forEach(sl => (W[sl] || []).filter(i => i).forEach(i => inv.push({ svg: pic(sl, i, icon(sl, i)), name: LOOKS[sl][i], on: (wear[sl] || 0) === i, eq: (wear[sl] || 0) === i, act: 'wear:' + sl + ':' + i, info: 'Tap to wear (tap again to take off).' })));
   const mats = [];
   MAT_GROUPS.forEach(([g, ks]) => ks.forEach(k => { if ((S.mats || {})[k] > 0) mats.push({ svg: matSvg(k, 48).replace('class="mi" ', ''), name: MATS[k], count: S.mats[k], info: g + ' · crafting material. Use it at the forge by the blacksmith.' }); }));
   if (S.medkits) inv.push({ svg: pic('medkit', 0, icon('medkit')), name: 'Med kit', count: S.medkits, info: 'Stand by a downed teammate to revive them.' });
-  if (S.weapon >= 0) inv.unshift({ svg: itemPic('weapon', S.weapon), name: WEAPONS[S.weapon].n, on: true, info: 'Equipped weapon: ' + Math.round((WEAPONS[S.weapon].m - 1) * 100) + '% more damage.' });
-  if (S.armorLv >= 0) inv.unshift({ svg: itemPic('armor', S.armorLv), name: ARMORS[S.armorLv].n, on: true, info: 'Equipped armour: take ' + Math.round(ARMORS[S.armorLv].a * 100) + '% less damage.' });
+  ensureOwn();
+  S.ownA.slice().sort((a, b) => b - a).forEach(t => inv.unshift({ svg: itemPic('armor', t), name: ARMORS[t].n, on: S.armorLv === t, eq: S.armorLv === t, act: 'eqa:' + t, info: 'Armour: take ' + Math.round(ARMORS[t].a * 100) + '% less damage. ' + (S.armorLv === t ? 'Equipped.' : 'Tap to wear it.') }));
+  S.ownW.slice().sort((a, b) => b - a).forEach(t => inv.unshift({ svg: itemPic('weapon', t), name: WEAPONS[t].n, on: S.weapon === t, eq: S.weapon === t, act: 'eqw:' + t, info: 'Weapon: ' + Math.round((WEAPONS[t].m - 1) * 100) + '% more damage. ' + (S.weapon === t ? 'Equipped.' : 'Tap to wield it.') }));
   if (S.axe >= 2) inv.push({ svg: itemPic('axe', S.axe), name: ['', '', 'Twin Axes', 'Axe III', 'Axe IV'][S.axe], on: true, info: 'Chopping axes: ' + AXE[S.axe].dmg + ' damage, hits ' + AXE[S.axe].max + ' at once.' });
   if (S.bag) inv.push({ svg: itemPic('bag', S.bag), name: 'Pack ' + CAPS[S.bag], on: true, info: 'Carries ' + cap() + ' items.' });
   if (S.runLv) inv.push({ svg: itemPic('boots', S.runLv), name: ['', 'Fur Boots', 'Runner Boots', 'Windwalkers'][S.runLv], on: true, info: 'Move ' + S.runLv * 12 + '% faster.' });
@@ -4139,7 +4169,7 @@ function showStats() {
   if (heroTab !== 'stats' && heroTab !== 'town' && heroTab !== 'relics') return showHero();
   return showStatsOld();
 }
-const invBtn = it => `<button type="button" class="slot${it.on ? ' on' : ''}" data-pick="${it.act || 'inv:' + it.name}">${it.svg}${it.count ? '<b>' + it.count + '</b>' : ''}<i>${it.name}</i></button>`;
+const invBtn = it => `<button type="button" class="slot${it.on ? ' on' : ''}" data-pick="${it.act || 'inv:' + it.name}">${it.eq ? '<em class="eq">Equipped</em>' : ''}${it.svg}${it.count ? '<b>' + it.count + '</b>' : ''}<i>${it.name}</i></button>`;
 function showHero() {
   const { slots, inv, mats } = heroItems(), sl = k => { const it = slots[k]; return `<button type="button" class="slot${it.empty ? ' empty' : ''}${heroPick === 'slot:' + k ? ' on' : ''}" data-pick="slot:${k}">${it.svg}<i>${it.label}</i></button>`; };
   const picked = heroPick && heroPick.startsWith('slot:') ? slots[heroPick.slice(5)] : heroPick ? inv.concat(mats).find(x => x.act === heroPick || 'inv:' + x.name === heroPick) : null;
@@ -4214,6 +4244,8 @@ $('statsBody').addEventListener('click', e => {
   const tb = e.target.closest('[data-tab]'); if (tb) { e.stopPropagation(); heroTab = tb.dataset.tab; heroPick = null; showStats(); return; }
   const pk = e.target.closest('[data-pick]'); if (pk) { e.stopPropagation(); const v = pk.dataset.pick;
     if (v.startsWith('ranged:')) { S.rangedOn = +v.slice(7); applyMyLook(); play('pay'); }
+    else if (v.startsWith('eqw:')) { S.weapon = +v.slice(4); applyMyLook(); play('pay'); savePersonal(); }
+    else if (v.startsWith('eqa:')) { S.armorLv = +v.slice(4); applyMyLook(); play('pay'); savePersonal(); }
     else if (v.startsWith('wear:')) { const [, slot, i] = v.split(':'); (S.wear = S.wear || {})[slot] = S.wear[slot] === +i ? 0 : +i; applyMyLook(); play('pay'); }
     heroPick = v; showHero(); return; }
   const r = e.target.closest('[data-ranged]'); if (r) { e.stopPropagation(); S.rangedOn = +r.dataset.ranged; applyMyLook(); showStats(); return; } const b = e.target.closest('[data-wear]'); if (!b) return; e.stopPropagation(); const [slot, i] = b.dataset.wear.split(':'); (S.wear = S.wear || {})[slot] = +i; applyMyLook(); showStats(); });
@@ -4897,7 +4929,7 @@ $('coop').addEventListener('click', e => {
 const SAVE_KEY = 'frosthold-save-v6';
 const WORKER_HOME = { hauler: [0, 17], mender: [8.2, 9], logger: [6, 18.5], hunter: [16.5, 16.3], stonecutter: [-16.5, 25.4], miner: [-25.5, -10] };
 function clearSave() { try { localStorage.removeItem(SAVE_KEY); } catch (e) {} }
-const HERO_KEYS = ['runLv', 'tamer', 'pet', 'rangedOwn', 'rangedOn', 'wardrobe', 'wear', 'axe', 'bag', 'pick', 'weapon', 'armorLv', 'mats', 'specials', 'scrolls', 'seenRecipes', 'forgeSeen', 'satchel', 'known', 'tried', 'bonusHp', 'bonusDmg', 'speedBonus', 'medkits', 'relics', 'xp', 'lvl'];
+const HERO_KEYS = ['runLv', 'tamer', 'pet', 'rangedOwn', 'rangedOn', 'wardrobe', 'wear', 'axe', 'bag', 'pick', 'weapon', 'armorLv', 'mats', 'specials', 'scrolls', 'seenRecipes', 'forgeSeen', 'satchel', 'known', 'tried', 'ownW', 'ownA', 'bonusHp', 'bonusDmg', 'speedBonus', 'medkits', 'relics', 'xp', 'lvl'];
 let heroReady = false;   // only save the hero once it has been loaded, so a rejoin in progress never overwrites it
 // each co-op room has its own hero: joining a new room starts at level 1, rejoining the same room picks up where you left off
 let heroLoadedKey = null;
