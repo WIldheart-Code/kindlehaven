@@ -167,8 +167,9 @@ Three gold-only upgrade spaces sit around the plaza: comfort (supplies last long
 
 ## Potions and food
 - The pot can brew **potions and meals**, each with its own colour and bottle or bowl. Like every recipe they're secret until you make them. There are healing tonics, hearty meals, drinks for speed, strength and toughness, a rare magic elixir, and a poison you coat your weapon with.
-- To use one, open **Hero**, find it under **Materials**, tap it to read what it does, then tap again to drink it (or coat your weapon).
-- Active effects show as coloured tags at the top of the screen with the seconds left.
+- **Potion drawer:** once you have a potion, a purple 🧪 tab appears at the left edge of the screen. Tap it to slide open a list of your potions and meals (with what each does and how many you have); tap one to drink it (or coat your weapon). Tap the tab again to close it.
+- You can also use them from **Hero → Materials**: tap to read what it does, then tap again.
+- Active effects show as coloured tags near the bottom of the screen with the seconds left.
 - **Salvage:** break down gear you own but aren't wearing (weapons, armour, ranged weapons, helmets, capes) for half its gold and materials back; logs, stone and crystal come back as gold. Tapping **Salvage** first shows what you would get back, then **Confirm** breaks it down (or **Cancel**). Anything you're wearing shows **Equipped** and can't be salvaged until you wear something else.
 - Materials are shown at the top of the forge, grouped into **Hides, Sinew, Metal, Alloys, Brewed, Gems, Magic and Junk**, each with its own icon (also used in recipe costs). The Hero screen lists your **Gear** and your **Materials** separately.
 
