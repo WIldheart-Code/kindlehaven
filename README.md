@@ -94,7 +94,7 @@ Three gold-only upgrade spaces sit around the plaza: comfort (supplies last long
   - **Shaggy Pelt, Beast Sinew:** yetis, wraiths, golems, raptors, sabre tigers (rare).
   - **Dragon Scale, Ancient Sinew:** mammoths, T-rexes, dragons (very rare).
   - Camp legends drop three times as often and give extra. In co-op, materials from your kills go to you.
-- **The forge:** stand by the blacksmith and tap **⚒ Forge** to open the forge window. The first time, a short guide explains how it works. Recipes are grouped into tabs: **Weapons, Armour, Tools** (axes, packs, boots), **Special, Town** (supplies) and **Salvage**. A green number on a tab shows how many recipes there you can afford. Each recipe shows a picture of the item.
+- **The forge:** once the blacksmith is built, tap **⚒ Forge** anywhere inside your town walls to open the forge window. The first time, a short guide explains how it works. Recipes are grouped into tabs: **Weapons, Armour, Tools** (axes, packs, boots), **Special, Town** (supplies) and **Salvage**. A green number on a tab shows how many recipes there you can afford. Each recipe shows a picture of the item.
 - Forged gear is equipped on your hero straight away and listed under **Gear** on the Hero screen. Logs, stone and crystal come from your pack; gold from your wallet. Each item lists what it needs and how much you have.
 - **New recipe alerts:** when a recipe becomes available (a Town Hall or castle upgrade, a special earned, a scroll found), a banner tells you and the Forge button shows **NEW** until you open it.
 - **Recipes reveal as your town grows:** the forge only shows what your Town Hall allows. New recipes appear with each Town Hall upgrade, rare gear at **Castle I** and legendary gear at **Castle II**. The forge tells you when the next ones unlock.
@@ -135,6 +135,11 @@ Three gold-only upgrade spaces sit around the plaza: comfort (supplies last long
 - **Salvage:** break down gear you own (weapon, armour, ranged weapons, helmets, capes) for half its gold and materials back; logs, stone and crystal come back as gold. Salvaging a weapon or armour drops you one tier.
 - Materials are shown at the top of the forge, grouped into **Hides, Sinew, Gems and Magic**, each with its own icon (also used in recipe costs). The Hero screen lists your **Gear** and your **Materials** separately.
 
+## Town chest
+- A shared **chest** stands in the plaza in front of the Town Hall. Walk up to it and tap **📦 Chest**.
+- **Store all** puts every log, stone, crystal or meat from your pack, or all of one material, into the chest; **Take all** takes it back (resources only as far as your pack has room).
+- Everyone in a co-op town shares the chest, so it's an easy way to pool hides, gems and building supplies. It is saved with the town.
+
 ## Ranged weapons
 A ranged weapon fires on its own at the nearest threat in range, alongside your axes. **Hunting Bow** (12 m), **Crossbow** (Town Hall II) and **Rifle** (Town Hall III) are forged at the blacksmith. Magic staffs come from treasure: the **Frost Staff** slows, the **Fire Staff** explodes, and the **Storm Staff** throws lightning that jumps to two more foes.
 
@@ -169,7 +174,7 @@ The Town Hall offers one quest at a time (the Quest card): hunt animals, collect
 Twelve cave entrances lie 200–315 m out (purple squares on the minimap). Tap **Enter dungeon** to play a 2D side-scrolling level: run, jump over pits and ice spikes, stomp or axe slimes, skeletons and bats, and reach the chest at the end. Dungeons are drawn in a chunky pixel-block style, hero included. You can jump about four blocks high, enough to reach every ledge. You have **three hearts** (top left): every hit, spike or fall costs one, and losing all three sends you back to the entrance. Your gear and looks come with you. Controls: on-screen arrows, attack and jump buttons (or A/D, W/Space, J). Reach the chest for a treasure chest. A cleared dungeon refills after two days.
 
 ## Knockouts and revives
-- You respawn at the Town Hall a few seconds after being knocked out; your pack spills where you fell.
+- You respawn at the Town Hall a few seconds after being knocked out; your pack spills where you fell, and your crafting materials drop in a **satchel** marked "Your materials". Walk over it to get them all back (only you can pick it up, and it stays until you do).
 - The **Med Center** (Town Hall II) revives you where you fell, once every 5 minutes.
 - **Med kits** (Med Center, or treasure): stand next to a downed teammate for two seconds to revive them.
 
@@ -183,7 +188,7 @@ Twelve cave entrances lie 200–315 m out (purple squares on the minimap). Tap *
 - **Room code (no account):** on the GitHub Pages site, tap **Co-op → Host a game** for a 4-character code and QR; friends tap Co-op and enter the code or scan the QR.
 - **On claude.ai:** tap Co-op on the shared page; the first player hosts.
 - Each player has their own hero, pack, wallet, gear and pet. Joining a new co-op room starts you at **level 1** with basic gear; your progress in that room is kept on your device, so rejoining the same room brings it back. Your solo hero is untouched. Set your name and coat colour under Co-op or Hero; teammates appear with your name, colour ring and what you carry, and as a coloured star on the minimap.
-- Stand next to a teammate and tap **Give** to hand over gold, resources or spare gear.
+- Stand next to a teammate and tap **Give** to hand over gold, resources, crafting materials (one or all of a kind) or spare gear.
 - Pausing in co-op only covers your own screen: the shared world keeps running for everyone, and your hero can't be hurt while paused.
 - You get alerts when a teammate is under attack or knocked out. A phone that drops out or sleeps rejoins on its own, behind a Reconnecting screen (with a Play solo instead button) rather than flashing back to a solo game. If the host refreshes the page, their room reopens with the same code and friends reconnect automatically within about 20 seconds, with their gear, pet, gold, pack and position just as they left them; **Leave co-op** closes the room for good.
 

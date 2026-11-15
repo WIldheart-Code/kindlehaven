@@ -177,6 +177,16 @@ html,body{height:100%;margin:0;background:var(--ice);color:var(--ink);overflow:h
 #forge .none{font:700 13px/1.3 var(--body);opacity:.65;margin:0}
 #forge ul{margin:0;padding-left:18px;font:700 13px/1.4 var(--body)}
 #closeForge{display:block;margin:14px auto 0;border:0;border-radius:12px;background:#2b4a74;color:#fff;font:16px/1 var(--display);padding:10px 20px;cursor:pointer}
+#chestP{position:fixed;inset:0;z-index:21;display:flex;align-items:center;justify-content:center;background:rgba(16,26,44,.72);padding:0 16px}
+#chestP .box{background:#f4f7fc;color:var(--ink);border-radius:18px;padding:18px 18px 14px;width:min(380px,100%);max-height:86vh;overflow:auto;box-shadow:0 20px 50px rgba(0,0,0,.35)}
+#chestP h2{margin:0 0 8px;font:26px/1 var(--display);color:#2b4a74;text-align:center}
+#chestP h3{margin:12px 0 4px;font:13px/1 var(--display);letter-spacing:.12em;text-transform:uppercase;color:var(--ember)}
+#chestP dl{display:grid;grid-template-columns:1fr auto;gap:4px 12px;margin:0;font:700 14px/1.3 var(--body)}
+#chestP dd{margin:0;text-align:right;font-variant-numeric:tabular-nums}
+#chestP .none{font:700 13px/1.3 var(--body);opacity:.65;margin:0}
+#chestP ul{margin:0;padding-left:18px;font:700 13px/1.4 var(--body)}
+#closeChest{display:block;margin:14px auto 0;border:0;border-radius:12px;background:#2b4a74;color:#fff;font:16px/1 var(--display);padding:10px 20px;cursor:pointer}
+#chestBtn{position:fixed;z-index:8;right:12px;bottom:calc(205px + env(safe-area-inset-bottom,0px));border:2px solid #fff;background:#6b4a2a;color:#fff;font:17px/1 var(--display);letter-spacing:.04em;padding:12px 16px;border-radius:14px;box-shadow:0 4px 0 rgba(0,0,0,.3);cursor:pointer}
 #closeStats{display:block;margin:14px auto 0;border:0;border-radius:12px;background:#2b4a74;color:#fff;font:16px/1 var(--display);padding:10px 20px;cursor:pointer}
 #invite{position:fixed;inset:0;z-index:21;display:flex;align-items:center;justify-content:center;background:rgba(16,26,44,.72);padding:0 16px}
 #invite .box{background:#f4f7fc;color:var(--ink);border-radius:18px;padding:20px;max-width:330px;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.35)}
@@ -239,7 +249,7 @@ html,body{height:100%;margin:0;background:var(--ice);color:var(--ink);overflow:h
 </div>
 
 <div id="banner" class="hud"></div>
-<button id="forgeBtn" type="button" hidden>⚒ Forge</button><button id="tameBtn" type="button" hidden></button><button id="tameNo" type="button" hidden>Fight on</button>
+<button id="forgeBtn" type="button" hidden>⚒ Forge</button><button id="chestBtn" type="button" hidden>📦 Chest</button><button id="tameBtn" type="button" hidden></button><button id="tameNo" type="button" hidden>Fight on</button>
 <button id="giveBtn" type="button" hidden></button>
 <button id="dunBtn" type="button" hidden></button>
 <div id="dun" hidden><canvas id="dunCv"></canvas><button id="dunLeave" type="button">Leave dungeon</button>
@@ -262,6 +272,7 @@ html,body{height:100%;margin:0;background:var(--ice);color:var(--ink);overflow:h
 <div class="joinrow"><label for="codeIn">Room code</label><input id="codeIn" maxlength="6" autocomplete="off" inputmode="text" placeholder="e.g. K7Q2"><button id="joinBtn" type="button">Join</button></div>
 <p id="lobbyMsg" class="fine"></p><button id="closeLobby" type="button" class="ghost">Cancel</button></div></div>
 <div id="help" hidden><div class="box"><h2>How to play</h2><input id="helpQ" type="search" placeholder="Search help (e.g. pets, raids, castle)"><div id="helpBody">Loading…</div><button id="closeHelp" type="button">Close</button></div></div>
+<div id="chestP" hidden><div class="box"><h2>Town Chest</h2><div id="chestBody"></div><button id="closeChest" type="button">Close</button></div></div>
 <div id="forge" hidden><div class="box"><h2>Forge</h2><div id="forgeBody"></div><button id="closeForge" type="button">Close</button></div></div>
 <div id="stats" hidden><div class="box"><h2>Hero</h2><div id="statsBody"></div><h3>Name and coat colour</h3><div class="prof"></div><button id="closeStats" type="button">Close</button></div></div>
 <div id="over" hidden><div class="box"><h2 id="overHead">Frosthold has fallen</h2><p id="overTxt"></p><button id="again" type="button">Rebuild</button></div></div>
@@ -2340,13 +2351,16 @@ function openGive() {
   if (res.length) { opts.push('<h3>From your pack</h3>'); res.forEach(t => { opts.push(`<button data-g="${t}:${carry[t].length}">All ${PLURAL[t]} (${carry[t].length})</button>`); if (carry[t].length > 10) opts.push(`<button data-g="${t}:10">10 ${PLURAL[t]}</button>`); }); }
   const gear = (S.rangedOwn || []).map(i => `<button data-g="ranged:${i}">${RANGED[i].n}</button>`)
     .concat(['helm', 'cape'].flatMap(sl => ((S.wardrobe || {})[sl] || []).filter(i => i).map(i => `<button data-g="${sl}:${i}">${LOOKS[sl][i]}</button>`)));
+  const M = S.mats || {}, mk2 = MAT_GROUPS.flatMap(g => g[1]).filter(k => M[k] > 0);
+  if (mk2.length) { opts.push('<h3>Materials</h3>'); mk2.forEach(k => { opts.push(`<button data-g="mat:${k}:1">1 ${MATS[k]}</button>`); if (M[k] > 1) opts.push(`<button data-g="mat:${k}:${M[k]}">All ${MATS[k]} (${M[k]})</button>`); }); }
   if (gear.length) opts.push('<h3>Gear (you hand it over)</h3>', ...gear);
   L.innerHTML = opts.join(''); $('givePanel').hidden = false;
 }
 function doGive(kind, v) {
   const r = giveTo && NET.remotes[giveTo.peer]; if (!r) return;
   const n = +v;
-  if (kind === 'cash') { if (S.wallet < n) return; S.wallet -= n; NET.room.emit('give', { to: r.peer, t: 'cash', n, q: 0, gift: 1 }).catch(() => {}); }
+  if (kind === 'mat') { const [k, c] = v.split('|'), m = Math.min(+c, (S.mats || {})[k] || 0); if (!m) return; S.mats[k] -= m; NET.room.emit('give', { to: r.peer, t: 'mat', m: { [k]: m }, gift: 1 }).catch(() => {}); }
+  else if (kind === 'cash') { if (S.wallet < n) return; S.wallet -= n; NET.room.emit('give', { to: r.peer, t: 'cash', n, q: 0, gift: 1 }).catch(() => {}); }
   else if (RES.includes(kind)) { const k = Math.min(n, carry[kind].length); for (let i = 0; i < k; i++) takeFromStack(kind); bump(kind); NET.room.emit('give', { to: r.peer, t: kind, n: k, q: 0, gift: 1 }).catch(() => {}); }
   else if (kind === 'ranged') { S.rangedOwn = (S.rangedOwn || []).filter(i => i !== n); S.rangedOn = bestRanged(); applyMyLook(); NET.room.emit('give', { to: r.peer, t: 'gear', slot: 'ranged', id: n }).catch(() => {}); }
   else { const W = S.wardrobe[kind]; W.splice(W.indexOf(n), 1); if (S.wear[kind] === n) S.wear[kind] = Math.max(0, ...W); applyMyLook(); NET.room.emit('give', { to: r.peer, t: 'gear', slot: kind, id: n }).catch(() => {}); }
@@ -2354,7 +2368,7 @@ function doGive(kind, v) {
 }
 $('giveBtn').addEventListener('click', e => { e.stopPropagation(); openGive(); });
 $('giveClose').addEventListener('click', e => { e.stopPropagation(); $('givePanel').hidden = true; });
-$('giveList').addEventListener('click', e => { const b = e.target.closest('[data-g]'); if (!b || b.disabled) return; e.stopPropagation(); const [k, v] = b.dataset.g.split(':'); doGive(k, v); });
+$('giveList').addEventListener('click', e => { const b = e.target.closest('[data-g]'); if (!b || b.disabled) return; e.stopPropagation(); const [k, v, c] = b.dataset.g.split(':'); doGive(k, c !== undefined ? v + '|' + c : v); });
 ['pointerdown', 'touchstart', 'mousedown'].forEach(ev => { $('giveBtn').addEventListener(ev, e => e.stopPropagation()); $('givePanel').addEventListener(ev, e => e.stopPropagation()); });
 function updateWorkerTags() {
   for (const t of WORKER_TAGS) {
@@ -2565,6 +2579,7 @@ function hurtHero(dmg) {
     else S.downT = team ? 30 : 6;
     player.g.rotation.z = Math.PI / 2; player.g.position.y = 0.4; heroBar.hidden = true;
     for (const t of ['log', 'meat', 'stone', 'ore']) { const n = carry[t].length; if (n) { while (carry[t].length) takeFromStack(t); dropItem(t, player.x + rand(-1, 1), player.z + rand(-1, 1), n); } }
+    dropSatchel();
     banner('You were knocked out!', false, S.medRevive > 0 ? 'The med center is patching you up\u2026' : team ? 'Wait for a teammate with a med kit, or respawn at the town hall' : 'Your pack spilled. Go back for it.');
   }
 }
@@ -2690,7 +2705,7 @@ function tameCandidate() {
   return b;
 }
 function updateTaming(dt) {
-  $('forgeBtn').hidden = !nearForge() || DUN; checkNewRecipes(dt);
+  $('forgeBtn').hidden = !nearForge() || DUN; checkNewRecipes(dt); updateSatchel(); updateChestBtn();
   const btn = $('tameBtn'), c = taming > 0 ? tameTgt : tameCandidate();
   $('tameNo').hidden = !c || !c.alive || taming > 0; $('tameNo').onclick = e => { e.stopPropagation(); if (c) c.noTame = true; };
   if (!c || !c.alive) { btn.hidden = true; taming = 0; tameTgt = null; return; }
@@ -2765,6 +2780,81 @@ $('forgeBody').addEventListener('click', e => {
   const sv = e.target.closest('[data-salv]'); if (sv) { doSalvage(sv.dataset.salv); return showForge(); }
 });
 ['pointerdown', 'touchstart', 'mousedown'].forEach(ev => $('forge').addEventListener(ev, e => e.stopPropagation()));
+/* ---- materials satchel: dropped where you're knocked out, picked up by walking over it ---- */
+let satchelM = null;
+function dropSatchel() {
+  const M = S.mats || {}, m = {}; let any = false; for (const k in M) if (M[k] > 0) { m[k] = M[k]; any = true; }
+  if (!any) return;
+  const old = S.satchel && S.satchel.m || {}; for (const k in old) m[k] = (m[k] || 0) + old[k];
+  S.satchel = { x: player.x, z: player.z, m }; S.mats = {}; if (satchelM) { scene.remove(satchelM.g); satchelM.tag.remove(); satchelM = null; }
+  note('Your materials spilled in a satchel', 'bad');
+}
+function updateSatchel() {
+  const sc = S.satchel; if (!sc) { if (satchelM) { scene.remove(satchelM.g); satchelM.tag.remove(); satchelM = null; } return; }
+  if (!satchelM) { const g = new THREE.Group(), bag = mk(new THREE.SphereGeometry(0.42, 12, 10).scale(1, 0.8, 1), 0x8a5a36); bag.position.y = 0.34; g.add(bag);
+    const tie = mk(Cyl(0.12, 0.2, 0.22, 8), 0x5b3416); tie.position.y = 0.72; g.add(tie); g.position.set(sc.x, 0, sc.z); scene.add(g);
+    const tag = document.createElement('div'); tag.className = 'tag'; tag.textContent = 'Your materials'; ov.appendChild(tag); satchelM = { g, tag }; }
+  satchelM.g.rotation.y += 0.02; satchelM.g.position.y = Math.abs(Math.sin(time * 2)) * 0.15;
+  const dd = d2(player.x, player.z, sc.x, sc.z); satchelM.tag.hidden = dd > 40 * 40; if (!satchelM.tag.hidden) place(satchelM.tag, sc.x, 1.6, sc.z);
+  if (dd < 1.6 * 1.6 && S.downT <= 0 && !DUN) { gainMats(sc.m, sc.x, sc.z); S.satchel = null; banner('Materials recovered!', true); savePersonal(); }
+}
+/* ---- town chest: shared storage for resources and materials, kept by the host ---- */
+const CHEST = { x: 3, z: 7.6 };
+const CHEST_RES = ['log', 'stone', 'ore', 'meat'];
+let chestG = null;
+function buildChest() {
+  const g = new THREE.Group(); g.position.set(CHEST.x, 0, CHEST.z); g.rotation.y = 0.3;
+  const body = mk(Box(1.3, 0.7, 0.85), 0x8a5a36); body.position.y = 0.35; g.add(body);
+  const lid = mk(new THREE.CylinderGeometry(0.43, 0.43, 1.3, 12, 1, false, 0, Math.PI).rotateZ(Math.PI / 2), 0x9a6538); lid.position.y = 0.7; g.add(lid);
+  [-0.45, 0.45].forEach(x => { const band = mk(Box(0.1, 1.15, 0.9), 0x5a6470); band.position.set(x, 0.6, 0); g.add(band); });
+  const lock = mk(Box(0.18, 0.22, 0.06), 0xf2c14e); lock.position.set(0, 0.62, 0.45); g.add(lock);
+  scene.add(g); chestG = g; addObs(CHEST.x, CHEST.z, 0.8);
+}
+buildChest();
+const nearChest = () => !DUN && d2(player.x, player.z, CHEST.x, CHEST.z) < 3.2 * 3.2;
+function updateChestBtn() { $('chestBtn').hidden = !nearChest(); }
+const chestOf = () => (S.chest = S.chest || {});
+// host (or solo) applies a chest change; returns how many actually moved
+function chestApply(op, k, n) {
+  const C2 = chestOf(); if (op === 'put') { C2[k] = (C2[k] || 0) + n; return n; }
+  const m = Math.min(n, C2[k] || 0); C2[k] = (C2[k] || 0) - m; if (!C2[k]) delete C2[k]; return m;
+}
+function chestHostOp(d, peer) {
+  if (isGuest()) return;
+  const m = chestApply(d.op, d.k, d.n); NET.worldT = 0;
+  if (d.op === 'take' && m > 0) { if (MATS[d.k]) NET.room.emit('give', { to: peer, t: 'mat', m: { [d.k]: m } }).catch(() => {}); else NET.room.emit('give', { to: peer, t: d.k, n: m, q: 0 }).catch(() => {}); }
+}
+const mineOf = k => MATS[k] ? ((S.mats || {})[k] || 0) : carry[k].length;
+function chestMove(op, k, all) {
+  if (op === 'put') {
+    const n = all ? mineOf(k) : Math.min(1, mineOf(k)); if (!n) return;
+    if (MATS[k]) S.mats[k] -= n; else { for (let i = 0; i < n; i++) takeFromStack(k); bump(k); }
+    if (isGuest()) { chestOf()[k] = (chestOf()[k] || 0) + n; NET.room.emit('give', { to: NET.host, t: 'chest', op, k, n }).catch(() => {}); } else chestApply(op, k, n);
+  } else {
+    const have = chestOf()[k] || 0, cap2 = MATS[k] ? have : Math.min(have, Math.max(0, room())); const n = all ? cap2 : Math.min(1, cap2);
+    if (!n) { if (!MATS[k] && have) note('Pack full!'); return; }
+    if (isGuest()) { chestOf()[k] = have - n; NET.room.emit('give', { to: NET.host, t: 'chest', op: 'take', k, n }).catch(() => {}); }
+    else { const m = chestApply('take', k, n); if (MATS[k]) gainMats({ [k]: m }, player.x, player.z); else for (let i = 0; i < m; i++) addToStack(k); }
+  }
+  play('coin'); savePersonal();
+}
+function resSvg(t) {
+  const c = { log: '#8a5a36', stone: '#9aa3ad', ore: '#7fd3f0', meat: '#d9524b' }[t];
+  return `<svg class="mi" viewBox="0 0 48 48" width="22" height="22">${t === 'log' ? `<rect x="6" y="16" width="36" height="16" rx="8" fill="${c}" stroke="#1d2128" stroke-width="1.6"/><circle cx="38" cy="24" r="6" fill="#e0b47a" stroke="#1d2128" stroke-width="1.4"/>` : t === 'ore' ? `<path d="M24 4 L36 20 L24 44 L12 20 Z" fill="${c}" stroke="#1d2128" stroke-width="1.6"/>` : t === 'meat' ? `<path d="M10 28 C8 14 26 8 34 16 C42 24 34 40 22 38 C16 37 11 34 10 28 Z" fill="${c}" stroke="#1d2128" stroke-width="1.6"/><circle cx="36" cy="36" r="4" fill="#f3e6cf" stroke="#1d2128" stroke-width="1.4"/>` : `<path d="M8 34 L14 16 L30 10 L42 22 L38 38 L20 42 Z" fill="${c}" stroke="#1d2128" stroke-width="1.6"/>`}</svg>`;
+}
+function showChest() {
+  const C2 = chestOf(), row = (k, img, name) => { const mine = mineOf(k), in2 = C2[k] || 0; if (!mine && !in2) return '';
+    return `<div class="row"><span class="pic" style="background:#f4f7fb;flex-basis:36px;height:36px">${img}</span><div><b>${name}</b>You ${mine} · Chest ${in2}</div><span style="display:flex;flex-direction:column;gap:4px"><button type="button" data-cm="put:${k}" ${mine ? '' : 'disabled'}>Store all</button><button type="button" class="salv" data-cm="take:${k}" ${in2 ? '' : 'disabled'}>Take all</button></span></div>`; };
+  let h = '<div class="craft"><p>Shared by everyone in town. Store what you don\'t need; take what you do.' + (isGuest() ? ' The host keeps the chest.' : '') + '</p>';
+  const res = CHEST_RES.map(k => row(k, resSvg(k), k === 'ore' ? 'Crystal' : k[0].toUpperCase() + k.slice(1))).join('');
+  h += '<h3>Resources</h3>' + (res || '<p>Nothing yet. Resources come from your pack.</p>');
+  MAT_GROUPS.forEach(([g, ks]) => { const r = ks.map(k => row(k, matSvg(k, 28), MATS[k])).join(''); if (r) h += '<h3>' + g + '</h3>' + r; });
+  $('chestBody').innerHTML = h + '</div>'; $('chestP').hidden = false;
+}
+$('chestBtn').addEventListener('click', e => { e.stopPropagation(); showChest(); });
+$('closeChest').addEventListener('click', e => { e.stopPropagation(); $('chestP').hidden = true; });
+$('chestBody').addEventListener('click', e => { e.stopPropagation(); const b = e.target.closest('[data-cm]'); if (!b || b.disabled) return; const [op, k] = b.dataset.cm.split(':'); chestMove(op, k, true); showChest(); });
+['pointerdown', 'touchstart', 'mousedown'].forEach(ev => { $('chestP').addEventListener(ev, e => e.stopPropagation()); $('chestBtn').addEventListener(ev, e => e.stopPropagation()); });
 ['pointerdown', 'touchstart', 'mousedown'].forEach(ev => $('forgeBtn').addEventListener(ev, e => e.stopPropagation()));
 $('tameBtn').addEventListener('click', e => { e.stopPropagation(); if (!taming) { tameTgt = tameCandidate(); if (tameTgt) { taming = 0.001; play('spell'); } } });
 ['pointerdown', 'touchstart', 'mousedown'].forEach(ev => { $('tameBtn').addEventListener(ev, e => e.stopPropagation()); $('tameNo').addEventListener(ev, e => e.stopPropagation()); });
@@ -3522,7 +3612,8 @@ function refundOf(c) {
   return r;
 }
 function gainRefund(r) { S.wallet += r.cash || 0; bump('cash'); const M = S.mats = S.mats || {}; for (const k in r) if (MATS[k]) M[k] = (M[k] || 0) + r[k]; }
-const nearForge = () => B.smith && d2(player.x, player.z, -6, 20.4) < 49;
+const inTown = () => rings.some(r => r.active && inSquare(player.x, player.z, r.h));
+const nearForge = () => B.smith && !DUN && inTown();
 function craftList() {
   const L = [], th = S.th, nw = S.weapon + 1, na = S.armorLv + 1;
   if (nw < WEAPONS.length && (S.castle || 0) >= GEAR_CASTLE[nw]) L.push({ id: 'weapon', g: 'weapon', lv: nw, r: WEAPONS[nw].r, n: WEAPONS[nw].n, d: Math.round((WEAPONS[nw].m - 1) * 100) + '% more damage' + (S.weapon >= 0 ? ' (replaces ' + WEAPONS[S.weapon].n + ')' : ''), c: RECIPES.weapon[nw], th: GEAR_TH[nw] });
@@ -3591,7 +3682,7 @@ function showForge() {
   if (!S.forgeSeen) h += `<div class="ftut"><b>Welcome to the forge</b><ol><li><b>Gather materials:</b> animals and beasts drop hides and sinew. Tougher beasts drop rarer ones; gems and magic come from rare beasts and dungeons.</li><li><b>Bring resources:</b> logs, stone and crystal are paid from your pack, gold from your wallet. Red chips show what you're short of.</li><li><b>Craft:</b> pick a tab (Weapons, Armour, Tools, Special, Town) and tap Craft. Your hero equips new gear straight away; see it under Hero.</li><li><b>Unlock more:</b> recipes appear as your Town Hall and castle grow, and special ones as you defend well. Recipe scrolls drop from rare beasts and dungeons.</li><li><b>Salvage</b> old gear for half its materials back.</li></ol><button type="button" data-ftut="1">Got it</button></div>`;
   h += '<h3>Materials</h3>' + (owned.length ? MAT_GROUPS.map(([g, ks]) => { const have = ks.filter(k => M[k] > 0); return have.length ? `<div class="mgrp"><i>${g}</i><div class="mats">` + have.map(k => `<span>${matSvg(k)}<b>${M[k]}</b> ${MATS[k]}</span>`).join('') + '</div></div>' : ''; }).join('') : '<p>None yet. Hunt animals and slay beasts: tougher creatures drop rarer hides and sinew, but less often.</p>');
   if (!B.smith) h += '<p>Build the blacksmith to open the forge.</p>';
-  else if (!near) h += '<p>Stand by the blacksmith to craft and salvage. Logs, stone and crystal are paid from your pack.</p>';
+  else if (!near) h += '<p>Come back inside the town walls to craft and salvage. Logs, stone and crystal are paid from your pack.</p>';
   h += '<div class="ftabs">' + FORGE_TABS.map(([k, n]) => `<button type="button" data-ftab="${k}" aria-pressed="${forgeTab === k}">${n}${ready[k] ? '<i>' + ready[k] + '</i>' : ''}</button>`).join('') + '</div>';
   if (forgeTab === 'salvage') {
     h += '<p>Break down gear you own for half its materials and gold back.</p>' + (sv.length ? sv.map(r => { const [k, i] = r.id.split(':'), img = k === 'weapon' ? itemPic('weapon', S.weapon) : k === 'armor' ? itemPic('armor', S.armorLv) : k === 'ranged' ? pic('ranged', +i, icon('ranged', +i)) : pic(k, +i, icon(k, +i));
@@ -4236,7 +4327,7 @@ const NET = { mode: 'solo', room: null, me: null, host: null, seq: 0, buf: new M
   lastSeq: {}, remotes: {}, presT: 0, flushT: 0, worldT: 0, hostSeen: 0, lastHostPres: null, padKey: '', known: new Set(), th: 1 };
 function isGuest() { return NET.mode === 'guest'; }
 function isHost() { return NET.mode === 'host'; }
-const SYNC_KEYS = ['braces', 'runes', 'totem', 'cleanRaids', 'castle', 'dragonWins', 'rangeLv', 'lastRaidDay', 'wallLv', 'houseLv', 'clock', 'season', 'civ', 'warm', 'food', 'th', 'cook', 'houses', 'wave', 'waveT', 'raidOn', 'blizOn', 'towerLv', 'masonry', 'guardLv', 'bank', 'carpenter', 'mine', 'gold', 'warmUp', 'foodUp', 'bell', 'priceMul', 'taxMul', 'boots', 'medic', 'sleds', 'horn', 'won', 'over'];
+const SYNC_KEYS = ['chest', 'braces', 'runes', 'totem', 'cleanRaids', 'castle', 'dragonWins', 'rangeLv', 'lastRaidDay', 'wallLv', 'houseLv', 'clock', 'season', 'civ', 'warm', 'food', 'th', 'cook', 'houses', 'wave', 'waveT', 'raidOn', 'blizOn', 'towerLv', 'masonry', 'guardLv', 'bank', 'carpenter', 'mine', 'gold', 'warmUp', 'foodUp', 'bell', 'priceMul', 'taxMul', 'boots', 'medic', 'sleds', 'horn', 'won', 'over'];
 const ROLE_IDS = ['logger', 'hunter', 'stonecutter', 'miner', 'hauler', 'mender'];
 const R2 = v => Math.round(v * 100) / 100;
 function netAct(kind, target, a, b) {
@@ -4388,7 +4479,8 @@ function onGive(msg) {
   if (d.t === 'revive') { if (S.downT > 0) reviveHere(0.5, 'A teammate used a med kit on you'); return; }
   if (d.t === 'none') return;
   if (d.t === 'quest') { questEvent(d.qt, d.what); return; }
-  if (d.t === 'mat') { gainMats(d.m || {}, player.x, player.z); return; }
+  if (d.t === 'mat') { if (d.gift && NET.remotes[msg.peer]) note(remoteName(NET.remotes[msg.peer]) + ' gave you materials', 'xp'); gainMats(d.m || {}, player.x, player.z); return; }
+  if (d.t === 'chest') { chestHostOp(d, msg.peer); return; }
   if (d.t === 'gear') {
     const who = NET.remotes[msg.peer] ? remoteName(NET.remotes[msg.peer]) : 'A teammate';
     if (d.slot === 'ranged') { S.rangedOwn = S.rangedOwn || []; if (!S.rangedOwn.includes(d.id)) S.rangedOwn.push(d.id); S.rangedOn = bestRanged(); banner(who + ' gave you a ' + RANGED[d.id].n, true); }
@@ -4657,7 +4749,7 @@ $('coop').addEventListener('click', e => {
 const SAVE_KEY = 'frosthold-save-v6';
 const WORKER_HOME = { hauler: [0, 17], mender: [8.2, 9], logger: [6, 18.5], hunter: [16.5, 16.3], stonecutter: [-16.5, 25.4], miner: [-25.5, -10] };
 function clearSave() { try { localStorage.removeItem(SAVE_KEY); } catch (e) {} }
-const HERO_KEYS = ['runLv', 'tamer', 'pet', 'rangedOwn', 'rangedOn', 'wardrobe', 'wear', 'axe', 'bag', 'pick', 'weapon', 'armorLv', 'mats', 'specials', 'scrolls', 'seenRecipes', 'forgeSeen', 'bonusHp', 'bonusDmg', 'speedBonus', 'medkits', 'relics', 'xp', 'lvl'];
+const HERO_KEYS = ['runLv', 'tamer', 'pet', 'rangedOwn', 'rangedOn', 'wardrobe', 'wear', 'axe', 'bag', 'pick', 'weapon', 'armorLv', 'mats', 'specials', 'scrolls', 'seenRecipes', 'forgeSeen', 'satchel', 'bonusHp', 'bonusDmg', 'speedBonus', 'medkits', 'relics', 'xp', 'lvl'];
 let heroReady = false;   // only save the hero once it has been loaded, so a rejoin in progress never overwrites it
 // each co-op room has its own hero: joining a new room starts at level 1, rejoining the same room picks up where you left off
 let heroLoadedKey = null;
