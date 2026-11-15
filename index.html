@@ -559,7 +559,7 @@ const LAKES = [], RUINS = [];
     else if (t < 0.8) { const b = new THREE.Group(); b.position.set(x, 0, z); decor(b);
       for (let k = 0; k < 3; k++) { const s = new THREE.Mesh(new THREE.SphereGeometry(R(0.3, 0.45), 12, 8), bushMat); s.position.set(R(-0.35, 0.35), 0.3, R(-0.35, 0.35)); s.castShadow = true; b.add(s); }
       const cap = new THREE.Mesh(new THREE.SphereGeometry(0.42, 12, 8).scale(1.2, 0.4, 1.2), moundMat); cap.position.y = 0.62; b.add(cap);
-      for (let k = 0; k < 4; k++) { const r = new THREE.Mesh(new THREE.SphereGeometry(0.06, 6, 4), berry); r.position.set(R(-0.4, 0.4), R(0.25, 0.5), R(-0.4, 0.4)); b.add(r); } }
+      for (let k = 0; k < 4; k++) rnd(); }   /* decorative bushes stay plain so they aren't mistaken for pickable berry bushes */
     else { const c = new THREE.Group(); c.position.set(x, 0, z); decor(c);
       for (let k = 0; k < 3; k++) { const h = R(0.3, 0.8), sp = new THREE.Mesh(new THREE.ConeGeometry(0.12, h, 6), crystalMatEarly); sp.position.set(R(-0.25, 0.25), h / 2, R(-0.25, 0.25)); sp.rotation.set(R(-0.4, 0.4), 0, R(-0.4, 0.4)); c.add(sp); } }
   }
@@ -2872,9 +2872,9 @@ function updateSatchel() {
 }
 /* ---- foraging: berry bushes, wild roots and herbs grow across the wilds ---- */
 const FORAGE = {
-  berries: { n: 'Snowberry bush', food: 2, col: 0xc8384b, r0: 24, r1: 700, count: 90, regrow: 150 },
-  roots: { n: 'Wild roots', food: 3, col: 0xe08a2a, r0: 24, r1: 700, count: 70, regrow: 180 },
-  frostmint: { n: 'Frostmint', food: 0, col: 0x7fe0c8, r0: 30, r1: 800, count: 70, regrow: 200 },
+  berries: { n: 'Snowberry bush', food: 2, col: 0xc8384b, r0: 24, r1: 700, count: 90, regrow: 150, near: 45 },
+  roots: { n: 'Wild roots', food: 3, col: 0xe08a2a, r0: 24, r1: 700, count: 70, regrow: 180, near: 30 },
+  frostmint: { n: 'Frostmint', food: 0, col: 0x7fe0c8, r0: 30, r1: 800, count: 70, regrow: 200, near: 25 },
   nightshade: { n: 'Nightshade', food: 0, col: 0x6a3a8a, r0: 80, r1: 900, count: 45, regrow: 260 },
   emberroot: { n: 'Ember Root', food: 0, col: 0xff6a2a, r0: 110, r1: 1000, count: 45, regrow: 260 },
   moonpetal: { n: 'Moonpetal', food: 0, col: 0xdfe6ff, r0: 190, r1: 1120, count: 35, regrow: 360 },
@@ -2892,9 +2892,9 @@ function makePlant(k) {
 }
 function spawnForage() {
   const R = outerRing();
-  for (const k in FORAGE) { const F = FORAGE[k];
-    for (let i = 0, tries = 0; i < F.count && tries < F.count * 20; tries++) {
-      const a = rand(0, TAU), r = rand(F.r0, F.r1), x = C.x + Math.cos(a) * r, z = C.z + Math.sin(a) * r;
+  for (const k in FORAGE) { const F = FORAGE[k], near = F.near || 0;
+    for (let i = 0, tries = 0; i < F.count + near && tries < (F.count + near) * 20; tries++) {
+      const a = rand(0, TAU), r = i < near ? rand(R ? R.h + 6 : 20, 110) : rand(F.r0, F.r1), /* a dense ring of common plants just outside the walls */ x = C.x + Math.cos(a) * r, z = C.z + Math.sin(a) * r;
       if (onLake(x, z, 3) || (R && inSquare(x, z, R.h + 4)) || plants.some(p => d2(p.x, p.z, x, z) < 9)) continue;
       const g = makePlant(k); g.position.set(x, 0, z); g.rotation.y = rand(0, TAU); scene.add(g); plants.push({ k, x, z, g, alive: true, respawn: 0 }); i++;
     } }
