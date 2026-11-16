@@ -62,7 +62,7 @@ Workers, villagers, guards, animals, pets, camp monsters and raiders all walk ar
 - **One raid a night, at nightfall.** Raiders are a mix: wolves and goblins at first, then spiders, bears, trolls, yetis and wraiths. Raiders who can't break through give up after 3 minutes.
 - Raiders chew through walls; broken sections show a cheaper rebuild space. They go after workers caught outside the walls first.
 - **Watchtowers** shoot anything in range; every corner of every wall ring has a tower spot. Each tower has its own upgrades (Crossbows, Ballista, Frost Spire).
-- **Blacksmith defense upgrades:** Arrows II/III (all towers), **tower range** (Spyglasses, High Perches, Eagle Eyes: +4 m each), **wall reinforcement** (Iron Bands, Stone Bastions, Rune Wards: +75% wall strength each) and Masonry.
+- **Defence upgrades** are forged on the forge's **Town** tab: Arrows II/III (all towers), **tower range** (Spyglasses, High Perches, Eagle Eyes: +4 m each), **wall reinforcement** (Iron Bands, Stone Bastions, Rune Wards: +75% wall strength each), Masonry and Guard Drill. In co-op only the host can buy these.
 - **Guards** (Barracks, Town Hall II) post at all four gates, north, south, east and west in turn, and fight raiders nearby.
 
 ## Building the town
@@ -95,12 +95,12 @@ At **Castle III** the final battles begin: each night brings a **dragon siege** 
 - Workers have health; a worker who dies drops what they carried.
 
 ## Village upgrades
-Three gold-only upgrade spaces sit around the plaza: comfort (supplies last longer), trade (more income) and folk (hero, workers and towers). Later upgrades wait for Town Hall II and III.
+Two gold-only upgrade spaces sit around the plaza: comfort (supplies last longer) and trade (more income). The folk upgrades (Snow Boots, Medic Tent, Work Sleds, Watch Horn, Iron Boots) are now on the forge's **Tools** tab. Later upgrades wait for Town Hall II and III.
 
 ## Your hero
 ![The Hero screen](assets/help/hero.jpg)
 - **Hero levels** come from gathering, building, selling and fighting, and add damage and health.
-- **Personal blacksmith upgrades:** the **Crystal Pick** (to mine crystal) and **ranged weapons** (below). Axes, packs, boots, weapons and armour are crafted at the forge (see Crafting). In co-op each player has their own.
+- **Everything is made at the forge** (see Crafting): weapons, armour, axes, packs, boots, the **Crystal Pick** (Tools tab, to mine crystal) and **ranged weapons** (Weapons tab, below). In co-op each player has their own.
 - **The Hero screen** (cog → Hero): your 3D hero in their gear, equipment slots, your Gear and your Materials listed separately (tap an item to see it or equip it), plus Pet, Stats, Town and Relics tabs, and your name and coat colour.
 - New gear is equipped automatically when it's better than what you have.
 
@@ -182,7 +182,7 @@ Three gold-only upgrade spaces sit around the plaza: comfort (supplies last long
 - Everyone in a co-op town shares the chest, so it's an easy way to pool hides, gems and building supplies. It is saved with the town.
 
 ## Ranged weapons
-A ranged weapon fires on its own at the nearest threat in range, alongside your axes. **Hunting Bow** (12 m), **Crossbow** (Town Hall II) and **Rifle** (Town Hall III) are forged at the blacksmith. Magic staffs come from treasure: the **Frost Staff** slows, the **Fire Staff** explodes, and the **Storm Staff** throws lightning that jumps to two more foes.
+A ranged weapon fires on its own at the nearest threat in range, alongside your axes. **Hunting Bow** (12 m), **Crossbow** (Town Hall II) and **Rifle** (Town Hall III) are forged on the forge's Weapons tab. Magic staffs come from treasure: the **Frost Staff** slows, the **Fire Staff** explodes, and the **Storm Staff** throws lightning that jumps to two more foes.
 
 ## Pets
 ![A pet wolf following you](assets/help/pet.jpg)
@@ -237,6 +237,7 @@ Cave entrances lie 200–315 m out, with more scattered through the outer lands 
 
 ## Change log
 - When you come back after an update, a **What's new** screen lists what changed since you last played. Find the full list any time under the cog: **What's new**.
+- **2.6:** the blacksmith's upgrades (bows, crossbow, rifle, crystal pick, snow and iron boots, medic tent, work sleds, watch horn, spyglasses, arrows, wall upgrades, masonry and guard drill) are now in the forge.
 - **2.5:** more yaks, fewer deer.
 - **2.4:** tap a material in the forge to see where it comes from.
 - **2.3:** animals no longer get stuck against mines, rocks and buildings.
