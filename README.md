@@ -95,7 +95,7 @@ At **Castle III** the final battles begin: each night brings a **dragon siege** 
 - Workers have health; a worker who dies drops what they carried.
 
 ## Village upgrades
-Two gold-only upgrade spaces sit around the plaza: comfort (supplies last longer) and trade (more income). The folk upgrades (Snow Boots, Medic Tent, Work Sleds, Watch Horn, Iron Boots) are now on the forge's **Tools** tab. Later upgrades wait for Town Hall II and III.
+Gold-only village upgrades are bought in the forge: **comfort** (Warm Cloaks, Smokehouse, Hearth Stones, Granary: supplies last longer) and **trade** (Market Bell, Fair Prices, Tax Office, Merchant Guild: more income) on the **Town** tab, and **folk** (Snow Boots, Medic Tent, Work Sleds, Watch Horn, Iron Boots) on the **Tools** tab. Later ones wait for Town Hall II and III; in co-op only the host buys town upgrades.
 
 ## Your hero
 ![The Hero screen](assets/help/hero.jpg)
@@ -237,6 +237,7 @@ Cave entrances lie 200–315 m out, with more scattered through the outer lands 
 
 ## Change log
 - When you come back after an update, a **What's new** screen lists what changed since you last played. Find the full list any time under the cog: **What's new**.
+- **2.7:** the comfort and trade plaza upgrades (Market Bell and the rest) are in the forge's Town tab.
 - **2.6:** the blacksmith's upgrades (bows, crossbow, rifle, crystal pick, snow and iron boots, medic tent, work sleds, watch horn, spyglasses, arrows, wall upgrades, masonry and guard drill) are now in the forge.
 - **2.5:** more yaks, fewer deer.
 - **2.4:** tap a material in the forge to see where it comes from.
