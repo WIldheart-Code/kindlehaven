@@ -273,7 +273,7 @@ html,body{height:100%;margin:0;background:var(--ice);color:var(--ink);overflow:h
 <div id="hint" class="hud">Swipe to move</div>
 <div id="paused" class="hud" hidden>Paused<small>Tap to resume</small></div>
 <div id="netbar" class="hud"><button id="cog" type="button" aria-label="Menu" aria-expanded="false"><svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M19.4 13a7.5 7.5 0 0 0 0-2l2.1-1.6-2-3.5-2.5 1a7.6 7.6 0 0 0-1.7-1L15 3h-4l-.4 2.9a7.6 7.6 0 0 0-1.7 1l-2.5-1-2 3.5L6.6 11a7.5 7.5 0 0 0 0 2l-2.1 1.6 2 3.5 2.5-1a7.6 7.6 0 0 0 1.7 1L11 21h4l.4-2.9a7.6 7.6 0 0 0 1.7-1l2.5 1 2-3.5zM13 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z" transform="translate(-1 0)"/></svg></button><span id="netTxt" hidden></span></div>
-<div id="menu" hidden><div class="box"><h2>Menu</h2><p style="margin:-4px 0 8px;text-align:center;font:800 11px var(--body);color:#8a96a8">Frosthold Outpost · version 2.11</p>
+<div id="menu" hidden><div class="box"><h2>Menu</h2><p style="margin:-4px 0 8px;text-align:center;font:800 11px var(--body);color:#8a96a8">Frosthold Outpost · version 2.12</p>
 <div class="mgrid"><button id="helpBtn" type="button">Help</button><button id="newsBtn" type="button">What's new</button><button id="reportBtn" type="button" hidden>Play report</button><button id="tutBtn" type="button">Tutorial</button><button id="coop" type="button">Co-op</button><button id="inviteBtn" type="button" hidden>Invite</button><button id="statsBtn" type="button">Hero</button><button id="pause" type="button">Pause</button><button id="mute" type="button">Sound: on</button><button id="newg" type="button">New game</button></div>
 <h3>Show on screen</h3>
 <div class="mshow"><label><input type="checkbox" data-hud="quest" checked> Goal</label><label><input type="checkbox" data-hud="qcard" checked> Quest</label><label><input type="checkbox" data-hud="town" checked> Town gauges</label><label><input type="checkbox" data-hud="res" checked> Resources</label><label><input type="checkbox" data-hud="mini" checked> Minimap</label></div>
@@ -426,9 +426,10 @@ const resName = t => t === 'ore' ? 'crystal' : t === 'cash' ? 'gold' : t === 'me
 const C = { x: 0, z: 10 };                // fort centre
 const TIERS = [12, 21, 30];               // half-size of each fort ring
 const GATE_HW = 2.5;
-const GAME_VERSION = '2.11';
+const GAME_VERSION = '2.12';
 // newest first; players who come back after an update see the entries newer than the last version they played
 const CHANGELOG = [
+  ['2.12', 'November 2026', ['Haulers and other workers walk round the side of the firewood and cookhouse stalls to drop off, instead of getting stuck behind them.']],
   ['2.11', 'November 2026', ['A Tame button on the left of the screen (once you have the Beast Charm): turn it off and you will no longer be offered taming while you fight.']],
   ['2.10', 'November 2026', ['A pet button on the left of the screen: Bold (attacks beasts and hunts animals) or Calm (only fights what is fighting you). It replaces the old rule that tied pet hunting to food collecting.']],
   ['2.9', 'November 2026', ['Build spaces show a glowing border that fills round like a clock while you stand on them; your resources are only taken once it is full.']],
@@ -1146,6 +1147,11 @@ function payToPallet(P, amt) { if (amt > 0) { S.wallet += amt; bump('cash'); } }
 /* ================= stalls (villagers buy goods → warmth/food + cash) ================= */
 const VCOLORS = [0x4f74c9, 0x7f55c4, 0xc45583, 0x3f9f92, 0xc9933f, 0x5f8a34, 0x3a8cc4];
 const stalls = [];
+// Workers coming from behind a stall walk round its side to the stand spot instead of pushing into the back of it.
+function stallPath(w, st, tx, tz) {
+  if (w.z > st.z - 0.6 && Math.abs(w.x - st.x) < 2.8) { const side = w.x >= st.x ? 1 : -1; return [st.x + side * 2.9, st.z - 0.8]; }
+  return [tx, tz];
+}
 function makeStall(cfg) {
   const s = Object.assign({ stock: 0, incoming: 0, counter: [], queue: [], dropT: 0, serveT: 0, sold: 0, received: 0, spawnT: 0 }, cfg);
   s.drop = { x: s.x, z: s.z - 2.5 };   // the stand spot, clear of the roof so it can be seen
@@ -2268,7 +2274,9 @@ function specialWorker(w, dt) {
       if (go(P.x, P.z + 1.3)) return true;
       const k = Math.min(P.n, workerCap(w)); P.n -= k; syncPile(P); w.R.item = P.type; w.fv = P.fv; workerTake(w, k); w.dest = st; w.t = 0.3; return false;
     }
-    const st = w.dest || fireStall; if (go(st.drop.x - 0.8 + (w.idx % 3) * 0.8, st.drop.z - 0.6)) return true;
+    const st = w.dest || fireStall, [sx, sz] = stallPath(w, st, st.drop.x - 0.8 + (w.idx % 3) * 0.8, st.drop.z - 0.6);
+    if (sx !== st.drop.x - 0.8 + (w.idx % 3) * 0.8) { walkTo(w, sx, sz, w.R.speed, dt); return true; }   // round the side first
+    if (go(st.drop.x - 0.8 + (w.idx % 3) * 0.8, st.drop.z - 0.6)) return true;
     w.t -= dt; if (w.t <= 0) { w.t = 0.1; const m = w.items.pop(); const wp = new THREE.Vector3(); m.getWorldPosition(wp); w.sg.remove(m); stallReceive(st, wp, w.fv); }
     return false;
   }
@@ -3589,7 +3597,7 @@ function update(dt) {
       const dest = workerDest(w);
       if (dest) {
         const toStall = !!dest.drop, tx = (toStall ? dest.drop.x : dest.x) - 0.8 + (w.idx % 3) * 0.8, tz = toStall ? dest.drop.z - 0.6 : dest.z - 1.4;
-        if (d2(w.x, w.z, tx, tz) > 0.3) { walkTo(w, tx, tz, R.speed, dt); moving = true; }
+        if (d2(w.x, w.z, tx, tz) > 0.3) { const [sx, sz] = toStall ? stallPath(w, dest, tx, tz) : [tx, tz]; walkTo(w, sx, sz, R.speed, dt); moving = true; }
         else {
           if (w.herbs) { for (const k in w.herbs) chestApply('put', k, w.herbs[k]); w.herbs = null; w.picks = 0; NET.worldT = 0; }   // gatherers put herbs and fruit in the town chest
           w.t -= dt;
