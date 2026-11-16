@@ -173,6 +173,7 @@ Three gold-only upgrade spaces sit around the plaza: comfort (supplies last long
 - You can also use them from **Hero → Materials**: tap to read what it does, then tap again.
 - Active effects show as coloured tags near the bottom of the screen with the seconds left.
 - **Salvage:** break down gear you own but aren't wearing (weapons, armour, ranged weapons, helmets, capes) for half its gold and materials back; logs, stone and crystal come back as gold. Tapping **Salvage** first shows what you would get back, then **Confirm** breaks it down (or **Cancel**). Anything you're wearing shows **Equipped** and can't be salvaged until you wear something else.
+- **Tap any material** in the forge (in the list at the top or in a recipe's costs) to see where it comes from: which creatures drop it and how often, where to forage it, and which dungeons, chests or recipes give it.
 - Materials are shown at the top of the forge, grouped into **Hides, Sinew, Metal, Alloys, Brewed, Gems, Magic and Junk**, each with its own icon (also used in recipe costs). The Hero screen lists your **Gear** and your **Materials** separately.
 
 ## Town chest
@@ -236,6 +237,7 @@ Cave entrances lie 200–315 m out, with more scattered through the outer lands 
 
 ## Change log
 - When you come back after an update, a **What's new** screen lists what changed since you last played. Find the full list any time under the cog: **What's new**.
+- **2.4:** tap a material in the forge to see where it comes from.
 - **2.3:** animals no longer get stuck against mines, rocks and buildings.
 - **2.2:** drag ⤡ under the minimap to make it any size; the What's new screen shows for every returning player.
 - **2.1:** the minimap shows workers, guards and your pet outside the walls; zoom (− / +) and three sizes (⤢); this change log.
