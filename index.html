@@ -271,7 +271,7 @@ html,body{height:100%;margin:0;background:var(--ice);color:var(--ink);overflow:h
 <div id="hint" class="hud">Swipe to move</div>
 <div id="paused" class="hud" hidden>Paused<small>Tap to resume</small></div>
 <div id="netbar" class="hud"><button id="cog" type="button" aria-label="Menu" aria-expanded="false"><svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M19.4 13a7.5 7.5 0 0 0 0-2l2.1-1.6-2-3.5-2.5 1a7.6 7.6 0 0 0-1.7-1L15 3h-4l-.4 2.9a7.6 7.6 0 0 0-1.7 1l-2.5-1-2 3.5L6.6 11a7.5 7.5 0 0 0 0 2l-2.1 1.6 2 3.5 2.5-1a7.6 7.6 0 0 0 1.7 1L11 21h4l.4-2.9a7.6 7.6 0 0 0 1.7-1l2.5 1 2-3.5zM13 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z" transform="translate(-1 0)"/></svg></button><span id="netTxt" hidden></span></div>
-<div id="menu" hidden><div class="box"><h2>Menu</h2><p style="margin:-4px 0 8px;text-align:center;font:800 11px var(--body);color:#8a96a8">Frosthold Outpost · version 2.7</p>
+<div id="menu" hidden><div class="box"><h2>Menu</h2><p style="margin:-4px 0 8px;text-align:center;font:800 11px var(--body);color:#8a96a8">Frosthold Outpost · version 2.8</p>
 <div class="mgrid"><button id="helpBtn" type="button">Help</button><button id="newsBtn" type="button">What's new</button><button id="reportBtn" type="button" hidden>Play report</button><button id="tutBtn" type="button">Tutorial</button><button id="coop" type="button">Co-op</button><button id="inviteBtn" type="button" hidden>Invite</button><button id="statsBtn" type="button">Hero</button><button id="pause" type="button">Pause</button><button id="mute" type="button">Sound: on</button><button id="newg" type="button">New game</button></div>
 <h3>Show on screen</h3>
 <div class="mshow"><label><input type="checkbox" data-hud="quest" checked> Goal</label><label><input type="checkbox" data-hud="qcard" checked> Quest</label><label><input type="checkbox" data-hud="town" checked> Town gauges</label><label><input type="checkbox" data-hud="res" checked> Resources</label><label><input type="checkbox" data-hud="mini" checked> Minimap</label></div>
@@ -424,9 +424,10 @@ const resName = t => t === 'ore' ? 'crystal' : t === 'cash' ? 'gold' : t === 'me
 const C = { x: 0, z: 10 };                // fort centre
 const TIERS = [12, 21, 30];               // half-size of each fort ring
 const GATE_HW = 2.5;
-const GAME_VERSION = '2.7';
+const GAME_VERSION = '2.8';
 // newest first; players who come back after an update see the entries newer than the last version they played
 const CHANGELOG = [
+  ['2.8', 'November 2026', ['You can hunt animals even with food collecting turned off (the food stays on the ground).', 'Your pet no longer charges beasts far tougher than it, unless you attack them or they attack you.', 'Tame creatures far weaker than you straight away, without wounding them first.']],
   ['2.7', 'November 2026', ['The plaza upgrades are in the forge too (Town tab): Warm Cloaks, Smokehouse, Hearth Stones and Granary, and Market Bell, Fair Prices, Tax Office and Merchant Guild.']],
   ['2.6', 'November 2026', ['All the blacksmith upgrades are in the forge now: bows, crossbow and rifle (Weapons tab), crystal pick, snow and iron boots, medic tent, work sleds and watch horn (Tools tab), and spyglasses, arrows, wall upgrades, masonry and guard drill (Town tab).']],
   ['2.5', 'November 2026', ['More yak herds roam the meadows (50, up from 22) and fewer deer (15, down from 30).']],
@@ -2818,9 +2819,11 @@ function tameKind(e) { const k = e.sp || e.type; return TAME[k] ? k : null; }
 function isWeakTame(e) { const k = tameKind(e); return !!(S.tamer && k && !e.noTame && e.alive && e.hp > 0 && e.hp / e.max <= TAME[k].at); }
 function grantCharm(why) { if (S.tamer) return; S.tamer = true; banner('Beast Charm!', true, (why ? why + ': ' : '') + 'weaken a rabbit, eagle, wolf, bear, raptor, tiger, T-rex or dragon, then tap Tame'); play('treasure'); }
 let tameTgt = null, taming = 0, pet = null;
+// a creature far weaker than you can be tamed straight away, no fight needed
+const easyTame = e => { const k = tameKind(e); return !!(S.tamer && k && !e.noTame && e.alive && e.kind !== 'enemy' && e.max <= heroMax() * 0.2); };
 function tameCandidate() {
   if (!S.tamer || S.downT > 0) return null; let b = null, bd = 5 * 5;
-  for (const list of [wilds, enemies, yaks]) for (const e of list) if (isWeakTame(e)) { const d = d2(e.x, e.z, player.x, player.z); if (d < bd) { bd = d; b = e; } }
+  for (const list of [wilds, enemies, yaks]) for (const e of list) if (isWeakTame(e) || easyTame(e)) { const d = d2(e.x, e.z, player.x, player.z); if (d < bd) { bd = d; b = e; } }
   return b;
 }
 function updateTaming(dt) {
@@ -2870,8 +2873,11 @@ function hurtPet(dmg) {
 function updatePet(dt) {
   if (S.pet && !pet) spawnPet(); if (!pet) return;
   const P = S.pet, T = pet.T, reach = 1.2 + T.size * 0.6;
-  if (!pet.tgt || !pet.tgt.alive || d2(pet.tgt.x, pet.tgt.z, player.x, player.z) > 22 * 22) { pet.tgt = (threats(player.x, player.z, 14).find(t => !isWeakTame(t[1])) || [])[1] || null;   // threats first, then game nearby
-    if (!pet.tgt) pet.tgt = nearest(wilds, w => w.alive && !w.noTame && !isWeakTame(w) && d2(w.x, w.z, player.x, player.z) < 12 * 12) || null;   // beasts and camp monsters near you, even before they notice you
+  // a beast much tougher than the pet is only fought once you've attacked it or it has attacked you or your pet
+  const tooTough = t => t.kind === 'wild' && t.max > P.max * 1.6 && !(time - (t.youHitT || -99) < 12 || time - (t.hitYouT || -99) < 12);
+  if (pet.tgt && tooTough(pet.tgt)) pet.tgt = null;
+  if (!pet.tgt || !pet.tgt.alive || d2(pet.tgt.x, pet.tgt.z, player.x, player.z) > 22 * 22) { pet.tgt = (threats(player.x, player.z, 14).find(t => !isWeakTame(t[1]) && !tooTough(t[1])) || [])[1] || null;   // threats first, then game nearby
+    if (!pet.tgt) pet.tgt = nearest(wilds, w => w.alive && !w.noTame && !isWeakTame(w) && !tooTough(w) && d2(w.x, w.z, player.x, player.z) < 12 * 12) || null;   // beasts and camp monsters near you, even before they notice you
     if (!pet.tgt && !S.noCollect.meat) pet.tgt = nearest(yaks, y => y.alive && !isWeakTame(y) && d2(y.x, y.z, player.x, player.z) < 14 * 14) || null; }
   let tx, tz, moving = false; const t = pet.tgt;
   if (t) { tx = t.x; tz = t.z; } else { tx = player.x - Math.sin(player.rot) * 2.2 + 1; tz = player.z - Math.cos(player.rot) * 2.2; }
@@ -2880,7 +2886,7 @@ function updatePet(dt) {
   else if (d > (t ? reach : 0.6)) { const sp = T.speed * 1.5 * (t ? 1 : Math.min(1.4, d / 2.5)); if (T.fly) { pet.x += (tx - pet.x) / d * sp * dt; pet.z += (tz - pet.z) / d * sp * dt; } else stepNPC(pet, (tx - pet.x) / d * sp * dt, (tz - pet.z) / d * sp * dt, 0.25 + T.size * 0.25); moving = true; pet.rot = turnTo(pet.rot, Math.atan2(tx - pet.x, tz - pet.z), 0.25); }
   else if (t) { pet.rot = turnTo(pet.rot, Math.atan2(tx - pet.x, tz - pet.z), 0.3); pet.atk -= dt;
     if (pet.atk <= 0) { pet.atk = 1; const dmg = (S.pet.dmg || T.dmg * (1 + (S.lvl - 1) * 0.08)) * (1 + ((S.pet.lvl || 1) - 1) * 0.15), k = t.kind === 'enemy' ? 0 : t.kind === 'wild' ? 4 : 1;
-      S.pet.dealt = (S.pet.dealt || 0) + dmg; hitTarget(k, t, dmg); if (!t.alive || t.hp <= 0) { petXP(12 + (t.T ? t.T.xp : t.xp || 6)); const P = S.pet; if (P) { P.kills = (P.kills || 0) + 1; if (t.kind === 'yak') P.hunts = (P.hunts || 0) + 1; if (t.kind === 'enemy') P.raiders = (P.raiders || 0) + 1; } } else petXP(2); if (T.breath) { burst(t.x, 1, t.z, 0x9fe8ff, 14, 3); for (const n of threats(t.x, t.z, 3.5)) if (n[1] !== t) hitTarget(n[0], n[1], dmg * 0.5); } } }
+      S.pet.dealt = (S.pet.dealt || 0) + dmg; petStrike = true; hitTarget(k, t, dmg); petStrike = false; if (!t.alive || t.hp <= 0) { petXP(12 + (t.T ? t.T.xp : t.xp || 6)); const P = S.pet; if (P) { P.kills = (P.kills || 0) + 1; if (t.kind === 'yak') P.hunts = (P.hunts || 0) + 1; if (t.kind === 'enemy') P.raiders = (P.raiders || 0) + 1; } } else petXP(2); if (T.breath) { burst(t.x, 1, t.z, 0x9fe8ff, 14, 3); for (const n of threats(t.x, t.z, 3.5)) if (n[1] !== t) hitTarget(n[0], n[1], dmg * 0.5); } } }
   if (!t && (pet.hurtT = (pet.hurtT || 0) - dt) <= 0) P.hp = Math.min(P.max, P.hp + P.max * 0.02 * dt);
   if (moving) pet.walkT += dt;
   pet.g.position.set(pet.x, T.fly ? 2.2 + Math.sin(time * 2) * 0.3 : 0, pet.z); pet.g.rotation.y = pet.rot;
@@ -3099,7 +3105,7 @@ function playerAttack() {
   const A = AXE[S.axe], R2 = A.range * A.range, cands = [], dmg = A.dmg * heroDmg();
   for (const e of enemies) if (e.alive && !isWeakTame(e) && d2(e.x, e.z, player.x, player.z) < R2 * (e.type === 'yeti' ? 1.6 : 1.1)) cands.push([0, e]);
   for (const m of wilds) if (m.alive && !isWeakTame(m) && d2(m.x, m.z, player.x, player.z) < (A.range + m.T.size * 0.6) ** 2) cands.push([4, m]);
-  for (const y of yaks) if (y.alive && !isWeakTame(y) && (!S.noCollect.meat || (y.sp === 'boar' && y.flee > 0)) && d2(y.x, y.z, player.x, player.z) < R2 * 1.1 + (y.A && y.A.fly ? 4 : 0)) cands.push([1, y]);   // food off: leave animals be (but fight off a charging boar)
+  for (const y of yaks) if (y.alive && !isWeakTame(y) && d2(y.x, y.z, player.x, player.z) < R2 * 1.1 + (y.A && y.A.fly ? 4 : 0)) cands.push([1, y]);   // food off: leave animals be (but fight off a charging boar)
   if (!S.noCollect.log) for (const t of trees) if (t.alive && t.choppable && d2(t.x, t.z, player.x, player.z) < R2) cands.push([2, t]);
   for (const r of rocks) if (r.alive && !r.hidden && !S.noCollect[r.item] && d2(r.x, r.z, player.x, player.z) < (Math.sqrt(R2) + 1.2) ** 2) { if (r.kind === 'gold' && !S.pick) { note('Crystal needs a crystal pick (Blacksmith, Town Hall II)'); continue; } cands.push([3, r]); }
   if (!cands.length) return false;
@@ -4307,8 +4313,10 @@ function spawnCamp(far, opts) {
   if (opts) { camp.elite = opts.name; camp.tag.textContent = opts.name; }
   wildCamps.push(camp); return camp;
 }
+let petStrike = false;
 function damageWild(w, dmg) {
   if (!w.alive || (taming > 0 && w === tameTgt)) return;
+  if (!petStrike) w.youHitT = time;   // the player (or their bow) started this fight
   w.hp -= dmg; w.shake = 0.25; w.aggro = true; burst(w.x, 1, w.z, 0x9aa4b1, 3, 2); play('hit');
   w.camp.guards.forEach(o => { if (d2(o.x, o.z, w.x, w.z) < 100) o.aggro = true; });
   if (w.hp <= 0) {
@@ -4608,7 +4616,7 @@ function updateWilds(dt) {
       const RG = T.ranged; w.rcd = (w.rcd || rand(0.5, 1.5)) - dt;
       if (RG && da > reach + 1.5 && da < RG.rng) { if (w.rcd <= 0) { w.rcd = RG.cd; monsterShot(w, RG, ax, az, T.dmg * 1.2 * (1 + S.th * 0.25) * w.dm * nightMean(), vsPet); } }   // stand off and throw
       else if (da > reach) { stepNPC(w, (ax - w.x) / da * T.speed * dt, (az - w.z) / da * T.speed * dt, 0.2 + T.size * 0.3); moving = true; }
-      else { w.atkT -= dt; if (w.atkT <= 0) { w.atkT = 1.1; w.shake = 0.15; const hit = T.dmg * 1.7 * (1 + S.th * 0.25) * w.dm * nightMean(); if (vsPet) hurtPet(hit); else hurtHero(hit); } }
+      else { w.atkT -= dt; if (w.atkT <= 0) { w.atkT = 1.1; w.shake = 0.15; const hit = T.dmg * 1.7 * (1 + S.th * 0.25) * w.dm * nightMean(); w.hitYouT = time; if (vsPet) hurtPet(hit); else hurtHero(hit); } }
       w.rot = turnTo(w.rot, Math.atan2(ax - w.x, az - w.z), 0.2);
     } else if (dh > 0.4) {
       stepNPC(w, (w.hx - w.x) / dh * T.speed * 0.6 * dt, (w.hz - w.z) / dh * T.speed * 0.6 * dt, 0.2 + T.size * 0.3); moving = true;
