@@ -270,7 +270,7 @@ html,body{height:100%;margin:0;background:var(--ice);color:var(--ink);overflow:h
 <div id="hint" class="hud">Swipe to move</div>
 <div id="paused" class="hud" hidden>Paused<small>Tap to resume</small></div>
 <div id="netbar" class="hud"><button id="cog" type="button" aria-label="Menu" aria-expanded="false"><svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M19.4 13a7.5 7.5 0 0 0 0-2l2.1-1.6-2-3.5-2.5 1a7.6 7.6 0 0 0-1.7-1L15 3h-4l-.4 2.9a7.6 7.6 0 0 0-1.7 1l-2.5-1-2 3.5L6.6 11a7.5 7.5 0 0 0 0 2l-2.1 1.6 2 3.5 2.5-1a7.6 7.6 0 0 0 1.7 1L11 21h4l.4-2.9a7.6 7.6 0 0 0 1.7-1l2.5 1 2-3.5zM13 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z" transform="translate(-1 0)"/></svg></button><span id="netTxt" hidden></span></div>
-<div id="menu" hidden><div class="box"><h2>Menu</h2><p style="margin:-4px 0 8px;text-align:center;font:800 11px var(--body);color:#8a96a8">Frosthold Outpost · version 2.2</p>
+<div id="menu" hidden><div class="box"><h2>Menu</h2><p style="margin:-4px 0 8px;text-align:center;font:800 11px var(--body);color:#8a96a8">Frosthold Outpost · version 2.3</p>
 <div class="mgrid"><button id="helpBtn" type="button">Help</button><button id="newsBtn" type="button">What's new</button><button id="reportBtn" type="button" hidden>Play report</button><button id="tutBtn" type="button">Tutorial</button><button id="coop" type="button">Co-op</button><button id="inviteBtn" type="button" hidden>Invite</button><button id="statsBtn" type="button">Hero</button><button id="pause" type="button">Pause</button><button id="mute" type="button">Sound: on</button><button id="newg" type="button">New game</button></div>
 <h3>Show on screen</h3>
 <div class="mshow"><label><input type="checkbox" data-hud="quest" checked> Goal</label><label><input type="checkbox" data-hud="qcard" checked> Quest</label><label><input type="checkbox" data-hud="town" checked> Town gauges</label><label><input type="checkbox" data-hud="res" checked> Resources</label><label><input type="checkbox" data-hud="mini" checked> Minimap</label></div>
@@ -423,9 +423,10 @@ const resName = t => t === 'ore' ? 'crystal' : t === 'cash' ? 'gold' : t === 'me
 const C = { x: 0, z: 10 };                // fort centre
 const TIERS = [12, 21, 30];               // half-size of each fort ring
 const GATE_HW = 2.5;
-const GAME_VERSION = '2.2';
+const GAME_VERSION = '2.3';
 // newest first; players who come back after an update see the entries newer than the last version they played
 const CHANGELOG = [
+  ['2.3', 'November 2026', ['Deer, rabbits and other animals no longer get stuck against mines, rocks and buildings.']],
   ['2.2', 'November 2026', ['Resize the minimap to any size: drag the ⤡ button under it.', 'The "What\'s new" screen now shows for everyone who played before an update.']],
   ['2.1', 'November 2026', ['The minimap shows your workers, guards and pet when they are outside the walls (on the rim if they are off the map).', 'Zoom the minimap in and out with − and +, and make it small, medium or large with ⤢.', 'This "What\'s new" screen and a change log in the menu.']],
   ['2.0', 'November 2026', ['Crafting: forge weapons, armour, axes, packs and boots from hides, sinew and metal at the blacksmith, and salvage old gear.', 'Smelt & Brew: discover secret smelter and pot recipes for metals, alloys, potions and meals. The town teaches the basics as it grows.', 'Potions and meals give timed boosts; drink them from the 🧪 drawer.', 'Foraging: pick berries, roots, herbs, stone piles and the odd ice shard. Hire gatherers.', 'Food now has fullness: meat fills people most, berries least.', 'A shared town chest, rare and legendary gear, special items, recipe scrolls and town supplies for walls and towers.', 'The world now reaches 1200 m to the mountains, with deadlier camps and epic dungeons at the edge.', 'Tame raptors and T-rexes; pets fight beasts near you.']],
@@ -3303,7 +3304,10 @@ function update(dt) {
     }
     else if (y.flee > 0) { y.flee -= dt; sp = y.A ? y.A.flee : 3.2; }
     else if (y.idle > 0) y.idle -= dt;
-    else { sp = y.A ? y.A.walk : 1.1; if (d2(y.x, y.z, y.tx, y.tz) < 0.3 || inSquare(y.tx, y.tz, outerRing().h + 3)) { y.idle = rand(1, 4); y.tx = y.hx + rand(-9, 9); y.tz = y.hz + rand(-9, 9); } }
+    else { sp = y.A ? y.A.walk : 1.1; if (d2(y.x, y.z, y.tx, y.tz) < 0.3 || inSquare(y.tx, y.tz, outerRing().h + 3)) { y.idle = rand(1, 4); for (let k = 0; k < 6; k++) { y.tx = y.hx + rand(-9, 9); y.tz = y.hz + rand(-9, 9); const [px, pz] = pushOut(y.tx, y.tz, 0.8); if (px === y.tx && pz === y.tz) break; } }   /* skip spots inside obstacles */ }
+    // animals that walk into a mine, rock or building give up and pick a new spot instead of pushing against it forever
+    if (sp > 0) { y.chk = (y.chk || 0) + dt; if (y.chk > 1.2) { const dNow = Math.hypot(y.tx - y.x, y.tz - y.z), gained = y.cx === undefined || y.ctx !== y.tx ? 9 : y.cx - dNow; y.chk = 0; y.cx = dNow; y.ctx = y.tx;
+        if (gained < sp * 0.4) { const a2 = rand(0, TAU); y.tx = y.x + Math.cos(a2) * 8; y.tz = y.z + Math.sin(a2) * 8; if (y.flee <= 0) y.idle = rand(0.5, 2); } } }
     if (sp > 0) { const dx = y.tx - y.x, dz = y.tz - y.z, L = Math.hypot(dx, dz); if (L > 0.1) { if (y.A && y.A.fly) { y.x += dx / L * sp * dt; y.z += dz / L * sp * dt; } else stepNPC(y, dx / L * sp * dt, dz / L * sp * dt, 0.35 * (y.A ? y.A.size / 2 : 1)); y.rot = turnTo(y.rot, Math.atan2(dx, dz), 0.12); y.walkT += dt * sp; } }
     }
     const s = y.shake > 0 ? 1 + Math.sin((y.shake -= dt) * 40) * 0.08 : 1;

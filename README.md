@@ -236,6 +236,7 @@ Cave entrances lie 200–315 m out, with more scattered through the outer lands 
 
 ## Change log
 - When you come back after an update, a **What's new** screen lists what changed since you last played. Find the full list any time under the cog: **What's new**.
+- **2.3:** animals no longer get stuck against mines, rocks and buildings.
 - **2.2:** drag ⤡ under the minimap to make it any size; the What's new screen shows for every returning player.
 - **2.1:** the minimap shows workers, guards and your pet outside the walls; zoom (− / +) and three sizes (⤢); this change log.
 - **2.0:** crafting at the forge, Smelt & Brew with secret recipes, potions and meals with timed boosts, foraging and gatherers, food fullness, the town chest, rare/legendary/special gear and recipe scrolls, town supplies, a 1200 m world with epic dungeons, and taming raptors and T-rexes.
