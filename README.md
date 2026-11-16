@@ -240,8 +240,8 @@ Cave entrances lie 200–315 m out, with more scattered through the outer lands 
 
 ## Change log
 - When you come back after an update, a **What's new** screen lists what changed since you last played. Find the full list any time under the cog: **What's new**.
-- **3.1:** a Tame on/off button stops taming offers while you fight.
-- **3.0:** a Bold/Calm pet button decides whether your pet attacks beasts and hunts (it no longer depends on food collecting).
+- **2.11:** a Tame on/off button stops taming offers while you fight.
+- **2.10:** a Bold/Calm pet button decides whether your pet attacks beasts and hunts (it no longer depends on food collecting).
 - **2.9:** build spaces fill a border like a clock before taking your resources.
 - **2.8:** hunt animals with food collecting off; pets avoid far tougher beasts unless the fight is on; tame much weaker creatures without fighting.
 - **2.7:** the comfort and trade plaza upgrades (Market Bell and the rest) are in the forge's Town tab.
