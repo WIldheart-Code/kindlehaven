@@ -11,7 +11,7 @@ Open `index.html` in a browser. There is no build step; three.js r128 loads from
 ![Chopping: logs stack on your back](assets/help/chop.jpg)
 - **Move:** swipe (drag) anywhere on the screen for a floating joystick, or use WASD / arrow keys.
 - **Gather:** your axe swings on its own at trees, rocks, animals and enemies in reach. What you gather stacks on your back.
-- **Build and buy:** stand on a build space for a moment and it starts taking what you carry and your gold (the short pause stops you paying by accident when you walk across one).
+- **Build and buy:** stand on a build space and a glowing border fills around it like a clock. When it's full (about a second), it takes what you carry and your gold. Step off before then and nothing is paid, so you can't pay by accident by walking across one.
 - **Sell:** stand in the dashed spot behind a stall's counter to hand over logs (firewood stall) or food (cookhouse). Villagers buy them for gold.
 - **The GOAL card** (top left) always says what to do next; the orange arrow on the ground points the way.
 - A new game starts with a short **Tutorial**; **Skip tutorial** closes it, and **Tutorial** in the cog menu replays it.
@@ -238,6 +238,7 @@ Cave entrances lie 200–315 m out, with more scattered through the outer lands 
 
 ## Change log
 - When you come back after an update, a **What's new** screen lists what changed since you last played. Find the full list any time under the cog: **What's new**.
+- **2.9:** build spaces fill a border like a clock before taking your resources.
 - **2.8:** hunt animals with food collecting off; pets avoid far tougher beasts unless the fight is on; tame much weaker creatures without fighting.
 - **2.7:** the comfort and trade plaza upgrades (Market Bell and the rest) are in the forge's Town tab.
 - **2.6:** the blacksmith's upgrades (bows, crossbow, rifle, crystal pick, snow and iron boots, medic tent, work sleds, watch horn, spyglasses, arrows, wall upgrades, masonry and guard drill) are now in the forge.
