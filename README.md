@@ -77,7 +77,15 @@ Finishing a new wall ring tears down the old one and clears the forest inside it
 
 ## Castle and the final battles
 ![A castle keep: stone walls and cobbled ground](assets/help/castle.jpg)
-After Town Hall III and the citadel wall, the Town Hall space offers **Castle I, II and III**. Each level:
+After Town Hall III and the citadel wall, the Town Hall space offers **Castle I, II and III**. They need smelted metal and glass from the forge (paid from your materials when you stand on the space) as well as stone and lots of gold:
+
+| Level | Cost |
+|---|---|
+| Castle I | 120 stone, 100 logs, 25 Iron Ingots, 10 Frost Glass, 2000 gold |
+| Castle II | 160 stone, 40 crystal, 30 Iron Ingots, 25 Steel Bars, 4000 gold |
+| Castle III | 200 stone, 80 crystal, 35 Steel Bars, 15 Runesteel, 20 Frost Glass, 8000 gold |
+
+Each level:
 - turns the hall into a bigger stone keep, every wall into brick stone with battlements, towers into round stone towers, gates into stone gatehouses, and paves the keep with cobblestones;
 - makes walls, towers and guards much stronger, adds housing, and allows two more **guard battalions** (Train Battalion raises three guards at once);
 - also makes the nightly raids much bigger and tougher.
@@ -240,6 +248,7 @@ Cave entrances lie 200–315 m out, with more scattered through the outer lands 
 
 ## Change log
 - When you come back after an update, a **What's new** screen lists what changed since you last played. Find the full list any time under the cog: **What's new**.
+- **2.13:** castle upgrades need smelted Iron, Steel, Runesteel and Frost Glass, and cost more gold.
 - **2.12:** workers walk round the stalls to drop off instead of getting stuck behind them.
 - **2.11:** a Tame on/off button stops taming offers while you fight.
 - **2.10:** a Bold/Calm pet button decides whether your pet attacks beasts and hunts (it no longer depends on food collecting).
