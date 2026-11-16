@@ -40,8 +40,8 @@ All food counts as one resource, **food** (the bowl counter): meat you hunt, veg
 - **Stone piles:** the small mounds of grey rocks lying around the wilds can be gathered: walk into one for 3 stone (if your pack has room and stone collecting is on). It's back about 5 minutes later.
 - **Ice shards:** now and then (rarely, and never right by town) a little cluster of blue ice crystals pokes out of the snow. Walk into it for 1 crystal; it regrows after about 15 minutes.
 - **Herbs** grow in the wilds too: **Frostmint** (pale green, everywhere), **Nightshade** (purple, 80 m and out), **Ember Root** (orange, 110 m and out) and **Moonpetal** (white, rare, 190 m and out). They're potion ingredients, not food.
-- **Rabbits** (1 food) and **deer** (2–3 food) graze in large numbers around the settlement.
-- **Yaks** (5–6 food) and **boars** (5–6 food, they charge back when hurt) keep to the far meadows, 130 m and more out. **Eagles** circle the far meadows too.
+- **Rabbits** (1 food) graze in large numbers around the settlement; **deer** (2–3 food) are fewer.
+- **Yaks** (5–6 food, the most common big game) and **boars** (5–6 food, they charge back when hurt) keep to the far meadows, 130 m and more out. **Eagles** circle the far meadows too.
 - **Garden** (after the cookhouse): veggies pile up beside it, fastest in summer.
 - **Fishery** (Town Hall II) and **fishing** (see below).
 
@@ -237,6 +237,7 @@ Cave entrances lie 200–315 m out, with more scattered through the outer lands 
 
 ## Change log
 - When you come back after an update, a **What's new** screen lists what changed since you last played. Find the full list any time under the cog: **What's new**.
+- **2.5:** more yaks, fewer deer.
 - **2.4:** tap a material in the forge to see where it comes from.
 - **2.3:** animals no longer get stuck against mines, rocks and buildings.
 - **2.2:** drag ⤡ under the minimap to make it any size; the What's new screen shows for every returning player.
