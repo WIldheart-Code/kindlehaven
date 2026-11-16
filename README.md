@@ -191,6 +191,7 @@ A ranged weapon fires on its own at the nearest threat in range, alongside your 
 - **Much weaker creatures** (with a fifth of your health or less, such as rabbits and young wolves) can be tamed straight away, no fighting needed: walk up and tap Tame.
 - Stand still beside it for two seconds. While you tame it, nothing (your bow, pet, towers or teammates) can finish it off. A failed attempt lets it recover some health.
 - Name your pet when you tame it, and rename it from the Hero screen.
+- **Taming on or off:** once you have the Beast Charm, a 🪢 **Tame** button on the left of the screen switches taming offers on (purple) or off (grey). With it off you just fight: no Tame button pops up when a creature is weak. It's remembered.
 - **Bold or Calm:** a 🐾 button on the left of the screen sets your pet's mood. **Bold** (red): it attacks beasts and camp monsters near you and hunts animals. **Calm** (green): it only fights what is already fighting you or your pet, or what you attack. Tap to switch; it's remembered.
 - A pet keeps 70% of its wild health and damage and is 80% of its wild size. It follows you, fights threats and any beast or camp monster within about 12 m of you (even before they spot you). It leaves beasts much tougher than itself alone unless you attack them or they attack you or your pet. It hunts nearby animals when it's quiet, heals between fights, and **levels up** (+15% damage and more health each level).
 - The **Pet** tab in the Hero screen shows your pet in 3D with its level, experience, health, damage, speed, total kills, raiders defeated, animals hunted, damage dealt and the day you tamed it.
@@ -239,6 +240,7 @@ Cave entrances lie 200–315 m out, with more scattered through the outer lands 
 
 ## Change log
 - When you come back after an update, a **What's new** screen lists what changed since you last played. Find the full list any time under the cog: **What's new**.
+- **3.1:** a Tame on/off button stops taming offers while you fight.
 - **3.0:** a Bold/Calm pet button decides whether your pet attacks beasts and hunts (it no longer depends on food collecting).
 - **2.9:** build spaces fill a border like a clock before taking your resources.
 - **2.8:** hunt animals with food collecting off; pets avoid far tougher beasts unless the fight is on; tame much weaker creatures without fighting.
