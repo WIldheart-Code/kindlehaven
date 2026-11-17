@@ -152,9 +152,9 @@ html,body{height:100%;margin:0;background:var(--ice);color:var(--ink);overflow:h
 #lobby button:focus-visible,#lobby input:focus-visible{outline:3px solid var(--ember);outline-offset:2px}
 #pubSplash{position:fixed;inset:0;z-index:61;background:#fdfbf7;display:flex;align-items:center;justify-content:center;transition:opacity .45s}#pubSplash.out{opacity:0;pointer-events:none}
 .ps-logo{position:relative;width:min(78vw,520px);aspect-ratio:1600/359}.ps-logo img{position:absolute;inset:0;width:100%;height:100%}
-.ps-logo:not(.go) *{visibility:hidden}.go .ps-wild{animation:psL .65s cubic-bezier(.2,.9,.3,1.25) both}.go .ps-heart{animation:psR .65s .08s cubic-bezier(.2,.9,.3,1.25) both}.go .ps-gaming{animation:psG .6s .9s ease-out both}
+.ps-logo:not(.go) *{visibility:hidden}.go .ps-wild{animation:psL .75s ease-out both}.go .ps-heart{animation:psR .75s ease-out both}.go .ps-gaming{animation:psG .6s .9s ease-out both}
 .ps-logo.go{animation:psBeat .7s .75s ease-in-out both}
-@keyframes psL{from{transform:translateX(-70vw) rotate(-8deg);opacity:0}to{transform:none;opacity:1}}@keyframes psR{from{transform:translateX(70vw) rotate(8deg);opacity:0}to{transform:none;opacity:1}}
+@keyframes psL{0%{transform:translateX(-70vw) rotate(-8deg);opacity:0}70%{transform:none;opacity:1}84%{transform:translateX(-1.6%)}100%{transform:none;opacity:1}}@keyframes psR{0%{transform:translateX(70vw) rotate(8deg);opacity:0}70%{transform:none;opacity:1}84%{transform:translateX(1.6%)}100%{transform:none;opacity:1}}
 @keyframes psG{from{clip-path:inset(0 50% 0 50%);opacity:0}to{clip-path:inset(0 0 0 0);opacity:1}}@keyframes psBeat{0%,100%{transform:scale(1)}20%{transform:scale(1.09)}40%{transform:scale(.98)}60%{transform:scale(1.05)}}
 .ps-logo i{position:absolute;left:42%;top:10%;width:18px;height:18px;opacity:0}.go i{animation:psH 1.2s ease-out both}.ps-logo i::before,.ps-logo i::after{content:'';position:absolute;width:10px;height:16px;background:#d81b5f;border-radius:10px 10px 0 0;left:5px;transform:rotate(-45deg);transform-origin:0 100%}.ps-logo i::after{left:-5px;transform:rotate(45deg);transform-origin:100% 100%}
 .go i:nth-of-type(1){animation-delay:.8s;--x:-60px}.go i:nth-of-type(2){animation-delay:.9s;--x:40px}.go i:nth-of-type(3){animation-delay:1s;--x:-10px}.go i:nth-of-type(4){animation-delay:1.1s;--x:80px}.go i:nth-of-type(5){animation-delay:1.2s;--x:-100px}
@@ -297,7 +297,7 @@ html,body{height:100%;margin:0;background:var(--ice);color:var(--ink);overflow:h
 <div id="hint" class="hud">Swipe to move</div>
 <div id="paused" class="hud" hidden>Paused<small>Tap to resume</small></div>
 <div id="netbar" class="hud"><button id="cog" type="button" aria-label="Menu" aria-expanded="false"><svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M19.4 13a7.5 7.5 0 0 0 0-2l2.1-1.6-2-3.5-2.5 1a7.6 7.6 0 0 0-1.7-1L15 3h-4l-.4 2.9a7.6 7.6 0 0 0-1.7 1l-2.5-1-2 3.5L6.6 11a7.5 7.5 0 0 0 0 2l-2.1 1.6 2 3.5 2.5-1a7.6 7.6 0 0 0 1.7 1L11 21h4l.4-2.9a7.6 7.6 0 0 0 1.7-1l2.5 1 2-3.5zM13 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z" transform="translate(-1 0)"/></svg></button><span id="netTxt" hidden></span></div>
-<div id="menu" hidden><div class="box"><h2>Menu</h2><p style="margin:-4px 0 8px;text-align:center;font:800 11px var(--body);color:#8a96a8">Kindlehaven · version 2.14</p>
+<div id="menu" hidden><div class="box"><h2>Menu</h2><p style="margin:-4px 0 8px;text-align:center;font:800 11px var(--body);color:#8a96a8">Kindlehaven · version 2.15</p>
 <div class="mgrid"><button id="helpBtn" type="button">Help</button><button id="newsBtn" type="button">What's new</button><button id="reportBtn" type="button" hidden>Play report</button><button id="tutBtn" type="button">Tutorial</button><button id="coop" type="button">Co-op</button><button id="inviteBtn" type="button" hidden>Invite</button><button id="statsBtn" type="button">Hero</button><button id="pause" type="button">Pause</button><button id="mute" type="button">Sound: on</button><button id="newg" type="button">New game</button></div>
 <h3>Show on screen</h3>
 <div class="mshow"><label><input type="checkbox" data-hud="quest" checked> Goal</label><label><input type="checkbox" data-hud="qcard" checked> Quest</label><label><input type="checkbox" data-hud="town" checked> Town gauges</label><label><input type="checkbox" data-hud="res" checked> Resources</label><label><input type="checkbox" data-hud="mini" checked> Minimap</label></div>
@@ -461,9 +461,10 @@ const resName = t => t === 'ore' ? 'crystal' : t === 'cash' ? 'gold' : t === 'me
 const C = { x: 0, z: 10 };                // fort centre
 const TIERS = [12, 21, 30];               // half-size of each fort ring
 const GATE_HW = 2.5;
-const GAME_VERSION = '2.14';
+const GAME_VERSION = '2.15';
 // newest first; players who come back after an update see the entries newer than the last version they played
 const CHANGELOG = [
+  ['2.15', 'November 2026', ['The Wildheart Gaming logo now clicks together neatly instead of the two words sliding past each other.']],
   ['2.14', 'November 2026', ['Frosthold Outpost is now Kindlehaven, with a new title screen.', 'Create your hero: pick a name, a look, a coat colour and any skin colour (Menu → Hero → Change look and skin).', 'Forge: press F to open it, and every recipe now shows its costs at a glance (green when you have enough, red when you are short).']],
   ['2.13', 'November 2026', ['Castle upgrades now need smelted Iron, Steel, Runesteel and Frost Glass as well as stone, and cost much more gold (2000, 4000 and 8000).']],
   ['2.12', 'November 2026', ['Haulers and other workers walk round the side of the firewood and cookhouse stalls to drop off, instead of getting stuck behind them.']],
