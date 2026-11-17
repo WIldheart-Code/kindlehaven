@@ -1,7 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<resources>
-    <string name="app_name">Frosthold Outpost</string>
-    <string name="title_activity_main">Frosthold Outpost</string>
-    <string name="package_name">com.frosthold.outpost</string>
-    <string name="custom_url_scheme">com.frosthold.outpost</string>
-</resources>
