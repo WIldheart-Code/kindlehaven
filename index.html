@@ -5137,7 +5137,7 @@ function netTick(dt) {
 // The link friends open. Inside the viewer the page runs on a sandboxed origin, so use the artifact's own address.
 const INVITE_URL = 'https://claude.ai/artifact/DmUogvxzfRxUSDKnoTeB3L';
 let qrMade = false;
-function inviteUrl() { return ON_CLAUDE ? INVITE_URL : location.origin + location.pathname + '#join-' + ROOM_CODE; }
+function inviteUrl() { return ON_CLAUDE ? INVITE_URL : window.FROST_WEB_URL ? window.FROST_WEB_URL + '#join-' + ROOM_CODE : location.origin + location.pathname + '#join-' + ROOM_CODE; }   // the phone apps invite friends to the web version (same rooms)
 function showInvite() {
   const url = inviteUrl();
   $('invite').hidden = false; $('inviteUrl').textContent = ON_CLAUDE ? url : 'Room code ' + ROOM_CODE + '  ·  ' + url;
