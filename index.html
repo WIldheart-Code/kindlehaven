@@ -297,7 +297,7 @@ html,body{height:100%;margin:0;background:var(--ice);color:var(--ink);overflow:h
 <div id="hint" class="hud">Swipe to move</div>
 <div id="paused" class="hud" hidden>Paused<small>Tap to resume</small></div>
 <div id="netbar" class="hud"><button id="cog" type="button" aria-label="Menu" aria-expanded="false"><svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M19.4 13a7.5 7.5 0 0 0 0-2l2.1-1.6-2-3.5-2.5 1a7.6 7.6 0 0 0-1.7-1L15 3h-4l-.4 2.9a7.6 7.6 0 0 0-1.7 1l-2.5-1-2 3.5L6.6 11a7.5 7.5 0 0 0 0 2l-2.1 1.6 2 3.5 2.5-1a7.6 7.6 0 0 0 1.7 1L11 21h4l.4-2.9a7.6 7.6 0 0 0 1.7-1l2.5 1 2-3.5zM13 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z" transform="translate(-1 0)"/></svg></button><span id="netTxt" hidden></span></div>
-<div id="menu" hidden><div class="box"><h2>Menu</h2><p style="margin:-4px 0 8px;text-align:center;font:800 11px var(--body);color:#8a96a8">Kindlehaven · version 2.16</p>
+<div id="menu" hidden><div class="box"><h2>Menu</h2><p style="margin:-4px 0 8px;text-align:center;font:800 11px var(--body);color:#8a96a8">Kindlehaven · version 2.17</p>
 <div class="mgrid"><button id="helpBtn" type="button">Help</button><button id="newsBtn" type="button">What's new</button><button id="reportBtn" type="button" hidden>Play report</button><button id="tutBtn" type="button">Tutorial</button><button id="coop" type="button">Co-op</button><button id="inviteBtn" type="button" hidden>Invite</button><button id="statsBtn" type="button">Hero</button><button id="pause" type="button">Pause</button><button id="mute" type="button">Sound: on</button><button id="newg" type="button">New game</button></div>
 <h3>Show on screen</h3>
 <div class="mshow"><label><input type="checkbox" data-hud="quest" checked> Goal</label><label><input type="checkbox" data-hud="qcard" checked> Quest</label><label><input type="checkbox" data-hud="town" checked> Town gauges</label><label><input type="checkbox" data-hud="res" checked> Resources</label><label><input type="checkbox" data-hud="mini" checked> Minimap</label></div>
@@ -461,9 +461,10 @@ const resName = t => t === 'ore' ? 'crystal' : t === 'cash' ? 'gold' : t === 'me
 const C = { x: 0, z: 10 };                // fort centre
 const TIERS = [12, 21, 30];               // half-size of each fort ring
 const GATE_HW = 2.5;
-const GAME_VERSION = '2.16';
+const GAME_VERSION = '2.17';
 // newest first; players who come back after an update see the entries newer than the last version they played
 const CHANGELOG = [
+  ['2.17', 'November 2026', ['Tool upgrades now need materials as well as gold: wood, food, stone and ore for the early ones, smelted Iron and Steel for the Watch Horn and Iron Boots. The Crystal Pick also needs ore and wood.']],
   ['2.16', 'November 2026', ['The title screen now fits wide computer screens, with the whole village in view.']],
   ['2.15', 'November 2026', ['The Wildheart Gaming logo now clicks together neatly instead of the two words sliding past each other.']],
   ['2.14', 'November 2026', ['Frosthold Outpost is now Kindlehaven, with a new title screen.', 'Create your hero: pick a name, a look, a coat colour and any skin colour (Menu → Hero → Change look and skin).', 'Forge: press F to open it, and every recipe now shows its costs at a glance (green when you have enough, red when you are short).']],
@@ -2176,7 +2177,7 @@ const padRanged = plot('ranged', { personal: true, x: -6.4, z: 11.4, labels: ['H
 const padRun = plot('run', { personal: true, x: -9.2, z: 10.8, labels: ['FUR BOOTS', 'RUNNER BOOTS', 'WINDWALKERS'], costs: [{ meat: 15, log: 20, cash: 60 }, { meat: 30, stone: 25, cash: 200 }, { ore: 25, meat: 40, cash: 450 }], tiers: [1, 2, 3],
   requires: () => false,
   onBuy: lv => { S.runLv = lv; banner(['', 'Fur boots!', 'Runner boots!', 'Windwalkers!'][lv], true, 'You move ' + lv * 12 + '% faster'); }, xp: 30 });
-plot('pick', { personal: true, x: -9.2, z: 17.4, label: 'CRYSTAL PICK', cost: { stone: 40, cash: 150 }, tier: 2, req: () => B.smith,
+plot('pick', { personal: true, x: -9.2, z: 17.4, label: 'CRYSTAL PICK', cost: { stone: 40, ore: 20, log: 30, cash: 150 }, tier: 2, req: () => B.smith,
   onBuy: () => { S.pick = true; banner('Crystal pick forged!', true, 'You can now mine crystal veins in the far wilds'); } });
 const padWalls = plot('reinforce', { x: 12.4, z: 11.2, labels: ['IRON BANDS', 'STONE BASTIONS', 'RUNE WARDS'], costs: [{ log: 60, stone: 40, cash: 150 }, { stone: 90, cash: 300 }, { stone: 80, ore: 30, cash: 600 }], tiers: [2, 2, 3],
   requires: () => B.smith && padWalls.level < 3 && S.th >= padWalls.tiers[padWalls.level],
@@ -2241,14 +2242,14 @@ const VILLAGE = [
     ['TAX OFFICE', 250, 3, () => S.taxMul = 2, 'Taxes doubled'],
     ['MERCHANT GUILD', 500, 3, () => S.priceMul = 2, 'Stalls pay double']] },
   { id: 'folk', gate: () => !!B.smith, x: 7.8, z: 14.8, ups: [
-    ['SNOW BOOTS', 50, 1, () => S.boots = 1, 'You run 15% faster'],
-    ['MEDIC TENT', 150, 2, () => S.medic = 1, 'You and your guards heal faster'],
-    ['WORK SLEDS', 200, 2, () => S.sleds = 1, 'Workers carry twice as much'],
-    ['WATCH HORN', 300, 3, () => S.horn = 1, 'Tower range +5'],
-    ['IRON BOOTS', 400, 3, () => S.boots = 2, 'You run 30% faster']] },
+    ['SNOW BOOTS', 50, 1, () => S.boots = 1, 'You run 15% faster', { log: 20, meat: 10 }],
+    ['MEDIC TENT', 150, 2, () => S.medic = 1, 'You and your guards heal faster', { log: 40, meat: 25 }],
+    ['WORK SLEDS', 200, 2, () => S.sleds = 1, 'Workers carry twice as much', { log: 60, stone: 25, ore: 10 }],
+    ['WATCH HORN', 300, 3, () => S.horn = 1, 'Tower range +5', { log: 40, ore: 20, iron: 6 }],
+    ['IRON BOOTS', 400, 3, () => S.boots = 2, 'You run 30% faster', { stone: 30, iron: 15, steel: 5 }]] },
 ];
 VILLAGE.forEach(v => {
-  const p = plot(v.id, { x: v.x, z: v.z, labels: v.ups.map(u => u[0]), costs: v.ups.map(u => ({ cash: u[1] })), xp: 30,
+  const p = plot(v.id, { x: v.x, z: v.z, labels: v.ups.map(u => u[0]), costs: v.ups.map(u => ({ ...(u[5] || {}), cash: u[1] })), xp: 30,
     requires: () => S.step >= 3 && v.gate() && p.level < v.ups.length && S.th >= v.ups[p.level][2],
     onBuy: lv => { const u = v.ups[lv - 1]; u[3](); banner(u[0][0] + u[0].slice(1).toLowerCase(), true, u[4]); } });
   v.pad = p;

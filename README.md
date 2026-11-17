@@ -104,7 +104,7 @@ At **Castle III** the final battles begin: each night brings a **dragon siege** 
 - Workers have health; a worker who dies drops what they carried.
 
 ## Village upgrades
-Gold-only village upgrades are bought in the forge: **comfort** (Warm Cloaks, Smokehouse, Hearth Stones, Granary: supplies last longer) and **trade** (Market Bell, Fair Prices, Tax Office, Merchant Guild: more income) on the **Town** tab, and **folk** (Snow Boots, Medic Tent, Work Sleds, Watch Horn, Iron Boots) on the **Tools** tab. Later ones wait for Town Hall II and III; in co-op only the host buys town upgrades.
+Village upgrades are bought in the forge: **comfort** (Warm Cloaks, Smokehouse, Hearth Stones, Granary: supplies last longer) and **trade** (Market Bell, Fair Prices, Tax Office, Merchant Guild: more income) on the **Town** tab, and **folk** (Snow Boots, Medic Tent, Work Sleds, Watch Horn, Iron Boots) on the **Tools** tab. Tool upgrades also need materials: Snow Boots and the Medic Tent take wood and food, Work Sleds wood, stone and ore, the Watch Horn wood, ore and Iron Ingots, and Iron Boots stone, Iron Ingots and Steel Bars. Later ones wait for Town Hall II and III; in co-op only the host buys town upgrades.
 
 ## Your hero
 ![The Hero screen](assets/help/hero.jpg)
@@ -249,6 +249,7 @@ Cave entrances lie 200–315 m out, with more scattered through the outer lands 
 
 ## Change log
 - When you come back after an update, a **What's new** screen lists what changed since you last played. Find the full list any time under the cog: **What's new**.
+- **2.17:** tool upgrades (boots, Medic Tent, Work Sleds, Watch Horn, Crystal Pick) need materials as well as gold.
 - **2.16:** the title screen fits wide computer screens.
 - **2.15:** the Wildheart Gaming logo animation no longer overlaps.
 - **2.14:** the game is now **Kindlehaven**, with a new title screen and a create-your-hero screen; the forge opens with **F** and shows every recipe's costs at a glance.
