@@ -119,6 +119,9 @@ html,body{height:100%;margin:0;background:var(--ice);color:var(--ink);overflow:h
 .slot em.eq{position:absolute;top:3px;left:3px;font:800 9px var(--body);font-style:normal;background:#3f8a5a;color:#fff;border-radius:6px;padding:1px 4px}
 .craft details summary{cursor:pointer;font:800 12px var(--body);color:#2b4a74;margin-top:3px;list-style:none}.craft details summary::-webkit-details-marker{display:none}.craft details summary::before{content:'▸ '}.craft details[open] summary::before{content:'▾ '}
 .craft .minfo{position:relative;background:#fff;border:2px solid #2b4a74;border-radius:12px;padding:10px 12px;margin:6px 0;font:800 12px var(--body);color:#2b4a74}.craft .minfo b{font:16px var(--display);color:#1d2128;margin-left:6px;vertical-align:middle}.craft .minfo span{display:block;color:#5a6b80;margin-top:2px}.craft .minfo i{display:block;font-style:normal;color:var(--ember);margin-top:6px;text-transform:uppercase;font-size:11px}.craft .minfo ul{margin:2px 0 0 16px;padding:0}.craft .minfo li{margin:2px 0}.craft .minfo button{position:absolute;top:6px;right:6px;border:0;background:#dfe6f0;color:#2b4a74;border-radius:8px;width:26px;height:26px;cursor:pointer}
+.craft .cc{display:flex;flex-wrap:wrap;gap:3px;margin-top:4px}.craft .cc span{display:inline-flex;align-items:center;gap:2px;padding:1px 6px 1px 3px;border-radius:7px;font:800 12px var(--body);cursor:default}.craft .cc span.ok{background:#e4f3e8;color:#2a5e3c}.craft .cc span.no{background:#fbe1dc;color:#a3271b}.craft .cc span[data-mat]{cursor:pointer}
+.craft .row.can{box-shadow:inset 4px 0 0 #3f8a5a}.craft .row .rd{display:block}
+.craft .mats.mc span{padding:2px 7px 2px 3px;cursor:pointer}
 .craft .mats{display:flex;flex-wrap:wrap;gap:4px}.craft .mats span{display:inline-flex;align-items:center;gap:4px;background:#f4f7fb;color:#2b4a74;border:1px solid #dfe6f0;border-radius:8px;padding:3px 8px 3px 4px;font:800 12px var(--body)}.craft .mats span b{color:#1d2128}.craft .mgrp{display:flex;gap:8px;align-items:flex-start;margin:4px 0}.craft .mgrp>i{flex:0 0 54px;font:800 10px var(--body);font-style:normal;text-transform:uppercase;color:#8a96a8;padding-top:7px}.craft .cost span{display:inline-flex;align-items:center;gap:3px}.mi{flex:none;vertical-align:middle}.craft p{font:800 12px var(--body);color:#5a6b80;margin:6px 0}
 #tameBtn{position:fixed;z-index:8;left:50%;transform:translateX(-50%);bottom:calc(78px + env(safe-area-inset-bottom,0px));border:2px solid #fff;background:#3f8a5a;color:#fff;font:17px/1 var(--display);letter-spacing:.04em;padding:14px 20px;border-radius:14px;box-shadow:0 6px 18px rgba(0,0,0,.3);cursor:pointer;white-space:nowrap}
 #chipMenu{position:fixed;z-index:9;display:flex;flex-direction:column;gap:6px;background:var(--panel);border:1px solid var(--panel-line);border-radius:12px;padding:7px}
@@ -319,7 +322,7 @@ html,body{height:100%;margin:0;background:var(--ice);color:var(--ink);overflow:h
 <div id="news" hidden><div class="box"><h2 id="newsHead">What's new</h2><div id="newsBody"></div><button id="closeNews" type="button">Got it</button></div></div>
 <div id="help" hidden><div class="box"><h2>How to play</h2><input id="helpQ" type="search" placeholder="Search help (e.g. pets, raids, castle)"><div id="helpBody">Loading…</div><button id="closeHelp" type="button">Close</button></div></div>
 <div id="chestP" hidden><div class="box"><h2>Town Chest</h2><div id="chestBody"></div><button id="closeChest" type="button">Close</button></div></div>
-<div id="forge" hidden><div class="box"><h2>Forge</h2><div id="forgeBody"></div><button id="closeForge" type="button">Close</button></div></div>
+<div id="forge" hidden><div class="box"><h2>Forge <small style="font:800 11px var(--body);color:#8a96a8">(F)</small></h2><div id="forgeBody"></div><button id="closeForge" type="button">Close</button></div></div>
 <div id="stats" hidden><div class="box"><h2>Hero</h2><div id="statsBody"></div><h3>Name and look</h3><div class="prof"></div><button id="closeStats" type="button">Close</button></div></div>
 <div id="over" hidden><div class="box"><h2 id="overHead">Kindlehaven has fallen</h2><p id="overTxt"></p><button id="again" type="button">Rebuild</button></div></div>
 
@@ -4069,7 +4072,9 @@ function matSources(k) {
 let matInfo = null;
 const matInfoHtml = () => matInfo ? `<div class="minfo"><button type="button" data-matx="1" aria-label="Close">✕</button>${matSvg(matInfo, 30)}<b>${MATS[matInfo]}</b><span>You have ${(S.mats || {})[matInfo] || 0}</span><i>Where to get it</i><ul>${matSources(matInfo).map(x => '<li>' + x + '</li>').join('')}</ul></div>` : '';
 const costTxt = c => Object.keys(c).filter(k => c[k]).map(k => c[k] + ' ' + (MATS[k] || resName(k))).join(', ');
-const costChips = c => '<span class="cost">' + Object.keys(c).filter(k => c[k]).map(k => `<span class="${haveOf(k) >= c[k] ? '' : 'no'}"${MATS[k] ? ` data-mat="${k}" style="cursor:pointer"` : ''}>${MATS[k] ? matSvg(k, 14) : ''}${c[k]} ${MATS[k] || resName(k)} <small>(${haveOf(k)})</small></span>`).join('') + '</span>';
+const costIcon = k => MATS[k] ? matSvg(k, 16) : k === 'cash' ? '<svg class="mi" viewBox="0 0 28 22" width="16" height="16"><circle cx="14" cy="11" r="8.5" fill="#f2c14e" stroke="#8a6410" stroke-width="2"/></svg>' : resSvg(k).replace('width="22" height="22"', 'width="16" height="16"');
+const costChips = c => '<span class="cost cc">' + Object.keys(c).filter(k => c[k]).map(k => { const have = haveOf(k), ok = have >= c[k], nm = MATS[k] || resName(k);
+  return `<span class="${ok ? 'ok' : 'no'}"${MATS[k] ? ` data-mat="${k}"` : ''} title="${nm}: need ${c[k]}, you have ${have}">${costIcon(k)}${ok ? c[k] : have + '/' + c[k]}</span>`; }).join('') + '</span>';
 // item pictures for forge rows and the hero inventory
 function itemPic(id, lv) {
   if (id === 'weapon') return pic('axe', lv, icon('axe', WEAPON_COL[lv + 1] || WEAPON_COL[0], false));
@@ -4216,7 +4221,8 @@ let forgeTab = 'weapon', salvAsk = null;
 // costs and ingredients stay folded away until the player taps Details (remembered while the forge is open)
 const openDetails = new Set();
 const fRow = (img, name, tag, cls, desc, body, btn) => { const k = String(name).replace(/<[^>]*>/g, '').replace(/"/g, '');
-  return `<div class="row${cls ? ' ' + cls : ''}"><span class="pic">${img}</span><div><b>${name}${tag ? ' <em>' + tag + '</em>' : ''}</b>${desc}${body ? `<details${openDetails.has(k) ? ' open' : ''}><summary data-dk="${k}">Details</summary>${body}</details>` : ''}</div>${btn}</div>`; };
+  const can = btn && /<button/.test(btn) && !/disabled/.test(btn.slice(0, btn.indexOf('>') + 1));
+  return `<div class="row${cls ? ' ' + cls : ''}${can ? ' can' : ''}"><span class="pic">${img}</span><div><b>${name}${tag ? ' <em>' + tag + '</em>' : ''}</b><span class="rd">${desc}</span>${body || ''}</div>${btn}</div>`; };
 function showForge() {
   $('forgeBtn').classList.remove('new');
   const near = nearForge(), M = S.mats || {}, owned = Object.keys(MATS).filter(k => M[k] > 0);
@@ -4226,8 +4232,8 @@ function showForge() {
     brew: knownBrews().map(recipeOf).filter(b => b && S.th >= (b.th || 1) && canAfford(b.in)).length, special: sp.filter(x => canAfford(x.c)).length, town: isGuest() ? 0 : su.filter(x => x.afford).length + forgePadRows('town').filter(r => r.ok).length, salvage: 0 };
   let h = '<div class="craft"><button type="button" class="fhero" data-fhero="1">⚔ Hero gear</button>';
   if (!S.forgeSeen) h += `<div class="ftut"><b>Welcome to the forge</b><ol><li><b>Gather materials:</b> animals and beasts drop hides and sinew. Tougher beasts drop rarer ones; gems and magic come from rare beasts and dungeons.</li><li><b>Bring resources:</b> logs, stone and crystal are paid from your pack, gold from your wallet. Red chips show what you're short of.</li><li><b>Craft:</b> pick a tab (Weapons, Armour, Tools, Special, Town) and tap Craft. Your hero equips new gear straight away; see it under Hero.</li><li><b>Unlock more:</b> recipes appear as your Town Hall and castle grow, and special ones as you defend well. Recipe scrolls drop from rare beasts and dungeons.</li><li><b>Salvage</b> old gear for half its materials back.</li></ol><button type="button" data-ftut="1">Got it</button></div>`;
-  h += '<h3>Materials</h3>' + (owned.length ? MAT_GROUPS.map(([g, ks]) => { const have = ks.filter(k => M[k] > 0); return have.length ? `<div class="mgrp"><i>${g}</i><div class="mats">` + have.map(k => `<span data-mat="${k}" style="cursor:pointer">${matSvg(k)}<b>${M[k]}</b> ${MATS[k]}</span>`).join('') + '</div></div>' : ''; }).join('') : '<p>None yet. Hunt animals and slay beasts: tougher creatures drop rarer hides and sinew, but less often.</p>');
-  h += matInfoHtml() + (owned.length && !matInfo ? '<p>Tap any material to see where it comes from.</p>' : '');
+  h += '<h3>Your materials <small style="font:700 11px var(--body);text-transform:none;letter-spacing:0;color:#8a96a8">tap one to see where it comes from</small></h3>' + (owned.length ? '<div class="mats mc">' + MAT_GROUPS.flatMap(([g, ks]) => ks.filter(k => M[k] > 0)).map(k => `<span data-mat="${k}" title="${MATS[k]}">${matSvg(k, 18)}<b>${M[k]}</b></span>`).join('') + '</div>' : '<p>None yet. Hunt animals and slay beasts: tougher creatures drop rarer hides and sinew, but less often.</p>');
+  h += matInfoHtml();
   if (!B.smith) h += '<p>Build the blacksmith to open the forge.</p>';
   else if (!near) h += '<p>Come back inside the town walls to craft and salvage. Logs, stone and crystal are paid from your pack.</p>';
   h += '<div class="ftabs">' + FORGE_TABS.map(([k, n]) => `<button type="button" data-ftab="${k}" aria-pressed="${forgeTab === k}">${n}${ready[k] ? '<i>' + ready[k] + '</i>' : ''}</button>`).join('') + '</div>';
@@ -5508,9 +5514,13 @@ setMini(miniZ, miniS);
 SND_CATS.forEach(([k, label]) => { const l = document.createElement('label'); l.innerHTML = '<input type="checkbox"> ' + label; const cb = l.firstChild; cb.checked = SND_ON[k] !== false;
   cb.addEventListener('change', () => { SND_ON[k] = cb.checked; try { localStorage.setItem('frosthold-sfx', JSON.stringify(SND_ON)); } catch (e) {} if (cb.checked) { unlockAudio(); } }); $('sndList').appendChild(l); });
 $('paused').addEventListener('click', () => setPaused(false));
-window.addEventListener('keydown', e => { if (e.key === 'p' || e.key === 'Escape') setPaused(!paused);
+window.addEventListener('keydown', e => {
+  if (e.target.closest && e.target.closest('input')) return;
+  if ((e.key === 'f' || e.key === 'F') && !DUN) { if (!$('forge').hidden) $('forge').hidden = true; else if (nearForge()) showForge(); else note(B.smith ? 'Go inside your town walls to use the forge' : 'Build the blacksmith to open the forge'); return; }
+  if (e.key === 'Escape' && !$('forge').hidden) { $('forge').hidden = true; return; }
+  if (e.key === 'p' || e.key === 'Escape') setPaused(!paused);
   const t = { '1': 'log', '2': 'meat', '3': 'stone', '4': 'ore' }[e.key];   // same order as the counters on screen
-  if (t && !e.target.closest('input')) { S.noCollect[t] = !S.noCollect[t]; syncToggles(); note(S.noCollect[t] ? 'Not collecting ' + PLURAL[t] : 'Collecting ' + PLURAL[t]); } });
+  if (t) { S.noCollect[t] = !S.noCollect[t]; syncToggles(); note(S.noCollect[t] ? 'Not collecting ' + PLURAL[t] : 'Collecting ' + PLURAL[t]); } });
 function frame(now) {
   let dt = Math.min(0.15, (now - last) / 1000); last = now;
   if (paused && !NET.room) dt = 0;   // in co-op the shared world can't stop: pausing only covers your screen
