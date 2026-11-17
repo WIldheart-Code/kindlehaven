@@ -249,6 +249,7 @@ Cave entrances lie 200–315 m out, with more scattered through the outer lands 
 
 ## Change log
 - When you come back after an update, a **What's new** screen lists what changed since you last played. Find the full list any time under the cog: **What's new**.
+- **2.16:** the title screen fits wide computer screens.
 - **2.15:** the Wildheart Gaming logo animation no longer overlaps.
 - **2.14:** the game is now **Kindlehaven**, with a new title screen and a create-your-hero screen; the forge opens with **F** and shows every recipe's costs at a glance.
 - **2.13:** castle upgrades need smelted Iron, Steel, Runesteel and Frost Glass, and cost more gold.
