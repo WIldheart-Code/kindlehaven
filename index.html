@@ -1,6 +1,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<title>Frosthold Outpost</title>
+<title>Kindlehaven</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@700;800&display=swap">
 <style>
@@ -147,6 +147,27 @@ html,body{height:100%;margin:0;background:var(--ice);color:var(--ink);overflow:h
 #lobby input{width:90px;font:20px/1 var(--display);letter-spacing:.12em;text-transform:uppercase;text-align:center;padding:8px;border:2px solid #b8c6da;border-radius:10px;background:#fff;color:var(--ink);-webkit-user-select:text;user-select:text}
 #lobby #joinBtn{background:#2b4a74}
 #lobby button:focus-visible,#lobby input:focus-visible{outline:3px solid var(--ember);outline-offset:2px}
+#pubSplash{position:fixed;inset:0;z-index:61;background:#fdfbf7;display:flex;align-items:center;justify-content:center;transition:opacity .45s}#pubSplash.out{opacity:0;pointer-events:none}
+.ps-logo{position:relative;width:min(78vw,520px);aspect-ratio:1600/359}.ps-logo img{position:absolute;inset:0;width:100%;height:100%}
+.ps-logo:not(.go) *{visibility:hidden}.go .ps-wild{animation:psL .65s cubic-bezier(.2,.9,.3,1.25) both}.go .ps-heart{animation:psR .65s .08s cubic-bezier(.2,.9,.3,1.25) both}.go .ps-gaming{animation:psG .6s .9s ease-out both}
+.ps-logo.go{animation:psBeat .7s .75s ease-in-out both}
+@keyframes psL{from{transform:translateX(-70vw) rotate(-8deg);opacity:0}to{transform:none;opacity:1}}@keyframes psR{from{transform:translateX(70vw) rotate(8deg);opacity:0}to{transform:none;opacity:1}}
+@keyframes psG{from{clip-path:inset(0 50% 0 50%);opacity:0}to{clip-path:inset(0 0 0 0);opacity:1}}@keyframes psBeat{0%,100%{transform:scale(1)}20%{transform:scale(1.09)}40%{transform:scale(.98)}60%{transform:scale(1.05)}}
+.ps-logo i{position:absolute;left:42%;top:10%;width:18px;height:18px;opacity:0}.go i{animation:psH 1.2s ease-out both}.ps-logo i::before,.ps-logo i::after{content:'';position:absolute;width:10px;height:16px;background:#d81b5f;border-radius:10px 10px 0 0;left:5px;transform:rotate(-45deg);transform-origin:0 100%}.ps-logo i::after{left:-5px;transform:rotate(45deg);transform-origin:100% 100%}
+.go i:nth-of-type(1){animation-delay:.8s;--x:-60px}.go i:nth-of-type(2){animation-delay:.9s;--x:40px}.go i:nth-of-type(3){animation-delay:1s;--x:-10px}.go i:nth-of-type(4){animation-delay:1.1s;--x:80px}.go i:nth-of-type(5){animation-delay:1.2s;--x:-100px}
+@keyframes psH{0%{opacity:0;transform:translate(0,0) scale(.4)}25%{opacity:1}100%{opacity:0;transform:translate(var(--x),-110px) scale(1.2)}}
+#titleSplash{position:fixed;inset:0;z-index:60;background:#7fb8ec url(assets/brand/title-art.svg) center bottom/cover no-repeat;display:flex;flex-direction:column;align-items:center;transition:opacity .5s}#titleSplash.out{opacity:0;pointer-events:none}
+.ts-sky{display:none}
+.ts-logo{position:relative;margin-top:calc(8vh + env(safe-area-inset-top,0px));width:min(92vw,560px);text-align:center;animation:tsIn .8s cubic-bezier(.2,.9,.3,1.3) both}.ts-logo svg{width:100%;filter:drop-shadow(0 6px 0 rgba(60,25,8,.35))}
+.ts-tag{display:inline-block;margin-top:-6px;background:#c8452f;color:#fff;font:20px var(--display);letter-spacing:.06em;padding:6px 22px;border:3px solid #5b2a12;border-radius:10px;transform:rotate(-2deg);box-shadow:0 4px 0 rgba(60,25,8,.35)}
+@keyframes tsIn{from{transform:translateY(-40px) scale(.7);opacity:0}to{transform:none;opacity:1}}
+#tsGo{position:absolute;bottom:calc(5vh + env(safe-area-inset-bottom,0px));border:3px solid #fff;background:#3f8a5a;color:#fff;font:26px var(--display);letter-spacing:.04em;padding:14px 34px;border-radius:999px;box-shadow:0 6px 0 #2a5e3c,0 10px 24px rgba(0,0,0,.3);cursor:pointer;animation:tsPulse 1.6s 1s ease-in-out infinite}
+@keyframes tsPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}.ts-by{position:absolute;bottom:calc(1.2vh + env(safe-area-inset-bottom,0px));color:#fff;font:800 12px var(--body);text-shadow:0 1px 3px rgba(0,0,0,.6);letter-spacing:.08em;text-transform:uppercase}
+#creator{position:fixed;inset:0;z-index:26;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 50% 30%,#3b6fa8,#16233a);padding:0 12px}#creator .box{background:#f4f7fc;color:var(--ink);border-radius:20px;padding:16px;width:min(420px,100%);max-height:94vh;overflow:auto;box-shadow:0 20px 50px rgba(0,0,0,.4)}#creator h2{margin:0 0 8px;font:28px/1 var(--display);color:#2b4a74;text-align:center}#creator b{display:block;font:800 12px var(--body);text-transform:uppercase;letter-spacing:.06em;color:var(--ember);margin:10px 0 5px}
+.cr-top{display:flex;gap:10px;align-items:stretch}#crView{flex:0 0 46%;background:radial-gradient(circle at 50% 70%,#dfeaf6,#b9cde4);border-radius:14px;overflow:hidden;min-height:200px}#crView canvas{width:100%!important;height:auto!important;display:block}.cr-side{flex:1;display:flex;flex-direction:column}.cr-side label{font:800 12px var(--body);color:#2b4a74}.cr-side input{display:block;width:100%;box-sizing:border-box;margin-top:4px;border:2px solid #c9d6e8;border-radius:10px;padding:9px;font:16px var(--display);color:#1d2128}
+.cr-looks{display:flex;gap:6px}.cr-looks button{flex:1;border:2px solid #c9d6e8;border-radius:12px;background:#fff;padding:6px 2px;font:800 12px var(--body);color:#2b4a74;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px}.cr-looks svg{width:44px;height:44px}.cr-looks button[aria-pressed=true]{border-color:#2b4a74;background:#e3efff}
+.cr-sw{display:flex;flex-wrap:wrap;gap:6px}.cr-sw button{width:32px;height:32px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 1px #c9d6e8;cursor:pointer}.cr-sw button[aria-pressed=true]{box-shadow:0 0 0 3px #2b4a74}
+#crGo{display:block;width:100%;margin-top:14px;border:0;border-radius:14px;background:#3f8a5a;color:#fff;font:20px var(--display);padding:13px;cursor:pointer;box-shadow:0 4px 0 #2a5e3c}
 #news{position:fixed;inset:0;z-index:24;display:flex;align-items:center;justify-content:center;background:rgba(16,26,44,.72);padding:0 16px}#news .box{background:#f4f7fc;color:var(--ink);border-radius:18px;padding:16px 18px;width:min(400px,100%);max-height:84vh;overflow:auto;box-shadow:0 20px 50px rgba(0,0,0,.35)}#news h2{margin:0 0 6px;font:26px/1 var(--display);color:#2b4a74;text-align:center}#news h3{margin:12px 0 4px;font:15px var(--display);color:var(--ember)}#news h3 small{font:800 11px var(--body);color:#8a96a8;margin-left:6px}#news ul{margin:0;padding-left:18px;font:700 13px/1.4 var(--body)}#news li{margin:3px 0}#closeNews{display:block;margin:14px auto 0;border:0;border-radius:12px;background:#2b4a74;color:#fff;font:16px/1 var(--display);padding:10px 22px;cursor:pointer}
 #help{position:fixed;inset:0;z-index:23;display:flex;align-items:center;justify-content:center;background:rgba(16,26,44,.72);padding:0 16px}
 #help .box{background:#f4f7fc;color:var(--ink);border-radius:18px;padding:16px;width:min(420px,100%);max-height:88vh;display:flex;flex-direction:column;box-shadow:0 20px 50px rgba(0,0,0,.35)}
@@ -273,23 +294,34 @@ html,body{height:100%;margin:0;background:var(--ice);color:var(--ink);overflow:h
 <div id="hint" class="hud">Swipe to move</div>
 <div id="paused" class="hud" hidden>Paused<small>Tap to resume</small></div>
 <div id="netbar" class="hud"><button id="cog" type="button" aria-label="Menu" aria-expanded="false"><svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M19.4 13a7.5 7.5 0 0 0 0-2l2.1-1.6-2-3.5-2.5 1a7.6 7.6 0 0 0-1.7-1L15 3h-4l-.4 2.9a7.6 7.6 0 0 0-1.7 1l-2.5-1-2 3.5L6.6 11a7.5 7.5 0 0 0 0 2l-2.1 1.6 2 3.5 2.5-1a7.6 7.6 0 0 0 1.7 1L11 21h4l.4-2.9a7.6 7.6 0 0 0 1.7-1l2.5 1 2-3.5zM13 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z" transform="translate(-1 0)"/></svg></button><span id="netTxt" hidden></span></div>
-<div id="menu" hidden><div class="box"><h2>Menu</h2><p style="margin:-4px 0 8px;text-align:center;font:800 11px var(--body);color:#8a96a8">Frosthold Outpost · version 2.13</p>
+<div id="menu" hidden><div class="box"><h2>Menu</h2><p style="margin:-4px 0 8px;text-align:center;font:800 11px var(--body);color:#8a96a8">Kindlehaven · version 2.13</p>
 <div class="mgrid"><button id="helpBtn" type="button">Help</button><button id="newsBtn" type="button">What's new</button><button id="reportBtn" type="button" hidden>Play report</button><button id="tutBtn" type="button">Tutorial</button><button id="coop" type="button">Co-op</button><button id="inviteBtn" type="button" hidden>Invite</button><button id="statsBtn" type="button">Hero</button><button id="pause" type="button">Pause</button><button id="mute" type="button">Sound: on</button><button id="newg" type="button">New game</button></div>
 <h3>Show on screen</h3>
 <div class="mshow"><label><input type="checkbox" data-hud="quest" checked> Goal</label><label><input type="checkbox" data-hud="qcard" checked> Quest</label><label><input type="checkbox" data-hud="town" checked> Town gauges</label><label><input type="checkbox" data-hud="res" checked> Resources</label><label><input type="checkbox" data-hud="mini" checked> Minimap</label></div>
 <h3>Sounds</h3><div class="mshow" id="sndList"></div>
 <button id="closeMenu" type="button" class="ghost">Close</button></div></div>
-<div id="invite" hidden><div class="box"><h2>Play together</h2><p>Scan with a phone, open Frosthold and tap <b>Co-op</b> to join your town.</p><div id="qr"></div><p class="link"><span id="inviteUrl"></span></p><div class="btns"><button id="copyLink" type="button">Copy link</button><button id="closeInvite" type="button">Done</button></div><p class="fine">Friends need access to this page: share it from the page’s Share menu first.</p></div></div>
+<div id="invite" hidden><div class="box"><h2>Play together</h2><p>Scan with a phone, open Kindlehaven and tap <b>Co-op</b> to join your town.</p><div id="qr"></div><p class="link"><span id="inviteUrl"></span></p><div class="btns"><button id="copyLink" type="button">Copy link</button><button id="closeInvite" type="button">Done</button></div><p class="fine">Friends need access to this page: share it from the page’s Share menu first.</p></div></div>
 <div id="lobby" hidden><div class="box"><h2>Play together</h2><div class="prof"></div><p>Host a town and share the code, or join a friend’s town. No account needed.</p>
 <button id="hostBtn" type="button">Host a game</button>
 <div class="joinrow"><label for="codeIn">Room code</label><input id="codeIn" maxlength="6" autocomplete="off" inputmode="text" placeholder="e.g. K7Q2"><button id="joinBtn" type="button">Join</button></div>
 <p id="lobbyMsg" class="fine"></p><button id="closeLobby" type="button" class="ghost">Cancel</button></div></div>
+<div id="pubSplash"><div class="ps-logo"><img class="ps-wild" src="assets/brand/wildheart-wild.png" alt=""><img class="ps-heart" src="assets/brand/wildheart-heart.png" alt=""><img class="ps-gaming" src="assets/brand/wildheart-gaming.png" alt="Wildheart Gaming"><i></i><i></i><i></i><i></i><i></i></div></div>
+<div id="titleSplash"><div class="ts-sky"></div><div class="ts-logo"><svg viewBox="0 0 600 230" aria-label="Kindlehaven"><defs><linearGradient id="tsg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff2a8"/><stop offset=".45" stop-color="#ffc23d"/><stop offset="1" stop-color="#ff7a1a"/></linearGradient><path id="tsArc" d="M40 175 Q300 95 560 175"/></defs>
+<path d="M300 8 C318 40 344 48 330 82 C322 100 304 104 300 104 C296 104 278 100 270 82 C256 48 282 40 300 8Z" fill="#ff8a2a" stroke="#5b2a12" stroke-width="7"/><path d="M300 48 C308 64 318 70 311 86 C307 94 302 95 300 95 C298 95 293 94 289 86 C282 70 292 64 300 48Z" fill="#ffe27a"/>
+<text font-family="Lilita One, sans-serif" font-size="104" text-anchor="middle" fill="url(#tsg)" stroke="#5b2a12" stroke-width="16" stroke-linejoin="round" paint-order="stroke"><textPath href="#tsArc" startOffset="50%">Kindlehaven</textPath></text></svg>
+<div class="ts-tag">Build · Brew · Survive</div></div><button type="button" id="tsGo">Tap to start</button><div class="ts-by">Wildheart Gaming</div></div>
+<div id="creator" hidden><div class="box"><h2>Create your hero</h2>
+<div class="cr-top"><div id="crView"></div><div class="cr-side"><label>Name<input id="crName" maxlength="12" placeholder="Your hero's name" autocomplete="off"></label>
+<b>Look</b><div class="cr-looks"><button type="button" data-look="0"><svg viewBox="0 0 48 48"><circle cx="24" cy="22" r="11" fill="#f3c9a3"/><path d="M12 20 Q24 4 36 20 L36 16 Q24 0 12 16Z" fill="#6b3f22"/><circle cx="11" cy="28" r="3.5" fill="#6b3f22"/><circle cx="11" cy="34" r="3" fill="#6b3f22"/><circle cx="11" cy="39" r="2.6" fill="#6b3f22"/><circle cx="37" cy="28" r="3.5" fill="#6b3f22"/><circle cx="37" cy="34" r="3" fill="#6b3f22"/><circle cx="37" cy="39" r="2.6" fill="#6b3f22"/><circle cx="20" cy="22" r="1.5"/><circle cx="28" cy="22" r="1.5"/></svg>Braids</button><button type="button" data-look="1"><svg viewBox="0 0 48 48"><circle cx="24" cy="20" r="11" fill="#f3c9a3"/><path d="M12 18 Q24 4 36 18 L36 14 Q24 0 12 14Z" fill="#6b3f22"/><path d="M13 24 Q24 46 35 24 Q30 30 24 29 Q18 30 13 24Z" fill="#6b3f22"/><circle cx="20" cy="19" r="1.5"/><circle cx="28" cy="19" r="1.5"/></svg>Beard</button></div></div></div>
+<b>Coat colour</b><div class="cr-sw" id="crCoat"></div>
+<b>Skin</b><div class="cr-sw" id="crSkin"></div>
+<button id="crGo" type="button">Start your adventure</button></div></div>
 <div id="news" hidden><div class="box"><h2 id="newsHead">What's new</h2><div id="newsBody"></div><button id="closeNews" type="button">Got it</button></div></div>
 <div id="help" hidden><div class="box"><h2>How to play</h2><input id="helpQ" type="search" placeholder="Search help (e.g. pets, raids, castle)"><div id="helpBody">Loading…</div><button id="closeHelp" type="button">Close</button></div></div>
 <div id="chestP" hidden><div class="box"><h2>Town Chest</h2><div id="chestBody"></div><button id="closeChest" type="button">Close</button></div></div>
 <div id="forge" hidden><div class="box"><h2>Forge</h2><div id="forgeBody"></div><button id="closeForge" type="button">Close</button></div></div>
-<div id="stats" hidden><div class="box"><h2>Hero</h2><div id="statsBody"></div><h3>Name and coat colour</h3><div class="prof"></div><button id="closeStats" type="button">Close</button></div></div>
-<div id="over" hidden><div class="box"><h2 id="overHead">Frosthold has fallen</h2><p id="overTxt"></p><button id="again" type="button">Rebuild</button></div></div>
+<div id="stats" hidden><div class="box"><h2>Hero</h2><div id="statsBody"></div><h3>Name and look</h3><div class="prof"></div><button id="closeStats" type="button">Close</button></div></div>
+<div id="over" hidden><div class="box"><h2 id="overHead">Kindlehaven has fallen</h2><p id="overTxt"></p><button id="again" type="button">Rebuild</button></div></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
@@ -937,7 +969,7 @@ function makePerson(coat, trim, hat) {
   const belt = mk(Cyl(0.41, 0.43, 0.09, 16), 0x4a3424); belt.position.y = 0.72; g.add(belt);
   const buckle = mk(Box(0.12, 0.1, 0.04), 0xd9b25a); buckle.position.set(0, 0.72, 0.41); g.add(buckle);
   // big head with a simple friendly face
-  const head = mk(new THREE.SphereGeometry(0.36, 20, 16), 0xf3c9a3); head.position.y = 1.5; g.add(head);
+  const head = mk(new THREE.SphereGeometry(0.36, 20, 16), 0xf3c9a3); head.position.y = 1.5; head.userData.skinPart = true; g.add(head);
   [-1, 1].forEach(k => {
     const e = new THREE.Mesh(new THREE.SphereGeometry(0.055, 10, 8).scale(1, 1.3, 0.6), basic(0x1d2128)); e.position.set(k * 0.12, 1.53, 0.32); g.add(e);
     const hl = new THREE.Mesh(new THREE.SphereGeometry(0.018, 6, 4), basic(0xffffff)); hl.position.set(k * 0.12 + 0.015, 1.56, 0.355); g.add(hl);
@@ -970,26 +1002,43 @@ function makeAxe() {
 /* ---- player ---- */
 // ---- player profile: name and coat colour, shown to teammates ----
 const COLORS = [['Red', 0xd9443a], ['Blue', 0x2f7fb8], ['Green', 0x3fa34d], ['Purple', 0x8e44ad], ['Gold', 0xe0a91c], ['Pink', 0xe85d9e], ['Teal', 0x1fa3a3], ['Charcoal', 0x3a414c]];
-const PROFILE = (() => { try { const p = JSON.parse(localStorage.getItem('frosthold-profile')); if (p && typeof p.color === 'number') return { name: String(p.name || '').slice(0, 12), color: p.color }; } catch (e) {} return { name: '', color: 0xd9443a }; })();
+const SKIN0 = 0xf3c9a3;
+const PROFILE = (() => { try { const p = JSON.parse(localStorage.getItem('frosthold-profile')); if (p && typeof p.color === 'number') return { name: String(p.name || '').slice(0, 12), color: p.color, skin: typeof p.skin === 'number' ? p.skin : SKIN0, look: p.look === 1 ? 1 : 0, made: !!p.made }; } catch (e) {} return { name: '', color: 0xd9443a, skin: SKIN0, look: 0, made: false }; })();
 function saveProfile() { try { localStorage.setItem('frosthold-profile', JSON.stringify(PROFILE)); } catch (e) {} }
 const hex = c => '#' + c.toString(16).padStart(6, '0');
 // The hero model's coat is red in its texture: a shader swaps red hues for the chosen colour, leaving skin, wood and fur alone.
-function coatShader(sh, u) {
-  sh.uniforms.uCoat = u;
-  sh.fragmentShader = 'uniform vec3 uCoat;\nvec3 rgb2hsv(vec3 c){vec4 K=vec4(0.,-1./3.,2./3.,-1.);vec4 p=mix(vec4(c.bg,K.wz),vec4(c.gb,K.xy),step(c.b,c.g));vec4 q=mix(vec4(p.xyw,c.r),vec4(c.r,p.yzx),step(p.x,c.r));float d=q.x-min(q.w,q.y);return vec3(abs(q.z+(q.w-q.y)/(6.*d+1e-10)),d/(q.x+1e-10),q.x);}\nvec3 hsv2rgb(vec3 c){vec3 p=abs(fract(c.xxx+vec3(1.,2./3.,1./3.))*6.-3.);return c.z*mix(vec3(1.),clamp(p-1.,0.,1.),c.y);}\n' +
-    sh.fragmentShader.replace('#include <map_fragment>', '#include <map_fragment>\n{ vec3 hv = rgb2hsv(diffuseColor.rgb); float red = (1. - smoothstep(0.03, 0.07, min(hv.x, 1. - hv.x))) * smoothstep(0.35, 0.55, hv.y);\n  vec3 t = uCoat; vec3 rec = hsv2rgb(vec3(t.x, mix(hv.y * 0.12, hv.y, step(0.2, t.y)), hv.z * mix(0.42, 1., step(0.35, t.z))));\n  diffuseColor.rgb = mix(diffuseColor.rgb, rec, red); }');
+function coatShader(sh, u, us) {
+  sh.uniforms.uCoat = u; sh.uniforms.uSkin = us;
+  sh.fragmentShader = 'uniform vec3 uCoat;\nuniform vec3 uSkin;\nvec3 rgb2hsv(vec3 c){vec4 K=vec4(0.,-1./3.,2./3.,-1.);vec4 p=mix(vec4(c.bg,K.wz),vec4(c.gb,K.xy),step(c.b,c.g));vec4 q=mix(vec4(p.xyw,c.r),vec4(c.r,p.yzx),step(p.x,c.r));float d=q.x-min(q.w,q.y);return vec3(abs(q.z+(q.w-q.y)/(6.*d+1e-10)),d/(q.x+1e-10),q.x);}\nvec3 hsv2rgb(vec3 c){vec3 p=abs(fract(c.xxx+vec3(1.,2./3.,1./3.))*6.-3.);return c.z*mix(vec3(1.),clamp(p-1.,0.,1.),c.y);}\n' +
+    sh.fragmentShader.replace('#include <map_fragment>', '#include <map_fragment>\n{ vec3 hv = rgb2hsv(diffuseColor.rgb); float red = (1. - smoothstep(0.03, 0.07, min(hv.x, 1. - hv.x))) * smoothstep(0.35, 0.55, hv.y);\n  vec3 t = uCoat; vec3 rec = hsv2rgb(vec3(t.x, mix(hv.y * 0.12, hv.y, step(0.2, t.y)), hv.z * mix(0.42, 1., step(0.35, t.z))));\n  diffuseColor.rgb = mix(diffuseColor.rgb, rec, red);\n  float skin = smoothstep(0.015, 0.035, hv.x) * (1. - smoothstep(0.1, 0.13, hv.x)) * smoothstep(0.12, 0.2, hv.y) * (1. - smoothstep(0.55, 0.68, hv.y)) * smoothstep(0.5, 0.62, hv.z) * (1. - red);\n  vec3 sk = hsv2rgb(vec3(uSkin.x, uSkin.y, clamp(uSkin.z * hv.z / 0.86, 0., 1.)));\n  diffuseColor.rgb = mix(diffuseColor.rgb, sk, skin); }');
 }
 function hsvOf(c) { const col = new THREE.Color(c), o = {}; col.getHSL(o); const v = Math.max(col.r, col.g, col.b), mn = Math.min(col.r, col.g, col.b); return new THREE.Vector3(o.h, v ? (v - mn) / v : 0, v); }
-function applyCoat(g, color) {
-  if (!g.userData.coatU) g.userData.coatU = { value: hsvOf(color) };
-  const u = g.userData.coatU; u.value.copy(hsvOf(color));
-  if (g.userData.body) g.userData.body.forEach(m => { if (m.isMesh && m.userData.coatPart) m.material.color.setHex(color); });
+function applyCoat(g, color, skinCol, look) {
+  if (!g.userData.coatU) { g.userData.coatU = { value: hsvOf(color) }; g.userData.skinU = { value: hsvOf(SKIN0) }; }
+  const u = g.userData.coatU, us = g.userData.skinU; u.value.copy(hsvOf(color));
+  if (skinCol !== undefined) { g.userData.skinCol = skinCol; us.value.copy(hsvOf(skinCol)); }
+  if (look !== undefined) applyLook(g, look);
+  if (g.userData.body) g.userData.body.forEach(m => { if (m.isMesh && m.userData.coatPart) m.material.color.setHex(color); if (m.isMesh && m.userData.skinPart && g.userData.skinCol !== undefined) m.material.color.setHex(g.userData.skinCol); });
   const sk = g.userData.skin; if (!sk || sk === true || sk.userData.coated) return; sk.userData.coated = true;
-  sk.traverse(o => { if (!o.isMesh) return; o.material = o.material.clone(); o.material.onBeforeCompile = sh => coatShader(sh, u); o.material.customProgramCacheKey = () => 'coat'; o.material.needsUpdate = true; });
+  sk.traverse(o => { if (!o.isMesh) return; o.material = o.material.clone(); o.material.onBeforeCompile = sh => coatShader(sh, u, us); o.material.customProgramCacheKey = () => 'coat2'; o.material.needsUpdate = true; });
+}
+// two looks, chosen when you create your hero: long braids, or a bushy beard (hair in a warm brown)
+const HAIR = 0x6b3f22;
+function applyLook(g, look) {
+  if (g.userData.lookN === look && g.userData.lookG) return; g.userData.lookN = look;
+  if (g.userData.lookG) g.remove(g.userData.lookG);
+  const L = new THREE.Group(); g.add(L); g.userData.lookG = L;
+  if (look === 0) [-1, 1].forEach(k => {   // braids falling from under the hood
+    for (let i = 0; i < 6; i++) { const b = mk(new THREE.SphereGeometry(0.046 - i * 0.003, 8, 6).scale(1, 1.25, 1), HAIR); b.position.set(k * (0.27 + i * 0.008), 1.4 - i * 0.068, 0.33 + i * 0.008); L.add(b); }
+    const tie = mk(new THREE.SphereGeometry(0.03, 8, 6), 0xe8504a); tie.position.set(k * 0.32, 0.98, 0.38); L.add(tie);
+  });
+  else { for (let i = -4; i <= 4; i++) { const a = i / 4 * 1.25, f = mk(new THREE.SphereGeometry(0.052 + (4 - Math.abs(i)) * 0.006, 8, 6), HAIR); f.position.set(Math.sin(a) * 0.16, 1.41 - Math.cos(a) * 0.09, 0.32 + Math.cos(a) * 0.06); L.add(f); }   /* a fuzzy beard along the jaw */
+    const mo = mk(new THREE.SphereGeometry(0.06, 10, 6).scale(2, 0.55, 0.7), HAIR); mo.position.set(0, 1.405, 0.4); L.add(mo); }
+  L.traverse(o => { if (o.isMesh) o.castShadow = true; });
 }
 function personCoat(g) { const b = g.userData.body && g.userData.body[0]; if (b && b.isMesh) { b.material = b.material.clone(); b.userData.coatPart = true; } }
 const P0 = makePerson(0xc8452f, 0xf3e6cf, 0x2f4a6d); personCoat(P0.g);
-skin(P0.g, 'hero', 1.95, { by: 'y', parts: P0.g.userData.body, after: () => applyCoat(P0.g, PROFILE.color) }); applyCoat(P0.g, PROFILE.color);
+skin(P0.g, 'hero', 1.95, { by: 'y', parts: P0.g.userData.body, after: () => applyCoat(P0.g, PROFILE.color, PROFILE.skin, PROFILE.look) }); applyCoat(P0.g, PROFILE.color, PROFILE.skin, PROFILE.look);
 const player = { x: 0, z: 8, rot: Math.PI, moving: false, atkT: 0, swingT: 0, walkT: 0, ...P0 };
 scene.add(player.g);
 const ring = new THREE.Mesh(new THREE.RingGeometry(0.62, 0.74, 28), new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.85 }));
@@ -2399,7 +2448,7 @@ function updateQuests(dt) {
 }
 /* ---- tutorial: a short walkthrough for new players; skippable at any time ---- */
 const TUT = [
-  { t: 'Welcome to Frosthold!', p: 'You lead a small settlement through a frozen wilderness. Keep your people warm and fed, build walls against raiders, and grow your camp into a citadel.' },
+  { t: 'Welcome to Kindlehaven!', p: 'You lead a small settlement through a frozen wilderness. Keep your people warm and fed, build walls against raiders, and grow your camp into a citadel.' },
   { t: 'Move around', p: 'Drag anywhere on the screen to move (a joystick appears under your finger). On a keyboard use WASD or the arrow keys.', task: 'Walk a few steps', start: () => ({ x: player.x, z: player.z }), done: b => Math.hypot(player.x - b.x, player.z - b.z) > 4 },
   { t: 'Chop wood', p: 'Walk up to a tree: your axe swings on its own. Logs stack on your back. Trees grow back over time.', task: 'Collect 8 logs', done: () => carry.log.length >= 8 || fireStall.received > 0 },
   { t: 'Keep your people warm', p: 'Villagers burn firewood. Walk to the firewood stall (blue roof) and stand in the dashed spot behind its counter: you hand over your logs, and villagers buy them for gold.', hi: 'town', task: 'Hand logs to the firewood stall', start: () => fireStall.received, done: b => fireStall.received > b },
@@ -2446,7 +2495,7 @@ function mdSections(md) {
   const close = () => { if (cur) { if (list) cur.h += '</ul>'; if (tbl) cur.h += '</table>'; } list = tbl = false; };
   for (const line of md.split('\n')) {
     if (/^## /.test(line)) { close(); cur = { t: line.slice(3).trim(), h: '' }; out.push(cur); continue; }
-    if (!cur) { if (line.trim() && !/^# /.test(line)) { cur = { t: 'About Frosthold', h: '' }; out.push(cur); } else continue; }
+    if (!cur) { if (line.trim() && !/^# /.test(line)) { cur = { t: 'About Kindlehaven', h: '' }; out.push(cur); } else continue; }
     if (/^\s*[-*] /.test(line)) { if (tbl) { cur.h += '</table>'; tbl = false; } if (!list) { cur.h += '<ul>'; list = true; } cur.h += '<li>' + inl(line.replace(/^\s*[-*] /, '')) + '</li>'; continue; }
     if (/^\|/.test(line)) { if (/^\|[-| ]+\|$/.test(line.trim())) continue; if (!tbl) { cur.h += '<table>'; tbl = true; } cur.h += '<tr>' + line.trim().slice(1, -1).split('|').map(c => '<td>' + inl(c.trim()) + '</td>').join('') + '</tr>'; continue; }
     const im = line.match(/^!\[(.*?)\]\((.+?)\)$/); if (im) { close(); cur.h += `<figure><img src="${esc(im[2])}" alt="${esc(im[1])}" loading="lazy"><figcaption>${esc(im[1])}</figcaption></figure>`; continue; }
@@ -3172,7 +3221,7 @@ function checkRings() {
     const r = rings[i];
     if (r.active && !r.complete && ringSecure(r)) {
       r.complete = true; retireRing(i);
-      banner(i === 1 ? 'The town expands!' : 'The citadel stands!', true, i === 1 ? 'The old walls come down. Grow the town to reach Town Hall III.' : 'Frosthold is complete. Hold out against the raids!');
+      banner(i === 1 ? 'The town expands!' : 'The citadel stands!', true, i === 1 ? 'The old walls come down. Grow the town to reach Town Hall III.' : 'Kindlehaven is complete. Hold out against the raids!');
       if (i === 2) S.won = true;
       play('fanfare');
     }
@@ -3652,7 +3701,7 @@ function update(dt) {
     enemies.forEach(e => { if (e.alive) { e.alive = false; scene.remove(e.g); e.bar.remove(); burst(e.x, 1, e.z, 0x7d8794, 8); } });
     S.raidOn = false; S.raidT = 0; S.waveT = Math.max(70, 160 - S.wave * 4 - dayNo() * 3); banner('The raiders retreat', true, 'They will be back');
   } else if (S.raidOn && !enemies.some(e => e.alive) && S.siege) { S.siege = false; S.raidT = 0; S.raidOn = false; S.dragonWins = (S.dragonWins || 0) + 1; gainXP(400);
-    if (S.dragonWins >= 3) { S.victory = true; banner('VICTORY! Frosthold stands forever', true, 'All three dragon sieges defeated. Keep playing as long as you like'); play('fanfare'); }
+    if (S.dragonWins >= 3) { S.victory = true; banner('VICTORY! Kindlehaven stands forever', true, 'All three dragon sieges defeated. Keep playing as long as you like'); play('fanfare'); }
     else { banner('Dragon siege ' + S.dragonWins + ' of 3 repelled!', true, 'More dragons will come next night'); play('fanfare'); }
     payToPallet(thPal, 500 * S.dragonWins, new THREE.Vector3(DOOR.x, 2, DOOR.z));
   } else if (S.raidOn && !enemies.some(e => e.alive)) { if (!rings.some(r => r.active && r.segs.some(sg => sg.broken))) { S.cleanRaids = (S.cleanRaids || 0) + 1; if (SPECIALS.some(x => x.cr === S.cleanRaids)) setTimeout(() => banner('Your defence is legendary', true, 'A special recipe is revealed at the forge'), 2500); }
@@ -3859,7 +3908,7 @@ const SPECIALS = [
   { id: 'crest', n: "Warden's Crest", d: '+40 max health', hint: 'Beat 3 raids without a wall breaking', cr: 3, ok: () => (S.cleanRaids || 0) >= 3, c: { stone: 40, hide2: 4, frostgem: 1, cash: 500 }, give: () => { S.bonusHp += 40; } },
   { id: 'edge', n: "Veteran's Edge", d: '+25% damage', hint: 'Survive to day 20', ok: () => dayNo() >= 20, c: { ore: 30, sinew3: 3, emberruby: 1, cash: 1500 }, give: () => { S.bonusDmg += 0.25; } },
   { id: 'shield', n: 'Bulwark Shield', d: 'Take 12% less damage on top of armour', hint: 'Beat 6 raids without a wall breaking, with Town Hall III', cr: 6, ok: () => (S.cleanRaids || 0) >= 6 && S.th >= 3, c: { stone: 80, ore: 20, moonsilver: 2, cash: 1200 } },
-  { id: 'heart', n: 'Heart of Frosthold', d: 'Legendary: +60 max health and +30% damage', hint: 'Repel a dragon siege at Castle III', leg: 1, ok: () => (S.dragonWins || 0) >= 1, c: { dragonheart: 1, voidopal: 1, moonsilver: 2, cash: 5000 }, give: () => { S.bonusHp += 60; S.bonusDmg += 0.3; } },
+  { id: 'heart', n: 'Heart of Kindlehaven', d: 'Legendary: +60 max health and +30% damage', hint: 'Repel a dragon siege at Castle III', leg: 1, ok: () => (S.dragonWins || 0) >= 1, c: { dragonheart: 1, voidopal: 1, moonsilver: 2, cash: 5000 }, give: () => { S.bonusHp += 60; S.bonusDmg += 0.3; } },
 ];
 const hasSpecial = id => (S.specials || []).includes(id);
 // recipe scrolls: found in dungeons and on rare beasts, they teach rare items
@@ -4418,7 +4467,7 @@ function fitCam(obj, pad, tilt) {
 }
 function heroModel() {   // the same parts as your hero in the world
   const p = makePerson(0xc8452f, 0xf3e6cf, 0x2f4a6d); personCoat(p.g);
-  skin(p.g, 'hero', 1.95, { by: 'y', parts: p.g.userData.body, after: () => applyCoat(p.g, PROFILE.color) }); applyCoat(p.g, PROFILE.color);
+  skin(p.g, 'hero', 1.95, { by: 'y', parts: p.g.userData.body, after: () => applyCoat(p.g, PROFILE.color, PROFILE.skin, PROFILE.look) }); applyCoat(p.g, PROFILE.color, PROFILE.skin, PROFILE.look);
   const pv = new THREE.Group(); pv.position.y = 0.95; p.g.add(pv); const a1 = makeAxe(), a2 = makeAxe(); a2.rotation.y = Math.PI; pv.add(a1, a2); p.g.userData.axes = [a1, a2];
   const pk = mk(Box(0.55, 0.55, 0.28), 0x6f4a2d); pk.position.set(0, 0.95, -0.36); p.g.add(pk);
   const base = new THREE.Mesh(new THREE.CylinderGeometry(0.9, 1.0, 0.16, 32), new THREE.MeshLambertMaterial({ color: 0x3a4866 })); base.position.y = -0.08;
@@ -4427,7 +4476,7 @@ function heroModel() {   // the same parts as your hero in the world
 }
 function syncHeroModel() {
   if (!HV.hero) { HV.hero = heroModel(); HV.hero.rotation.y = -0.5; }
-  const p = HV.hero.userData.p; applyCoat(p, PROFILE.color); buildGear(p, myLook());
+  const p = HV.hero.userData.p; applyCoat(p, PROFILE.color, PROFILE.skin, PROFILE.look); buildGear(p, myLook());
   p.userData.axes.forEach(a => weaponLook(a, S.weapon)); p.userData.axes[1].visible = S.axe >= 2;
 }
 function heroLoop() {
@@ -4881,7 +4930,7 @@ function netAct(kind, target, a, b) {
   else NET.buf.set(key, cur ? [kind, target, a, cur[3] + b] : [kind, target, a, b]);
 }
 function netGive(peer, t, n, q) { if (NET.room && n > 0) NET.room.emit('give', { to: peer, t, n, q: q || 0 }).catch(() => {}); }
-function heroState() { return [R2(player.x), R2(player.z), R2(player.rot), player.swingT > 0 ? 1 : 0, S.downT > 0 ? 1 : 0, PROFILE.name, PROFILE.color, [carry.log.length, carry.meat.length, carry.ore.length, carry.stone.length], S.hurtT > 2.2 ? 1 : 0, myLook()]; }
+function heroState() { return [R2(player.x), R2(player.z), R2(player.rot), player.swingT > 0 ? 1 : 0, S.downT > 0 ? 1 : 0, PROFILE.name, PROFILE.color, [carry.log.length, carry.meat.length, carry.ore.length, carry.stone.length], S.hurtT > 2.2 ? 1 : 0, myLook(), PROFILE.skin, PROFILE.look]; }
 
 const COOP_COATS = [0x2f7fb8, 0x8e44ad, 0xd4a017, 0x2e8b57, 0xc0392b];
 function makeRemote(peer, n) {
@@ -4953,7 +5002,7 @@ function applyHost(pr) {
     if (S.axe !== axeWas || S.bag !== bagWas) applyAxeLook();
     if ((S.blizOn > 0) !== blizWas) { $('bliz').style.opacity = S.blizOn > 0 ? 0.75 : 0; snowMat.size = S.blizOn > 0 ? 0.3 : 0.16; if (S.blizOn > 0) banner('Blizzard!', false, 'Firewood burns 2.5× faster'); }
     if (S.wave > waveWas && S.raidOn) banner('Raid ' + S.wave + '!', false, 'Raiders incoming');
-    if (S.over && $('over').hidden) { $('over').hidden = false; $('overHead').textContent = 'Frosthold has fallen'; $('overTxt').textContent = 'The host’s town lost its last villager.'; }
+    if (S.over && $('over').hidden) { $('over').hidden = false; $('overHead').textContent = 'Kindlehaven has fallen'; $('overTxt').textContent = 'The host’s town lost its last villager.'; }
   }
   const ack = pr.ack && NET.me ? pr.ack[NET.me] : 0;
   if (ack) { NET.pending = NET.pending.filter(a => a[0] > ack); NET.pendPay = NET.pendPay.filter(q => q.seq > ack); }
@@ -5043,7 +5092,8 @@ function remoteName(r, i) { return r.name || (r.role === 'host' ? 'Host' : 'Play
 function remoteLabel(r, i) { const c = r.pack || []; const bits = c.map((n, k) => n ? PACK_ICON[k] + n : '').filter(Boolean).join(' '); return remoteName(r, i) + (bits ? '  ' + bits : ''); }
 function remoteExtras(r, h, wasDown) {
   if (typeof h[5] === 'string') r.name = h[5].slice(0, 12);
-  if (typeof h[6] === 'number' && h[6] !== r.col) { r.col = r.g.userData.col = h[6]; applyCoat(r.g, r.col); r.ring.material.color.setHex(r.col); }
+  if (typeof h[10] === 'number' && (h[10] !== r.skinC || h[11] !== r.lookN)) { r.skinC = h[10]; r.lookN = h[11]; applyCoat(r.g, r.col ?? r.g.userData.col ?? 0x2f7fb8, h[10], h[11] === 1 ? 1 : 0); }
+  if (typeof h[6] === 'number' && h[6] !== r.col) { r.col = r.g.userData.col = h[6]; applyCoat(r.g, r.col, r.skinC, r.lookN); r.ring.material.color.setHex(r.col); }
   if (Array.isArray(h[7])) {
     r.pack = h[7].slice(0, 4).map(v => Math.max(0, v | 0));
     const key = r.pack.join(',');
@@ -5069,6 +5119,8 @@ function mountProfiles() {
     const sw = el.querySelector('.sw');
     COLORS.forEach(([nm, c]) => { const b = document.createElement('button'); b.type = 'button'; b.style.background = hex(c); b.setAttribute('aria-label', nm); b.dataset.c = c;
       b.addEventListener('click', e => { e.stopPropagation(); PROFILE.color = c; saveProfile(); applyCoat(P0.g, c); syncSwatches(); }); sw.appendChild(b); });
+    const ed = document.createElement('button'); ed.type = 'button'; ed.textContent = 'Change look and skin'; ed.style.cssText = 'margin-top:10px;width:100%;padding:9px;border-radius:10px;border:2px solid #c9d6e8;background:#fff;font:15px var(--display);color:#2b4a74;cursor:pointer';
+    ed.addEventListener('click', e => { e.stopPropagation(); $('stats').hidden = true; $('lobby').hidden = true; showCreator(); }); el.appendChild(ed);
   });
   syncSwatches();
 }
@@ -5469,6 +5521,53 @@ function frame(now) {
 }
 requestAnimationFrame(t => { last = t; frame(t); });
 
+/* ================= create your hero ================= */
+const SKINS = [0xf8dcc4, 0xf3c9a3, 0xe0ac7e, 0xc68a5c, 0x9a6440, 0x6b4029, 0x45291a, 0x8fb8e8, 0x6fcf8f, 0xb98ee8, 0xa7b0bd, 0xe8c36a];
+let crLoop = 0;
+function crRender() {
+  if ($('creator').hidden || !HV.r) { crLoop = 0; return; }
+  const cv = HV.r.domElement, w = cv.parentElement.clientWidth || 160, h = Math.round(w * 1.3);
+  if (cv.width !== Math.round(w * HV.r.getPixelRatio())) HV.r.setSize(w, h);
+  HV.cam.aspect = w / h; HV.cam.updateProjectionMatrix(); HV.hero.rotation.y += 0.012; HV.scene.add(HV.hero);
+  HV.cam.position.set(0, 1.35, 5.4); HV.cam.lookAt(0, 0.95, 0); HV.r.render(HV.scene, HV.cam); HV.scene.remove(HV.hero);
+  crLoop = requestAnimationFrame(crRender);
+}
+function crSync() {
+  applyCoat(P0.g, PROFILE.color, PROFILE.skin, PROFILE.look); if (HV.hero) { syncHeroModel(); }
+  document.querySelectorAll('#creator [data-look]').forEach(b => b.setAttribute('aria-pressed', +b.dataset.look === PROFILE.look));
+  document.querySelectorAll('#crCoat button').forEach(b => b.setAttribute('aria-pressed', +b.dataset.c === PROFILE.color));
+  document.querySelectorAll('#crSkin button').forEach(b => b.setAttribute('aria-pressed', +b.dataset.c === PROFILE.skin));
+}
+function showCreator() {
+  $('crName').value = PROFILE.name || '';
+  $('crCoat').innerHTML = COLORS.map(([n, c]) => `<button type="button" data-c="${c}" aria-label="${n} coat" style="background:${hex(c)}"></button>`).join('');
+  $('crSkin').innerHTML = SKINS.map(c => `<button type="button" data-c="${c}" aria-label="Skin colour" style="background:${hex(c)}"></button>`).join('');
+  $('creator').hidden = false;
+  if (hvInit()) { syncHeroModel(); HV.hero.rotation.y = 0; $('crView').innerHTML = ''; $('crView').appendChild(HV.r.domElement); if (!crLoop) crLoop = requestAnimationFrame(crRender); }
+  crSync();
+}
+$('creator').addEventListener('click', e => { e.stopPropagation();
+  const lk = e.target.closest('[data-look]'); if (lk) { PROFILE.look = +lk.dataset.look; crSync(); return; }
+  const cb = e.target.closest('#crCoat [data-c]'); if (cb) { PROFILE.color = +cb.dataset.c; crSync(); return; }
+  const sb = e.target.closest('#crSkin [data-c]'); if (sb) { PROFILE.skin = +sb.dataset.c; crSync(); return; } });
+['pointerdown', 'touchstart', 'mousedown', 'keydown'].forEach(ev => $('creator').addEventListener(ev, e => e.stopPropagation()));
+$('crGo').addEventListener('click', e => { e.stopPropagation();
+  const n = $('crName').value.trim(); if (!n) { $('crName').focus(); $('crName').placeholder = 'Give your hero a name'; return; }
+  PROFILE.name = n.slice(0, 12); PROFILE.made = true; saveProfile(); crSync(); $('creator').hidden = true;
+  if (typeof syncSwatches === 'function') syncSwatches(); banner('Welcome, ' + PROFILE.name + '!', true); });
+// a brand-new player makes a hero once, right after the title screens
+function maybeCreateHero() { if (!PROFILE.made) showCreator(); }
+// start-up: the publisher's animated logo, then the title screen; tap to play
+(() => {
+  const pub = $('pubSplash'), ttl = $('titleSplash');
+  const endPub = () => { if (pub.classList.contains('out')) return; pub.classList.add('out'); setTimeout(() => pub.remove(), 500); };
+  const start = () => { pub.querySelector('.ps-logo').classList.add('go'); setTimeout(endPub, 2800); };   // play the logo once the game has loaded behind it
+  if (document.readyState === 'complete') start(); else addEventListener('load', start);
+  pub.addEventListener('pointerdown', e => { e.stopPropagation(); endPub(); });
+  const go = e => { if (e) e.stopPropagation(); if (ttl.classList.contains('out')) return; ttl.classList.add('out'); setTimeout(() => ttl.remove(), 550); try { unlockAudio(); } catch (er) {} maybeCreateHero(); };
+  ttl.addEventListener('click', go); ['pointerdown', 'touchstart', 'mousedown'].forEach(ev => { ttl.addEventListener(ev, e => e.stopPropagation()); pub.addEventListener(ev, e => e.stopPropagation()); });
+  if (/[#&]join-/.test(location.hash)) setTimeout(() => go(), 3200);   // joining a friend's room: don't wait for a tap
+})();
 /* ================= play tracking =================
    When the game runs as a claude.ai artifact with a database, each play session is
    recorded (anonymously, under a random device id and the hero's name) so the play

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Frosthold Play Report</title>
+<title>Kindlehaven Play Report</title>
 <style>
 :root{--bg:#f4f3ef;--surface:#fcfcfb;--ink:#0b0b0b;--ink2:#52514e;--muted:#898781;--grid:#e1e0d9;--bar:#2a78d6;--bar-hi:#1c5fb0;--good:#006300;--warn:#8a5a00;--bad:#b42318;--chip:#ecebe6;--accent:#2b4a74}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121211;--surface:#1a1a19;--ink:#f0efec;--ink2:#c3c2b7;--muted:#898781;--grid:#2c2c2a;--bar:#3987e5;--bar-hi:#6aa8f0;--good:#0ca30c;--warn:#e0a020;--bad:#f0645a;--chip:#262624;--accent:#9fc3ef}}
@@ -47,7 +47,7 @@ a{color:var(--accent)}
 <body>
 <main>
 <header>
-  <div><h1>Frosthold play report</h1><p class="sub" id="sub">Loading play sessions…</p></div>
+  <div><h1>Kindlehaven play report</h1><p class="sub" id="sub">Loading play sessions…</p></div>
   <div class="ctl">
     <select id="range" aria-label="Time range"><option value="0">All time</option><option value="7">Last 7 days</option><option value="30">Last 30 days</option></select>
     <label><input type="checkbox" id="incl"> Include staging and test runs</label>
@@ -175,7 +175,7 @@ async function askAi(A, sg) {
   const btn = $('askAi'); btn.disabled = true; $('ai').textContent = 'Thinking…';
   const summary = { sessions: A.sess.length, players: A.pids.length, returning: A.returning, hoursPlayed: +A.hours.toFixed(1), medianSessionMin: +med(A.mins).toFixed(1), furthestStage: Object.fromEntries(A.stageCount), milestonesMedianMin: Object.fromEntries(A.milestones.filter(m => m[1]).map(([k, m]) => [k, +m[0].toFixed(1)])),
     townsFell: A.fell.length, raids: A.raids, cleanRaids: A.clean, knockoutsPerHour: +(A.knock / A.hours).toFixed(2), dungeonsWon: A.dW, dungeonsLost: A.dL, kills: A.kills, hunts: A.hunts, tames: A.tames, crafts: A.crafts, materials: A.mats, smelt: A.smelt, ruleFindings: sg.map(x => x.t) };
-  const prompt = 'You are a game balance designer. Frosthold is a survival town-builder: chop wood, keep villagers warm and fed, build walls, survive nightly raids, upgrade the Town Hall (I-III) then a Castle (I-III), win three dragon sieges. Heroes level up, explore wild camps and dungeons, hunt for hides, sinew, metal, gems and magic materials, and craft gear at a forge. Players can tame pets and play co-op.\n\nHere is aggregated play data as JSON:\n' + JSON.stringify(summary) + '\n\nGive 5 to 8 specific, practical suggestions to improve balance, difficulty curve and player retention. For each: one short title line, then one or two sentences with the change and the number it is based on. Plain text, no markdown headings.';
+  const prompt = 'You are a game balance designer. Kindlehaven is a survival town-builder: chop wood, keep villagers warm and fed, build walls, survive nightly raids, upgrade the Town Hall (I-III) then a Castle (I-III), win three dragon sieges. Heroes level up, explore wild camps and dungeons, hunt for hides, sinew, metal, gems and magic materials, and craft gear at a forge. Players can tame pets and play co-op.\n\nHere is aggregated play data as JSON:\n' + JSON.stringify(summary) + '\n\nGive 5 to 8 specific, practical suggestions to improve balance, difficulty curve and player retention. For each: one short title line, then one or two sentences with the change and the number it is based on. Plain text, no markdown headings.';
   try { const r = await sampleFn(prompt, { onText: ({ text }) => { $('ai').textContent = text; } }); $('ai').textContent = r.text; }
   catch (e) { $('ai').textContent = e && e.code === 'not_granted' ? 'Claude was not allowed for this page.' : 'Could not get suggestions right now. Try again in a moment.'; }
   btn.disabled = false;

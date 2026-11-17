@@ -1,4 +1,4 @@
-# Working on Frosthold
+# Working on Kindlehaven (formerly Frosthold Outpost)
 
 - The game is one file: `index.html`. No build step.
 - **Every gameplay change must update `README.md`.** README.md is shown in-game as the Help screen (cog → Help), so it is the player guide: keep it accurate, player-facing and organised by topic. Remove anything that becomes outdated.

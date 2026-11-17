@@ -1,4 +1,4 @@
-# Frosthold Outpost
+# Kindlehaven
 
 **Version 2.0**: crafting at the forge, smelting and brewing, potions and meals, foraging and gatherers, the town chest, and a world that now stretches 1200 m to the mountains.
 
@@ -9,6 +9,7 @@ Open `index.html` in a browser. There is no build step; three.js r128 loads from
 ## Getting started
 ![The camp at the start](assets/help/start.jpg)
 ![Chopping: logs stack on your back](assets/help/chop.jpg)
+- **Create your hero:** the first time you play, after the title screen, you name your hero and pick a look (Braids or Beard), a coat colour and a skin colour (natural shades or something more fantastical). Change them any time under cog → Hero → **Change look and skin**. Teammates in co-op see your look too.
 - **Move:** swipe (drag) anywhere on the screen for a floating joystick, or use WASD / arrow keys.
 - **Gather:** your axe swings on its own at trees, rocks, animals and enemies in reach. What you gather stacks on your back.
 - **Build and buy:** stand on a build space and a glowing border fills around it like a clock. When it's full (about a second), it takes what you carry and your gold. Step off before then and nothing is paid, so you can't pay by accident by walking across one.
@@ -20,7 +21,7 @@ Open `index.html` in a browser. There is no build step; three.js r128 loads from
 ![Handing logs to the firewood stall](assets/help/stall.jpg)
 - **Warmth:** every villager burns firewood. Sell logs at the firewood stall to keep the warmth meter up. Each log gives 1 warmth at Town Hall I, 2 at II and 3 at III, and bigger towns buy faster. Blizzards (winter, from Town Hall II) burn firewood 2.5× faster.
 - **Food:** once the cookhouse is built, villagers also eat. Sell meat, fish and veggies there; each food item lasts three times as long as a log.
-- If either meter hits zero, villagers start dying. Lose them all and Frosthold falls.
+- If either meter hits zero, villagers start dying. Lose them all and Kindlehaven falls.
 - With both meters above half and free beds, new villagers arrive. They pay taxes to the Town Hall.
 - **Housing:** each house holds 4; **Bunk Beds** (Town Hall II) raise that to 7 and **Stone Lofts** (Town Hall III) to 10; each Town Hall and Castle level adds more. Workers and guards live in their lodges and barracks, so they don't take beds.
 
@@ -149,7 +150,7 @@ Gold-only village upgrades are bought in the forge: **comfort** (Warm Cloaks, Sm
   - **Warden's Crest** (+40 max health): beat 3 raids with no wall broken.
   - **Veteran's Edge** (+25% damage): survive to day 20.
   - **Bulwark Shield** (12% less damage on top of armour): beat 6 raids with no wall broken, with Town Hall III.
-  - **Heart of Frosthold** (legendary: +60 health, +30% damage): repel a dragon siege.
+  - **Heart of Kindlehaven** (legendary: +60 health, +30% damage): repel a dragon siege.
   - A banner tells you when a well-defended raid reveals one.
 - **Recipe scrolls** are rare drops that teach one-of-a-kind items (crafted once, always active). Camp legends drop them three times as often:
   - **Raptor Claw Gauntlets** (+20% damage): raptors and sabre tigers.
