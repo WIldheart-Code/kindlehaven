@@ -309,7 +309,7 @@ html,body{height:100%;margin:0;background:var(--ice);color:var(--ink);overflow:h
 <div id="titleSplash"><div class="ts-sky"></div><div class="ts-logo"><svg viewBox="0 0 600 230" aria-label="Kindlehaven"><defs><linearGradient id="tsg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff2a8"/><stop offset=".45" stop-color="#ffc23d"/><stop offset="1" stop-color="#ff7a1a"/></linearGradient><path id="tsArc" d="M40 175 Q300 95 560 175"/></defs>
 <path d="M300 8 C318 40 344 48 330 82 C322 100 304 104 300 104 C296 104 278 100 270 82 C256 48 282 40 300 8Z" fill="#ff8a2a" stroke="#5b2a12" stroke-width="7"/><path d="M300 48 C308 64 318 70 311 86 C307 94 302 95 300 95 C298 95 293 94 289 86 C282 70 292 64 300 48Z" fill="#ffe27a"/>
 <text font-family="Lilita One, sans-serif" font-size="104" text-anchor="middle" fill="url(#tsg)" stroke="#5b2a12" stroke-width="16" stroke-linejoin="round" paint-order="stroke"><textPath href="#tsArc" startOffset="50%">Kindlehaven</textPath></text></svg>
-<div class="ts-tag">Build · Brew · Survive</div></div><button type="button" id="tsGo">Tap to start</button><div class="ts-by">Wildheart Gaming</div></div>
+<div class="ts-tag">Build · Brew · Survive</div></div><button type="button" id="tsGo">Tap to start</button></div>
 <div id="creator" hidden><div class="box"><h2>Create your hero</h2>
 <div class="cr-top"><div id="crView"></div><div class="cr-side"><label>Name<input id="crName" maxlength="12" placeholder="Your hero's name" autocomplete="off"></label>
 <b>Look</b><div class="cr-looks"><button type="button" data-look="0"><svg viewBox="0 0 48 48"><circle cx="24" cy="22" r="11" fill="#f3c9a3"/><path d="M12 20 Q24 4 36 20 L36 16 Q24 0 12 16Z" fill="#6b3f22"/><circle cx="11" cy="28" r="3.5" fill="#6b3f22"/><circle cx="11" cy="34" r="3" fill="#6b3f22"/><circle cx="11" cy="39" r="2.6" fill="#6b3f22"/><circle cx="37" cy="28" r="3.5" fill="#6b3f22"/><circle cx="37" cy="34" r="3" fill="#6b3f22"/><circle cx="37" cy="39" r="2.6" fill="#6b3f22"/><circle cx="20" cy="22" r="1.5"/><circle cx="28" cy="22" r="1.5"/></svg>Braids</button><button type="button" data-look="1"><svg viewBox="0 0 48 48"><circle cx="24" cy="20" r="11" fill="#f3c9a3"/><path d="M12 18 Q24 4 36 18 L36 14 Q24 0 12 14Z" fill="#6b3f22"/><path d="M13 24 Q24 46 35 24 Q30 30 24 29 Q18 30 13 24Z" fill="#6b3f22"/><circle cx="20" cy="19" r="1.5"/><circle cx="28" cy="19" r="1.5"/></svg>Beard</button></div></div></div>
@@ -5561,12 +5561,12 @@ function maybeCreateHero() { if (!PROFILE.made) showCreator(); }
 (() => {
   const pub = $('pubSplash'), ttl = $('titleSplash');
   const endPub = () => { if (pub.classList.contains('out')) return; pub.classList.add('out'); setTimeout(() => pub.remove(), 500); };
-  const start = () => { pub.querySelector('.ps-logo').classList.add('go'); setTimeout(endPub, 2800); };   // play the logo once the game has loaded behind it
+  const start = () => { pub.querySelector('.ps-logo').classList.add('go'); setTimeout(endPub, 4300); };   // play the logo once the game has loaded behind it
   if (document.readyState === 'complete') start(); else addEventListener('load', start);
   pub.addEventListener('pointerdown', e => { e.stopPropagation(); endPub(); });
   const go = e => { if (e) e.stopPropagation(); if (ttl.classList.contains('out')) return; ttl.classList.add('out'); setTimeout(() => ttl.remove(), 550); try { unlockAudio(); } catch (er) {} maybeCreateHero(); };
   ttl.addEventListener('click', go); ['pointerdown', 'touchstart', 'mousedown'].forEach(ev => { ttl.addEventListener(ev, e => e.stopPropagation()); pub.addEventListener(ev, e => e.stopPropagation()); });
-  if (/[#&]join-/.test(location.hash)) setTimeout(() => go(), 3200);   // joining a friend's room: don't wait for a tap
+  if (/[#&]join-/.test(location.hash)) setTimeout(() => go(), 4700);   // joining a friend's room: don't wait for a tap
 })();
 /* ================= play tracking =================
    When the game runs as a claude.ai artifact with a database, each play session is
