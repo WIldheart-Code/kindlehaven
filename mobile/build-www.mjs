@@ -2,7 +2,7 @@
 // Run from the repo root or mobile/:  node mobile/build-www.mjs
 import fs from 'fs'; import path from 'path'; import { fileURLToPath } from 'url';
 const here = path.dirname(fileURLToPath(import.meta.url)), root = path.join(here, '..'), out = path.join(here, 'www');
-const WEB_URL = 'https://dcardine.github.io/engage/';   // where co-op invites from the app point (the web version joins the same rooms)
+const WEB_URL = 'https://wildheart-code.github.io/kindlehaven/';   // where co-op invites from the app point (the web version joins the same rooms)
 fs.rmSync(out, { recursive: true, force: true }); fs.mkdirSync(out, { recursive: true });
 let html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
 const swap = (from, to) => { if (!html.includes(from)) throw new Error('not found in index.html: ' + from); html = html.replace(from, to); };

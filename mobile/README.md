@@ -19,7 +19,7 @@ the app works with no internet connection (co-op still needs one). The web versi
 2. The app id is `com.wildheartgaming.kindlehaven`. It can never change after the first store upload.
    The projects use Capacitor 8 and target Android 16 (API 36), which Google Play requires for new apps.
 3. Check `WEB_URL` at the top of `build-www.mjs`: co-op invites sent from the app point there (the web version joins
-   the same rooms). It is set to `https://dcardine.github.io/engage/`; change it if your GitHub Pages address differs.
+   the same rooms). It is set to `https://wildheart-code.github.io/kindlehaven/`; change it if your GitHub Pages address differs.
 
 ## Every release
 
