@@ -250,16 +250,7 @@ Cave entrances lie 200–315 m out, with more scattered through the outer lands 
 ## Change log
 - When you come back after an update, a **What's new** screen lists what changed since you last played. Find the full list any time under the cog: **What's new**.
 - **2.28:** end-game materials rebalanced (more crystal, cheaper Steel and Frost Glass, Frost Gems make 2 Runesteel and drop more often) and a Make all button for smelting.
-- **2.27:** roll a random hero name with the dice.
-- **2.26:** one Change Hero Look button on the Hero screen.
-- **2.25:** Hairless is now Shaved and keeps its hair.
-- **2.24:** Hairless (bald) and Hairy looks.
-- **2.23:** colour drop-downs in Create your hero.
-- **2.22:** choose a hair colour; darker skin covers the whole face; legs are black trousers.
-- **2.21:** gloves match your boots; beards sit lower on the chin.
-- **2.20:** hair and beards sit properly on the face; new look names Stache and Hairy Face.
-- **2.19:** six hero looks, hood and boots that match your coat, and Create your hero on every new game.
-- **2.18:** a **No beard** look, a neater beard and a sharper hero preview in Create your hero.
+- **2.18–2.27:** Create your hero reworked: six looks (Braids, Long hair, Shaved, Stache, Beard, Hairy), hair colour, colour drop-downs, matching hood, gloves and boots, a name dice, and the creator on every new game.
 - **2.17:** tool upgrades (boots, Medic Tent, Work Sleds, Watch Horn, Crystal Pick) need materials as well as gold.
 - **2.16:** the title screen fits wide computer screens.
 - **2.15:** the Wildheart Gaming logo animation no longer overlaps.
