@@ -9,7 +9,7 @@ Open `index.html` in a browser. There is no build step; three.js r128 loads from
 ## Getting started
 ![The camp at the start](assets/help/start.jpg)
 ![Chopping: logs stack on your back](assets/help/chop.jpg)
-- **Create your hero:** the first time you play, after the title screen, you name your hero and pick a look (Braids, Long hair, No beard, Stache, Beard or Hairy Face), a coat colour (your hood matches it, and your gloves and boots are a darker shade) and a skin colour (natural shades or something more fantastical). Drag the hero to turn them round. Starting a **New game** brings this screen up again, and you can change your look any time under cog → Hero → **Change look and skin**. Teammates in co-op see your look too.
+- **Create your hero:** the first time you play, after the title screen, you name your hero and pick a look (Braids, Long hair, No beard, Stache, Beard or Hairy Face), a coat colour (your hood matches it, and your gloves and boots are a darker shade) a hair colour and a skin colour (natural shades or something more fantastical). Your hair colour is used for your hair, braids and beard. Drag the hero to turn them round. Starting a **New game** brings this screen up again, and you can change your look any time under cog → Hero → **Change look and skin**. Teammates in co-op see your look too.
 - **Move:** swipe (drag) anywhere on the screen for a floating joystick, or use WASD / arrow keys.
 - **Gather:** your axe swings on its own at trees, rocks, animals and enemies in reach. What you gather stacks on your back.
 - **Build and buy:** stand on a build space and a glowing border fills around it like a clock. When it's full (about a second), it takes what you carry and your gold. Step off before then and nothing is paid, so you can't pay by accident by walking across one.
@@ -249,6 +249,7 @@ Cave entrances lie 200–315 m out, with more scattered through the outer lands 
 
 ## Change log
 - When you come back after an update, a **What's new** screen lists what changed since you last played. Find the full list any time under the cog: **What's new**.
+- **2.22:** choose a hair colour; darker skin covers the whole face; legs are black trousers.
 - **2.21:** gloves match your boots; beards sit lower on the chin.
 - **2.20:** hair and beards sit properly on the face; new look names Stache and Hairy Face.
 - **2.19:** six hero looks, hood and boots that match your coat, and Create your hero on every new game.

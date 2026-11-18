@@ -169,7 +169,7 @@ html,body{height:100%;margin:0;background:var(--ice);color:var(--ink);overflow:h
 #crName{background:#fff;color:#1d2b44;color-scheme:light}#creator{position:fixed;inset:0;z-index:26;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 50% 30%,#3b6fa8,#16233a);padding:0 12px}#creator .box{background:#f4f7fc;color:var(--ink);border-radius:20px;padding:16px;width:min(420px,100%);max-height:94vh;overflow:auto;box-shadow:0 20px 50px rgba(0,0,0,.4)}#creator h2{margin:0 0 8px;font:28px/1 var(--display);color:#2b4a74;text-align:center}#creator b{display:block;font:800 12px var(--body);text-transform:uppercase;letter-spacing:.06em;color:var(--ember);margin:10px 0 5px}
 .cr-top{display:flex;gap:10px;align-items:stretch}#crView{flex:0 0 46%;background:radial-gradient(circle at 50% 70%,#dfeaf6,#b9cde4);border-radius:14px;overflow:hidden;min-height:200px}#crView canvas{width:100%!important;height:auto!important;display:block}.cr-side{flex:1;display:flex;flex-direction:column}.cr-side label{font:800 12px var(--body);color:#2b4a74}.cr-side input{display:block;width:100%;box-sizing:border-box;margin-top:4px;border:2px solid #c9d6e8;border-radius:10px;padding:9px;font:16px var(--display);color:#1d2128}
 .cr-looks{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.cr-looks button{line-height:1.1;border:2px solid #c9d6e8;border-radius:12px;background:#fff;padding:6px 2px;font:800 12px var(--body);color:#2b4a74;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px}.cr-looks svg{width:44px;height:44px}.cr-looks button[aria-pressed=true]{border-color:#2b4a74;background:#e3efff}
-.cr-sw{display:flex;flex-wrap:wrap;gap:6px}#crSkin{flex-wrap:nowrap;gap:3px}#crSkin button{width:auto;flex:1 1 0;min-width:0;max-width:32px;height:auto;aspect-ratio:1;border-width:2px}.cr-sw button{width:32px;height:32px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 1px #c9d6e8;cursor:pointer}.cr-sw button[aria-pressed=true]{box-shadow:0 0 0 3px #2b4a74}
+.cr-sw{display:flex;flex-wrap:wrap;gap:6px}#crSkin,#crHair{flex-wrap:nowrap;gap:3px}#crSkin button,#crHair button{width:auto;flex:1 1 0;min-width:0;max-width:32px;height:auto;aspect-ratio:1;border-width:2px}.cr-sw button{width:32px;height:32px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 1px #c9d6e8;cursor:pointer}.cr-sw button[aria-pressed=true]{box-shadow:0 0 0 3px #2b4a74}
 #crGo{display:block;width:100%;margin-top:14px;border:0;border-radius:14px;background:#3f8a5a;color:#fff;font:20px var(--display);padding:13px;cursor:pointer;box-shadow:0 4px 0 #2a5e3c}
 #news{position:fixed;inset:0;z-index:24;display:flex;align-items:center;justify-content:center;background:rgba(16,26,44,.72);padding:0 16px}#news .box{background:#f4f7fc;color:var(--ink);border-radius:18px;padding:16px 18px;width:min(400px,100%);max-height:84vh;overflow:auto;box-shadow:0 20px 50px rgba(0,0,0,.35)}#news h2{margin:0 0 6px;font:26px/1 var(--display);color:#2b4a74;text-align:center}#news h3{margin:12px 0 4px;font:15px var(--display);color:var(--ember)}#news h3 small{font:800 11px var(--body);color:#8a96a8;margin-left:6px}#news ul{margin:0;padding-left:18px;font:700 13px/1.4 var(--body)}#news li{margin:3px 0}#closeNews{display:block;margin:14px auto 0;border:0;border-radius:12px;background:#2b4a74;color:#fff;font:16px/1 var(--display);padding:10px 22px;cursor:pointer}
 #help{position:fixed;inset:0;z-index:23;display:flex;align-items:center;justify-content:center;background:rgba(16,26,44,.72);padding:0 16px}
@@ -297,7 +297,7 @@ html,body{height:100%;margin:0;background:var(--ice);color:var(--ink);overflow:h
 <div id="hint" class="hud">Swipe to move</div>
 <div id="paused" class="hud" hidden>Paused<small>Tap to resume</small></div>
 <div id="netbar" class="hud"><button id="cog" type="button" aria-label="Menu" aria-expanded="false"><svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M19.4 13a7.5 7.5 0 0 0 0-2l2.1-1.6-2-3.5-2.5 1a7.6 7.6 0 0 0-1.7-1L15 3h-4l-.4 2.9a7.6 7.6 0 0 0-1.7 1l-2.5-1-2 3.5L6.6 11a7.5 7.5 0 0 0 0 2l-2.1 1.6 2 3.5 2.5-1a7.6 7.6 0 0 0 1.7 1L11 21h4l.4-2.9a7.6 7.6 0 0 0 1.7-1l2.5 1 2-3.5zM13 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z" transform="translate(-1 0)"/></svg></button><span id="netTxt" hidden></span></div>
-<div id="menu" hidden><div class="box"><h2>Menu</h2><p style="margin:-4px 0 8px;text-align:center;font:800 11px var(--body);color:#8a96a8">Kindlehaven · version 2.21</p>
+<div id="menu" hidden><div class="box"><h2>Menu</h2><p style="margin:-4px 0 8px;text-align:center;font:800 11px var(--body);color:#8a96a8">Kindlehaven · version 2.22</p>
 <div class="mgrid"><button id="helpBtn" type="button">Help</button><button id="newsBtn" type="button">What's new</button><button id="reportBtn" type="button" hidden>Play report</button><button id="tutBtn" type="button">Tutorial</button><button id="coop" type="button">Co-op</button><button id="inviteBtn" type="button" hidden>Invite</button><button id="statsBtn" type="button">Hero</button><button id="pause" type="button">Pause</button><button id="mute" type="button">Sound: on</button><button id="newg" type="button">New game</button></div>
 <h3>Show on screen</h3>
 <div class="mshow"><label><input type="checkbox" data-hud="quest" checked> Goal</label><label><input type="checkbox" data-hud="qcard" checked> Quest</label><label><input type="checkbox" data-hud="town" checked> Town gauges</label><label><input type="checkbox" data-hud="res" checked> Resources</label><label><input type="checkbox" data-hud="mini" checked> Minimap</label></div>
@@ -317,6 +317,7 @@ html,body{height:100%;margin:0;background:var(--ice);color:var(--ink);overflow:h
 <div class="cr-top"><div id="crView"></div><div class="cr-side"><label>Name<input id="crName" maxlength="12" placeholder="Your hero's name" autocomplete="off"></label>
 <b>Look</b><div class="cr-looks"><button type="button" data-look="0"><svg viewBox="0 0 48 48"><circle cx="24" cy="22" r="11" fill="#f3c9a3"/><path d="M12 20 Q24 4 36 20 L36 16 Q24 0 12 16Z" fill="#6b3f22"/><circle cx="11" cy="28" r="3.5" fill="#6b3f22"/><circle cx="11" cy="34" r="3" fill="#6b3f22"/><circle cx="11" cy="39" r="2.6" fill="#6b3f22"/><circle cx="37" cy="28" r="3.5" fill="#6b3f22"/><circle cx="37" cy="34" r="3" fill="#6b3f22"/><circle cx="37" cy="39" r="2.6" fill="#6b3f22"/><circle cx="20" cy="22" r="1.5"/><circle cx="28" cy="22" r="1.5"/></svg>Braids</button><button type="button" data-look="3"><svg viewBox="0 0 48 48"><path d="M10 18 Q24 0 38 18 L39 40 L33 40 L34 20 Q24 10 14 20 L15 40 L9 40Z" fill="#6b3f22"/><circle cx="24" cy="20" r="11" fill="#f3c9a3"/><path d="M12 18 Q24 4 36 18 L36 14 Q24 0 12 14Z" fill="#6b3f22"/><circle cx="20" cy="19" r="1.5"/><circle cx="28" cy="19" r="1.5"/><path d="M20 26 Q24 29 28 26" stroke="#6b3f22" stroke-width="1.6" fill="none"/></svg>Long hair</button><button type="button" data-look="2"><svg viewBox="0 0 48 48"><circle cx="24" cy="20" r="11" fill="#f3c9a3"/><path d="M12 18 Q24 4 36 18 L36 14 Q24 0 12 14Z" fill="#6b3f22"/><circle cx="20" cy="19" r="1.5"/><circle cx="28" cy="19" r="1.5"/><path d="M20 26 Q24 29 28 26" stroke="#6b3f22" stroke-width="1.6" fill="none"/></svg>No beard</button><button type="button" data-look="4"><svg viewBox="0 0 48 48"><circle cx="24" cy="20" r="11" fill="#f3c9a3"/><path d="M12 18 Q24 4 36 18 L36 14 Q24 0 12 14Z" fill="#6b3f22"/><circle cx="20" cy="19" r="1.5"/><circle cx="28" cy="19" r="1.5"/><path d="M17 26 Q21 23 24 25.5 Q27 23 31 26 Q27 27.5 24 26.5 Q21 27.5 17 26Z" fill="#6b3f22"/></svg>Stache</button><button type="button" data-look="1"><svg viewBox="0 0 48 48"><circle cx="24" cy="20" r="11" fill="#f3c9a3"/><path d="M12 18 Q24 4 36 18 L36 14 Q24 0 12 14Z" fill="#6b3f22"/><circle cx="20" cy="19" r="1.5"/><circle cx="28" cy="19" r="1.5"/><path d="M13 24 Q24 46 35 24 Q30 30 24 29 Q18 30 13 24Z" fill="#6b3f22"/></svg>Beard</button><button type="button" data-look="5"><svg viewBox="0 0 48 48"><circle cx="24" cy="20" r="11" fill="#f3c9a3"/><path d="M12 18 Q24 4 36 18 L36 14 Q24 0 12 14Z" fill="#6b3f22"/><circle cx="20" cy="19" r="1.5"/><circle cx="28" cy="19" r="1.5"/><path d="M13 24 Q24 46 35 24 Q30 30 24 29 Q18 30 13 24Z" fill="#6b3f22"/><path d="M17 26 Q21 23 24 25.5 Q27 23 31 26 Q27 27.5 24 26.5 Q21 27.5 17 26Z" fill="#6b3f22"/></svg>Hairy Face</button></div></div></div>
 <b>Coat colour</b><div class="cr-sw" id="crCoat"></div>
+<b>Hair</b><div class="cr-sw" id="crHair"></div>
 <b>Skin</b><div class="cr-sw" id="crSkin"></div>
 <button id="crGo" type="button">Start your adventure</button></div></div>
 <div id="news" hidden><div class="box"><h2 id="newsHead">What's new</h2><div id="newsBody"></div><button id="closeNews" type="button">Got it</button></div></div>
@@ -461,9 +462,10 @@ const resName = t => t === 'ore' ? 'crystal' : t === 'cash' ? 'gold' : t === 'me
 const C = { x: 0, z: 10 };                // fort centre
 const TIERS = [12, 21, 30];               // half-size of each fort ring
 const GATE_HW = 2.5;
-const GAME_VERSION = '2.21';
+const GAME_VERSION = '2.22';
 // newest first; players who come back after an update see the entries newer than the last version they played
 const CHANGELOG = [
+  ['2.22', 'November 2026', ['Create your hero: pick a hair colour (12 shades, natural and wild); it colours your hair, braids and beard.', 'Darker skin colours now cover the whole face, and legs are always black trousers.']],
   ['2.21', 'November 2026', ['Your gloves now match your boots (a darker shade of your coat), and beards sit lower on the chin.']],
   ['2.20', 'November 2026', ['Braids, long hair, beards and staches now sit properly on your hero\'s face.', 'The Moustache look is now called Stache, and Beard and moustache is now Hairy Face.']],
   ['2.19', 'November 2026', ['Create your hero: six looks (Braids, Long hair, No beard, Moustache, Beard, Beard and moustache), hair that sits on the face, and a hero that stays still until you drag to turn it.', 'Your hood matches your coat colour and your boots are a darker shade of it.', 'Starting a new game opens Create your hero again.', 'The old box backpack is gone; your hero just wears the real pack.']],
@@ -1014,25 +1016,26 @@ function makeAxe() {
 // ---- player profile: name and coat colour, shown to teammates ----
 const COLORS = [['Red', 0xd9443a], ['Blue', 0x2f7fb8], ['Green', 0x3fa34d], ['Purple', 0x8e44ad], ['Gold', 0xe0a91c], ['Pink', 0xe85d9e], ['Teal', 0x1fa3a3], ['Charcoal', 0x3a414c]];
 const SKIN0 = 0xf3c9a3;
-const PROFILE = (() => { try { const p = JSON.parse(localStorage.getItem('frosthold-profile')); if (p && typeof p.color === 'number') return { name: String(p.name || '').slice(0, 12), color: p.color, skin: typeof p.skin === 'number' ? p.skin : SKIN0, look: [0, 1, 2, 3, 4, 5].includes(p.look) ? p.look : 0, made: !!p.made }; } catch (e) {} return { name: '', color: 0xd9443a, skin: SKIN0, look: 0, made: false }; })();
+const PROFILE = (() => { try { const p = JSON.parse(localStorage.getItem('frosthold-profile')); if (p && typeof p.color === 'number') return { name: String(p.name || '').slice(0, 12), color: p.color, skin: typeof p.skin === 'number' ? p.skin : SKIN0, look: [0, 1, 2, 3, 4, 5].includes(p.look) ? p.look : 0, hair: typeof p.hair === 'number' ? p.hair : 0x6b3f22, made: !!p.made }; } catch (e) {} return { name: '', color: 0xd9443a, skin: SKIN0, look: 0, hair: 0x6b3f22, made: false }; })();
 function saveProfile() { try { localStorage.setItem('frosthold-profile', JSON.stringify(PROFILE)); } catch (e) {} }
 const hex = c => '#' + c.toString(16).padStart(6, '0');
 // The hero model's coat is red in its texture: a shader swaps red hues for the chosen colour, leaving skin, wood and fur alone.
-function coatShader(sh, u, us) {
-  sh.uniforms.uCoat = u; sh.uniforms.uSkin = us;
+function coatShader(sh, u, us, uh) {
+  sh.uniforms.uCoat = u; sh.uniforms.uSkin = us; sh.uniforms.uHair = uh;
   sh.vertexShader = 'varying float vObjY;\n' + sh.vertexShader.replace('#include <begin_vertex>', '#include <begin_vertex>\nvObjY = position.y;');
-  sh.fragmentShader = 'varying float vObjY;\nuniform vec3 uCoat;\nuniform vec3 uSkin;\nvec3 rgb2hsv(vec3 c){vec4 K=vec4(0.,-1./3.,2./3.,-1.);vec4 p=mix(vec4(c.bg,K.wz),vec4(c.gb,K.xy),step(c.b,c.g));vec4 q=mix(vec4(p.xyw,c.r),vec4(c.r,p.yzx),step(p.x,c.r));float d=q.x-min(q.w,q.y);return vec3(abs(q.z+(q.w-q.y)/(6.*d+1e-10)),d/(q.x+1e-10),q.x);}\nvec3 hsv2rgb(vec3 c){vec3 p=abs(fract(c.xxx+vec3(1.,2./3.,1./3.))*6.-3.);return c.z*mix(vec3(1.),clamp(p-1.,0.,1.),c.y);}\n' +
-    sh.fragmentShader.replace('#include <map_fragment>', '#include <map_fragment>\n{ vec3 hv = rgb2hsv(diffuseColor.rgb); float red = (1. - smoothstep(0.03, 0.07, min(hv.x, 1. - hv.x))) * smoothstep(0.35, 0.55, hv.y);\n  vec3 t = uCoat; vec3 rec = hsv2rgb(vec3(t.x, mix(hv.y * 0.12, hv.y, step(0.2, t.y)), hv.z * mix(0.42, 1., step(0.35, t.z))));\n  diffuseColor.rgb = mix(diffuseColor.rgb, rec, red);\n  float skin = smoothstep(0.015, 0.035, hv.x) * (1. - smoothstep(0.1, 0.13, hv.x)) * smoothstep(0.12, 0.2, hv.y) * (1. - smoothstep(0.55, 0.68, hv.y)) * smoothstep(0.5, 0.62, hv.z) * (1. - red);\n  vec3 sk = hsv2rgb(vec3(uSkin.x, uSkin.y, clamp(uSkin.z * hv.z / 0.86, 0., 1.)));\n  diffuseColor.rgb = mix(diffuseColor.rgb, sk, skin);\n  float hood = (1. - smoothstep(0.05, 0.09, abs(hv.x - 0.53))) * smoothstep(0.25, 0.4, hv.y) * smoothstep(0.28, 0.34, vObjY);\n  vec3 hc = hsv2rgb(vec3(t.x, mix(0.12, 0.85, step(0.2, t.y)) * (hv.y / 0.75), hv.z * mix(0.42, 0.95, step(0.35, t.z))));\n  diffuseColor.rgb = mix(diffuseColor.rgb, hc, hood);\n  float boot = (1. - smoothstep(-0.64, -0.58, vObjY)) * smoothstep(0.2, 0.35, hv.y) * (1. - smoothstep(0.12, 0.16, min(hv.x, 1. - hv.x))) * (1. - smoothstep(0.55, 0.7, hv.z));\n  vec3 bc = hsv2rgb(vec3(t.x, mix(0.1, 0.7, step(0.2, t.y)), hv.z * 0.75 * mix(0.5, 1., step(0.35, t.z))));\n  diffuseColor.rgb = mix(diffuseColor.rgb, bc, boot);\n  float glove = (1. - smoothstep(0.06, 0.1, abs(hv.x - 0.54))) * smoothstep(0.25, 0.4, hv.y) * (1. - smoothstep(0.26, 0.3, vObjY)) * smoothstep(-0.4, -0.35, vObjY);\n  diffuseColor.rgb = mix(diffuseColor.rgb, hsv2rgb(vec3(t.x, mix(0.1, 0.7, step(0.2, t.y)), hv.z * 0.8 * mix(0.5, 1., step(0.35, t.z)))), glove); }');
+  sh.fragmentShader = 'varying float vObjY;\nuniform vec3 uHair;\nuniform vec3 uCoat;\nuniform vec3 uSkin;\nvec3 rgb2hsv(vec3 c){vec4 K=vec4(0.,-1./3.,2./3.,-1.);vec4 p=mix(vec4(c.bg,K.wz),vec4(c.gb,K.xy),step(c.b,c.g));vec4 q=mix(vec4(p.xyw,c.r),vec4(c.r,p.yzx),step(p.x,c.r));float d=q.x-min(q.w,q.y);return vec3(abs(q.z+(q.w-q.y)/(6.*d+1e-10)),d/(q.x+1e-10),q.x);}\nvec3 hsv2rgb(vec3 c){vec3 p=abs(fract(c.xxx+vec3(1.,2./3.,1./3.))*6.-3.);return c.z*mix(vec3(1.),clamp(p-1.,0.,1.),c.y);}\n' +
+    sh.fragmentShader.replace('#include <map_fragment>', '#include <map_fragment>\n{ vec3 hv = rgb2hsv(diffuseColor.rgb); float red = (1. - smoothstep(0.03, 0.07, min(hv.x, 1. - hv.x))) * smoothstep(0.35, 0.55, hv.y);\n  vec3 t = uCoat; vec3 rec = hsv2rgb(vec3(t.x, mix(hv.y * 0.12, hv.y, step(0.2, t.y)), hv.z * mix(0.42, 1., step(0.35, t.z))));\n  diffuseColor.rgb = mix(diffuseColor.rgb, rec, red);\n  float hd = min(abs(hv.x - 0.06), 1. - abs(hv.x - 0.06)); float skinT = (1. - smoothstep(0.08, 0.11, hd)) * smoothstep(0.06, 0.14, hv.y) * (1. - smoothstep(0.58, 0.7, hv.y)) * smoothstep(0.36, 0.5, hv.z) * (1. - red);\n  float skin = skinT * smoothstep(0.2, 0.26, vObjY);\n  vec3 sk = hsv2rgb(vec3(uSkin.x, uSkin.y, clamp(uSkin.z * hv.z / 0.86, 0., 1.)));\n  diffuseColor.rgb = mix(diffuseColor.rgb, sk, skin);\n  float leg = skinT * (1. - smoothstep(-0.2, -0.14, vObjY));\n  diffuseColor.rgb = mix(diffuseColor.rgb, vec3(0.07, 0.07, 0.08) * (0.6 + 0.6 * hv.z), leg);\n  float hairM = (1. - smoothstep(0.07, 0.1, hd)) * smoothstep(0.55, 0.66, hv.y) * smoothstep(0.4, 0.46, vObjY) * (1. - red);\n  diffuseColor.rgb = mix(diffuseColor.rgb, hsv2rgb(vec3(uHair.x, uHair.y, clamp(uHair.z * hv.z / 0.5, 0., 1.))), hairM);\n  float hood = (1. - smoothstep(0.05, 0.09, abs(hv.x - 0.53))) * smoothstep(0.25, 0.4, hv.y) * smoothstep(0.28, 0.34, vObjY);\n  vec3 hc = hsv2rgb(vec3(t.x, mix(0.12, 0.85, step(0.2, t.y)) * (hv.y / 0.75), hv.z * mix(0.42, 0.95, step(0.35, t.z))));\n  diffuseColor.rgb = mix(diffuseColor.rgb, hc, hood);\n  float boot = (1. - smoothstep(-0.64, -0.58, vObjY)) * smoothstep(0.2, 0.35, hv.y) * (1. - smoothstep(0.12, 0.16, min(hv.x, 1. - hv.x))) * (1. - smoothstep(0.55, 0.7, hv.z));\n  vec3 bc = hsv2rgb(vec3(t.x, mix(0.1, 0.7, step(0.2, t.y)), hv.z * 0.75 * mix(0.5, 1., step(0.35, t.z))));\n  diffuseColor.rgb = mix(diffuseColor.rgb, bc, boot);\n  float glove = (1. - smoothstep(0.06, 0.1, abs(hv.x - 0.54))) * smoothstep(0.25, 0.4, hv.y) * (1. - smoothstep(0.26, 0.3, vObjY)) * smoothstep(-0.4, -0.35, vObjY);\n  diffuseColor.rgb = mix(diffuseColor.rgb, hsv2rgb(vec3(t.x, mix(0.1, 0.7, step(0.2, t.y)), hv.z * 0.8 * mix(0.5, 1., step(0.35, t.z)))), glove); }');
 }
 function hsvOf(c) { const col = new THREE.Color(c), o = {}; col.getHSL(o); const v = Math.max(col.r, col.g, col.b), mn = Math.min(col.r, col.g, col.b); return new THREE.Vector3(o.h, v ? (v - mn) / v : 0, v); }
-function applyCoat(g, color, skinCol, look) {
-  if (!g.userData.coatU) { g.userData.coatU = { value: hsvOf(color) }; g.userData.skinU = { value: hsvOf(SKIN0) }; }
-  const u = g.userData.coatU, us = g.userData.skinU; u.value.copy(hsvOf(color));
+function applyCoat(g, color, skinCol, look, hairCol) {
+  if (!g.userData.coatU) { g.userData.coatU = { value: hsvOf(color) }; g.userData.skinU = { value: hsvOf(SKIN0) }; g.userData.hairU = { value: hsvOf(HAIR) }; g.userData.hairM = new THREE.MeshLambertMaterial({ color: HAIR }); }
+  const u = g.userData.coatU, us = g.userData.skinU, uh = g.userData.hairU; u.value.copy(hsvOf(color));
+  if (hairCol !== undefined) { uh.value.copy(hsvOf(hairCol)); g.userData.hairM.color.setHex(hairCol); }
   if (skinCol !== undefined) { g.userData.skinCol = skinCol; us.value.copy(hsvOf(skinCol)); }
   if (look !== undefined) applyLook(g, look);
   if (g.userData.body) g.userData.body.forEach(m => { if (m.isMesh && m.userData.coatPart) m.material.color.setHex(color); if (m.isMesh && m.userData.skinPart && g.userData.skinCol !== undefined) m.material.color.setHex(g.userData.skinCol); });
   const sk = g.userData.skin; if (!sk || sk === true || sk.userData.coated) return; sk.userData.coated = true;
-  sk.traverse(o => { if (!o.isMesh) return; o.material = o.material.clone(); o.material.onBeforeCompile = sh => coatShader(sh, u, us); o.material.customProgramCacheKey = () => 'coat4'; o.material.needsUpdate = true; });
+  sk.traverse(o => { if (!o.isMesh) return; o.material = o.material.clone(); o.material.onBeforeCompile = sh => coatShader(sh, u, us, uh); o.material.customProgramCacheKey = () => 'coat7'; o.material.needsUpdate = true; });
 }
 // two looks, chosen when you create your hero: long braids, or a bushy beard (hair in a warm brown)
 const HAIR = 0x6b3f22;
@@ -1041,7 +1044,7 @@ function applyLook(g, look) {
   if (g.userData.lookG) g.remove(g.userData.lookG);
   const L = new THREE.Group(); g.add(L); g.userData.lookG = L;
   /* looks: 0 braids, 1 beard, 2 clean, 3 long hair, 4 moustache, 5 beard and moustache */
-  const hm = new THREE.MeshLambertMaterial({ color: HAIR }), blob = (sx, sy, sz, x, y, z, rz) => { const m = new THREE.Mesh(new THREE.SphereGeometry(1, 28, 18), hm); m.scale.set(sx, sy, sz); m.position.set(x, y, z); if (rz) m.rotation.z = rz; L.add(m); return m; };
+  const hm = g.userData.hairM || new THREE.MeshLambertMaterial({ color: HAIR }), blob = (sx, sy, sz, x, y, z, rz) => { const m = new THREE.Mesh(new THREE.SphereGeometry(1, 28, 18), hm); m.scale.set(sx, sy, sz); m.position.set(x, y, z); if (rz) m.rotation.z = rz; L.add(m); return m; };
   /* measured on the hero model: face spans x -0.16..0.20 (centre 0.03), mouth at y 1.40, scarf from 1.36 down; the face edge sits farther back on the right */
   const SIDE = { '-1': [-0.165, 0.275], '1': [0.205, 0.205] };
   if (look === 0) [-1, 1].forEach(k => {   /* braids from the face edge down over the scarf */
@@ -1058,7 +1061,7 @@ function applyLook(g, look) {
 }
 function personCoat(g) { const b = g.userData.body && g.userData.body[0]; if (b && b.isMesh) { b.material = b.material.clone(); b.userData.coatPart = true; } }
 const P0 = makePerson(0xc8452f, 0xf3e6cf, 0x2f4a6d); personCoat(P0.g);
-skin(P0.g, 'hero', 1.95, { by: 'y', parts: P0.g.userData.body, after: () => applyCoat(P0.g, PROFILE.color, PROFILE.skin, PROFILE.look) }); applyCoat(P0.g, PROFILE.color, PROFILE.skin, PROFILE.look);
+skin(P0.g, 'hero', 1.95, { by: 'y', parts: P0.g.userData.body, after: () => applyCoat(P0.g, PROFILE.color, PROFILE.skin, PROFILE.look, PROFILE.hair) }); applyCoat(P0.g, PROFILE.color, PROFILE.skin, PROFILE.look, PROFILE.hair);
 const player = { x: 0, z: 8, rot: Math.PI, moving: false, atkT: 0, swingT: 0, walkT: 0, ...P0 };
 scene.add(player.g);
 const ring = new THREE.Mesh(new THREE.RingGeometry(0.62, 0.74, 28), new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.85 }));
@@ -4490,7 +4493,7 @@ function fitCam(obj, pad, tilt) {
 }
 function heroModel() {   // the same parts as your hero in the world
   const p = makePerson(0xc8452f, 0xf3e6cf, 0x2f4a6d); personCoat(p.g);
-  skin(p.g, 'hero', 1.95, { by: 'y', parts: p.g.userData.body, after: () => applyCoat(p.g, PROFILE.color, PROFILE.skin, PROFILE.look) }); applyCoat(p.g, PROFILE.color, PROFILE.skin, PROFILE.look);
+  skin(p.g, 'hero', 1.95, { by: 'y', parts: p.g.userData.body, after: () => applyCoat(p.g, PROFILE.color, PROFILE.skin, PROFILE.look, PROFILE.hair) }); applyCoat(p.g, PROFILE.color, PROFILE.skin, PROFILE.look, PROFILE.hair);
   const pv = new THREE.Group(); pv.position.y = 0.95; p.g.add(pv); const a1 = makeAxe(), a2 = makeAxe(); a2.rotation.y = Math.PI; pv.add(a1, a2); p.g.userData.axes = [a1, a2];
   const pk = mk(Box(0.55, 0.55, 0.28), 0x6f4a2d); pk.position.set(0, 0.95, -0.36); pk.visible = false; p.g.add(pk);
   const base = new THREE.Mesh(new THREE.CylinderGeometry(0.9, 1.0, 0.16, 32), new THREE.MeshLambertMaterial({ color: 0x3a4866 })); base.position.y = -0.08;
@@ -4499,7 +4502,7 @@ function heroModel() {   // the same parts as your hero in the world
 }
 function syncHeroModel() {
   if (!HV.hero) { HV.hero = heroModel(); HV.hero.rotation.y = -0.5; }
-  const p = HV.hero.userData.p; applyCoat(p, PROFILE.color, PROFILE.skin, PROFILE.look); buildGear(p, $('creator').hidden ? myLook() : null);
+  const p = HV.hero.userData.p; applyCoat(p, PROFILE.color, PROFILE.skin, PROFILE.look, PROFILE.hair); buildGear(p, $('creator').hidden ? myLook() : null);
   p.userData.axes.forEach(a => weaponLook(a, S.weapon)); p.userData.axes[1].visible = S.axe >= 2;
 }
 function heroLoop() {
@@ -4953,7 +4956,7 @@ function netAct(kind, target, a, b) {
   else NET.buf.set(key, cur ? [kind, target, a, cur[3] + b] : [kind, target, a, b]);
 }
 function netGive(peer, t, n, q) { if (NET.room && n > 0) NET.room.emit('give', { to: peer, t, n, q: q || 0 }).catch(() => {}); }
-function heroState() { return [R2(player.x), R2(player.z), R2(player.rot), player.swingT > 0 ? 1 : 0, S.downT > 0 ? 1 : 0, PROFILE.name, PROFILE.color, [carry.log.length, carry.meat.length, carry.ore.length, carry.stone.length], S.hurtT > 2.2 ? 1 : 0, myLook(), PROFILE.skin, PROFILE.look]; }
+function heroState() { return [R2(player.x), R2(player.z), R2(player.rot), player.swingT > 0 ? 1 : 0, S.downT > 0 ? 1 : 0, PROFILE.name, PROFILE.color, [carry.log.length, carry.meat.length, carry.ore.length, carry.stone.length], S.hurtT > 2.2 ? 1 : 0, myLook(), PROFILE.skin, PROFILE.look, PROFILE.hair]; }
 
 const COOP_COATS = [0x2f7fb8, 0x8e44ad, 0xd4a017, 0x2e8b57, 0xc0392b];
 function makeRemote(peer, n) {
@@ -5115,7 +5118,7 @@ function remoteName(r, i) { return r.name || (r.role === 'host' ? 'Host' : 'Play
 function remoteLabel(r, i) { const c = r.pack || []; const bits = c.map((n, k) => n ? PACK_ICON[k] + n : '').filter(Boolean).join(' '); return remoteName(r, i) + (bits ? '  ' + bits : ''); }
 function remoteExtras(r, h, wasDown) {
   if (typeof h[5] === 'string') r.name = h[5].slice(0, 12);
-  if (typeof h[10] === 'number' && (h[10] !== r.skinC || h[11] !== r.lookN)) { r.skinC = h[10]; r.lookN = h[11]; applyCoat(r.g, r.col ?? r.g.userData.col ?? 0x2f7fb8, h[10], [0, 1, 2, 3, 4, 5].includes(h[11]) ? h[11] : 0); }
+  if (typeof h[10] === 'number' && (h[10] !== r.skinC || h[11] !== r.lookN || h[12] !== r.hairC)) { r.skinC = h[10]; r.lookN = h[11]; r.hairC = h[12]; applyCoat(r.g, r.col ?? r.g.userData.col ?? 0x2f7fb8, h[10], [0, 1, 2, 3, 4, 5].includes(h[11]) ? h[11] : 0, typeof h[12] === 'number' ? h[12] : undefined); }
   if (typeof h[6] === 'number' && h[6] !== r.col) { r.col = r.g.userData.col = h[6]; applyCoat(r.g, r.col, r.skinC, r.lookN); r.ring.material.color.setHex(r.col); }
   if (Array.isArray(h[7])) {
     r.pack = h[7].slice(0, 4).map(v => Math.max(0, v | 0));
@@ -5549,6 +5552,7 @@ function frame(now) {
 requestAnimationFrame(t => { last = t; frame(t); });
 
 /* ================= create your hero ================= */
+const HAIRS = [0x1c1612, 0x3b2516, 0x6b3f22, 0xa0602e, 0xc9893a, 0xe6c46a, 0xb8432c, 0xd8d4cc, 0x3f7fd8, 0x3fae6a, 0x9a5ad8, 0xe86aa8];
 const SKINS = [0xf8dcc4, 0xf3c9a3, 0xe0ac7e, 0xc68a5c, 0x9a6440, 0x6b4029, 0x45291a, 0x8fb8e8, 0x6fcf8f, 0xb98ee8, 0xa7b0bd, 0xe8c36a];
 let crLoop = 0;
 function crRender() {
@@ -5560,14 +5564,16 @@ function crRender() {
   crLoop = requestAnimationFrame(crRender);
 }
 function crSync() {
-  applyCoat(P0.g, PROFILE.color, PROFILE.skin, PROFILE.look); if (HV.hero) { syncHeroModel(); }
+  applyCoat(P0.g, PROFILE.color, PROFILE.skin, PROFILE.look, PROFILE.hair); if (HV.hero) { syncHeroModel(); }
   document.querySelectorAll('#creator [data-look]').forEach(b => b.setAttribute('aria-pressed', +b.dataset.look === PROFILE.look));
   document.querySelectorAll('#crCoat button').forEach(b => b.setAttribute('aria-pressed', +b.dataset.c === PROFILE.color));
   document.querySelectorAll('#crSkin button').forEach(b => b.setAttribute('aria-pressed', +b.dataset.c === PROFILE.skin));
+  document.querySelectorAll('#crHair button').forEach(b => b.setAttribute('aria-pressed', +b.dataset.c === PROFILE.hair));
 }
 function showCreator() {
   $('crName').value = PROFILE.name || '';
   $('crCoat').innerHTML = COLORS.map(([n, c]) => `<button type="button" data-c="${c}" aria-label="${n} coat" style="background:${hex(c)}"></button>`).join('');
+  $('crHair').innerHTML = HAIRS.map(c => `<button type="button" data-c="${c}" aria-label="Hair colour" style="background:${hex(c)}"></button>`).join('');
   $('crSkin').innerHTML = SKINS.map(c => `<button type="button" data-c="${c}" aria-label="Skin colour" style="background:${hex(c)}"></button>`).join('');
   $('creator').hidden = false;
   if (hvInit()) { syncHeroModel(); HV.hero.rotation.y = 0; $('crView').innerHTML = ''; $('crView').appendChild(HV.r.domElement); if (!crLoop) crLoop = requestAnimationFrame(crRender); }
@@ -5576,6 +5582,7 @@ function showCreator() {
 $('creator').addEventListener('click', e => { e.stopPropagation();
   const lk = e.target.closest('[data-look]'); if (lk) { PROFILE.look = +lk.dataset.look; crSync(); return; }
   const cb = e.target.closest('#crCoat [data-c]'); if (cb) { PROFILE.color = +cb.dataset.c; crSync(); return; }
+  const hb = e.target.closest('#crHair [data-c]'); if (hb) { PROFILE.hair = +hb.dataset.c; crSync(); return; }
   const sb = e.target.closest('#crSkin [data-c]'); if (sb) { PROFILE.skin = +sb.dataset.c; crSync(); return; } });
 ['pointerdown', 'touchstart', 'mousedown', 'keydown'].forEach(ev => $('creator').addEventListener(ev, e => e.stopPropagation()));
 $('crGo').addEventListener('click', e => { e.stopPropagation();
