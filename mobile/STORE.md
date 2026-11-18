@@ -48,21 +48,32 @@ survival,town builder,crafting,winter,snow,castle,co-op,village,tame,pets,dungeo
 
 - Cartoon or fantasy violence: **infrequent/mild** (axes and creatures, no blood)
 - Everything else (realistic violence, horror, sexual content, profanity, drugs, gambling): **none**
-- User-generated content / chat: **no** (co-op shares only hero names, looks and play, and only with people who have your room code)
+- User-generated content / chat: **no**. In the app, hero names are rolled from a fixed list of fun names (players
+  cannot type one), and co-op shares only those names, hero looks and play, and only with people who have your room code
 - Expected result: Apple 9+, Google PEGI 7 / Everyone 10+
-- Target audience (Google): choose **13 and over** unless you want to meet the Families policy; the game is cartoon
-  styled, so answer the "appeals to children" questions honestly
+
+## Target audience and Families (Google)
+
+- Target age groups: **all ages** (5 and under, 6–8, 9–12, 13–15, 16–17, 18+). This puts the app in Google's
+  **Families policy**; answer the Families questions in Play Console:
+  - Ads: **none**. In-app purchases: **none**. Third-party SDKs: none for ads or analytics.
+  - The app uses the PeerJS signalling service only to connect co-op players (it sees the IP address while connecting);
+    say so where Play Console asks about data sent to third parties. No account, no free-text names, no chat.
+- The first review of a Families app can take longer; allow a week or two.
 
 ## Privacy
 
-- **Privacy policy URL:** `https://wildheartgaming.com/privacy/` (Wildheart Gaming's policy; `privacy.html` in this
-  repo is a draft of what it should cover for Kindlehaven)
+- **Privacy policy URL:** `https://wildheartgaming.com/privacy/`. Ask for a short **Kindlehaven notice** on that page
+  (the policy allows game-specific notices). Suggested text:
+  > **Kindlehaven app.** Your town, hero and progress are saved only on your device; the app sends us no analytics,
+  > crash reports or other data. Hero names in the app are picked from a list of fun names, not typed. In optional
+  > online co-op, the players in your room see your hero's name and look, and a matchmaking service (PeerJS) sees your
+  > device's IP address while connecting you. Kindlehaven is suitable for all ages.
 - **Apple App Privacy:** Data Not Collected
 - **Google Data safety:**
-  - Does your app collect or share user data? Answer **Yes** to be safe: in optional co-op the hero name and
-    look are sent to the other players in the room. Declare **Personal info → Name** (the user-chosen hero name):
-    collected, not shared with third parties, optional, processed ephemerally (not stored), purpose **App functionality**.
-  - Mention in the policy (already done) that the PeerJS matchmaking service sees the device's IP address during co-op.
+  - Does your app collect or share user data? **No**. The only thing that leaves the device is the rolled hero name
+    and gameplay, sent directly to the other co-op players at the player's request, which Google treats as not
+    collected. If Play Console disagrees, declare **Personal info → Name**: optional, not stored, App functionality.
   - Is data encrypted in transit? **Yes** (co-op connections are encrypted)
   - Can users request deletion? Data stays on the device; uninstalling deletes it
 - No ads, no in-app purchases, no account sign-in
