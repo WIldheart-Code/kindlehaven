@@ -94,7 +94,7 @@ Each level:
 At **Castle III** the final battles begin: each night brings a **dragon siege** (one dragon, then two, then three, with a large escort). Defeat all three for **victory**; you can keep playing after.
 
 ## Workers
-- **Loggers, hunters, stonecutters and miners** gather on their own and stack what they collect on a pile beside their lodge. Stand on a pile to load your pack. Piles hold 80, or 300 after the Warehouse.
+- **Loggers, hunters, stonecutters and miners** gather on their own and stack what they collect on a pile beside their lodge. Stand on a pile to load your pack. Piles hold 80, or 300 after the Warehouse. Miners carry a big load of crystal each trip, so the crystal mine keeps up with the smelter.
 - **Hunters** stay near the settlement and hunt rabbits and deer.
 - **Gatherers** (hire them by the garden once it's built) pick berries, roots and herbs within about 130 m of town. Food goes to the cookhouse; the fruit and herbs go into the **town chest** for anyone to use.
 - **Tap a pile's label** to lock it (a padlock shows): haulers won't take from a locked pile, so you can save it for building. Tap again to unlock.
@@ -137,13 +137,13 @@ Village upgrades are bought in the forge: **comfort** (Warm Cloaks, Smokehouse, 
   - **Rare:** **Stormcaller Axe** (+330% damage) and **Moonsilver Mail** (68% less damage).
   - **Legendary:** **Wyrmking's Wrath** (+450% damage) and **Aegis of the Ancients** (75% less damage).
 - **Precious materials** (rare, so explore and fight for them):
-  - **Frost Gem:** golems and mammoths, star-3 dungeons and up, treasure in far camps.
+  - **Frost Gem:** golems and mammoths (fairly often), every cleared dungeon, treasure in far camps. One Frost Gem makes **two** Runesteel bars.
   - **Spirit Essence:** wraiths; dungeons.
   - **Ember Ruby:** raptors and sabre tigers (rare), T-rexes; star-4 dungeons.
   - **Moonsilver:** star-3 and star-4 dungeons, treasure chests in tougher camps.
   - **Void Opal:** wild dragons, star-4 dungeons, treasure in the farthest camps.
   - **Dragon Heart:** very rare from wild dragons; one in four dragons that besiege your castle drops one.
-  - Every cleared dungeon gives at least one Frost Gem or Spirit Essence.
+  - Every cleared dungeon gives a Frost Gem, and often Spirit Essence too.
 ![Rare and legendary recipes](assets/help/legendary.jpg)
 - **Special items** are one of a kind and stay hidden until you earn them through your hero's growth, how long your world survives, and how well you defend your town (raids beaten with **no wall broken** count; the forge shows your tally). Each is crafted once and always active:
   - **Hunter's Mantle** (+10% speed): reach hero level 8.
@@ -166,7 +166,7 @@ Village upgrades are bought in the forge: **comfort** (Warm Cloaks, Smokehouse, 
 - **Smelt & Brew:** a forge tab with a **smelter** and a **pot**. The **smelter** takes stone, crystal, metal, alloys, gems and glass; the **pot** takes food, hides, sinew, forage (fruit, roots, herbs), magic materials and anything already brewed. Tap ingredients to put up to six in, then **Fire the smelter** or **Stir the pot**.
   - The right mix makes a new material. A wrong mix gives junk (Slag or Gunk, sell it for 2 gold each) or burns away, but **half of any metal, gem, magic, alloy or brewed material comes back**; only hides, sinew and resources are lost.
   - **Alloys:** smelting any metal together with a gem or magic material always fuses into an alloy named after the rarest one you added (Frost, Spirit, Moon, Ember, Void or Heartfire Alloy). Better metal and more of it give more alloy. Each alloy unlocks a Special item (rivets, a band, a guard, gauntlets, an amulet and the legendary Heartfire Core).
-  - Recipes are secret until you discover them. Once you've made something, its recipe is saved under **Known recipes** with **Make 1** and **Make 5** buttons. Mixes you've already tried that didn't work are flagged so you don't waste ingredients twice.
+  - Recipes are secret until you discover them. Once you've made something, its recipe is saved under **Known recipes** with **Make 1** and **Make 5** buttons, plus **Make all** to smelt or brew as many as you can afford in one tap. Mixes you've already tried that didn't work are flagged so you don't waste ingredients twice.
   - **The town teaches the basics** as it grows; their recipes appear under Known recipes with a "New recipes learned!" banner:
     - From the start: Iron Ingot, Tallow, Healing Tonic.
     - Town Hall II: Steel Bar, Hide Glue, Hearty Stew.

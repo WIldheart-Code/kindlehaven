@@ -1776,7 +1776,7 @@ function leaveDungeon(won) {
   player.x = D.d.ex; player.z = D.d.ez + 1;
   if (won) {
     (S.dungeons = S.dungeons || {})[D.d.i] = dayNo(); gainXP(40 * D.d.tier); questEvent('clear', 1);
-    { const t = D.d.tier, o = {}; o[Math.random() < 0.5 ? 'spirit' : 'frostgem'] = 1;
+    { const t = D.d.tier, o = { frostgem: 1 }; if (Math.random() < 0.5) o.spirit = 1;
       if (t >= 3 && Math.random() < 0.5) o.moonsilver = 1; if (t >= 4 && Math.random() < 0.35) o.voidopal = 1; if (t >= 4 && Math.random() < 0.3) o.emberruby = 1;
       if (t >= 5) { Object.assign(o, { dragonheart: 1, voidopal: 2, emberruby: 2, moonsilver: 2, runesteel: 3, hide4: 3, sinew4: 3 }); S.wallet += 1500; bump('cash');
         const epic = [['weapon', 7], ['armor', 7]].filter(([g, t2]) => !(g === 'weapon' ? S.ownW || [] : S.ownA || []).includes(t2));
@@ -2302,7 +2302,7 @@ const ROLES = {
   logger: { coat: 0x3d6b3a, hat: 0x8a3b2a, item: 'log', cap: 8, speed: 3.4, hit: 0.8, reach: 1.5 },
   hunter: { coat: 0x7a5230, hat: 0x2f3f24, item: 'meat', cap: 10, speed: 3.9, hit: 0.6, reach: 1.9 },
   stonecutter: { coat: 0x55606e, hat: 0x9aa3ad, item: 'stone', cap: 8, speed: 3.2, hit: 0.85, reach: 1.8 },
-  miner: { coat: 0x4a5568, hat: 0xd9a520, item: 'ore', cap: 6, speed: 3.2, hit: 0.9, reach: 1.8 },
+  miner: { coat: 0x4a5568, hat: 0xd9a520, item: 'ore', cap: 12, speed: 3.2, hit: 0.9, reach: 1.8 },
   hauler: { coat: 0xb07a2a, hat: 0x5b3416, item: 'log', cap: 12, speed: 3.7, hit: 0.1, reach: 1.2 },
   mender: { coat: 0x6b4a8a, hat: 0xd5dbe4, item: 'log', cap: 1, speed: 3.4, hit: 0.6, reach: 1.2 },
   gatherer: { coat: 0x4f8a3a, hat: 0xc8384b, item: 'meat', cap: 10, speed: 3.8, hit: 0.7, reach: 1.3 },
@@ -3012,7 +3012,7 @@ $('forgeBody').addEventListener('click', e => {
   if (e.target.closest('[data-bclear]')) { brewSel = {}; return showForge(); }
   if (e.target.closest('[data-bfire]')) { brewFire(); return showForge(); }
   if (e.target.closest('[data-bjunk]')) { brewSellJunk(); return showForge(); }
-  const bm = e.target.closest('[data-bmake]'); if (bm) { const [k, n] = bm.dataset.bmake.split('|'); brewMake(k, +n); return showForge(); }
+  const bm = e.target.closest('[data-bmake]'); if (bm) { const [k, n] = bm.dataset.bmake.split('|'); brewMake(k, n === 'all' ? 'all' : +n); return showForge(); }
   const fp = e.target.closest('[data-fpad]'); if (fp) { buyForgePad(fp.dataset.fpad); return showForge(); }
   const sm = e.target.closest('[data-smelt]'); if (sm) { const [id, n] = sm.dataset.smelt.split(':'); doSmelt(id, +n); return showForge(); }
   const su = e.target.closest('[data-supply]'); if (su) { doSupply(su.dataset.supply); return showForge(); }
@@ -3892,8 +3892,8 @@ const MAT_COL = { hide1: '#b48a5a', hide2: '#8a5a36', hide3: '#e8e1d2', hide4: '
 const DROPS = {
   rabbit: [['hide1', 0.35]], eagle: [['sinew1', 0.3]], deer: [['hide1', 0.5], ['sinew1', 0.35]], yak: [['hide2', 0.25], ['sinew1', 0.4]], boar: [['hide2', 0.3], ['sinew2', 0.2]],
   spider: [['sinew1', 0.3]], goblin: [['hide1', 0.3]], wolf: [['hide1', 0.45], ['sinew1', 0.3]], bear: [['hide2', 0.3], ['sinew2', 0.2]], troll: [['hide2', 0.25], ['sinew2', 0.2], ['iron', 0.15]],
-  yeti: [['hide3', 0.15], ['sinew2', 0.25]], wraith: [['sinew3', 0.1], ['spirit', 0.12]], golem: [['sinew3', 0.08], ['frostgem', 0.15], ['iron', 0.35], ['steel', 0.12]], raptor: [['hide3', 0.12], ['sinew3', 0.1], ['emberruby', 0.04]], tiger: [['hide3', 0.14], ['sinew3', 0.1], ['emberruby', 0.04]],
-  mammoth: [['hide4', 0.07], ['sinew3', 0.1], ['frostgem', 0.1]], trex: [['hide4', 0.06], ['sinew4', 0.05], ['emberruby', 0.08]], dragon: [['hide4', 0.08], ['sinew4', 0.06], ['dragonheart', 0.04], ['voidopal', 0.05]],
+  yeti: [['hide3', 0.15], ['sinew2', 0.25]], wraith: [['sinew3', 0.1], ['spirit', 0.12]], golem: [['sinew3', 0.08], ['frostgem', 0.3], ['iron', 0.35], ['steel', 0.12]], raptor: [['hide3', 0.12], ['sinew3', 0.1], ['emberruby', 0.04]], tiger: [['hide3', 0.14], ['sinew3', 0.1], ['emberruby', 0.04]],
+  mammoth: [['hide4', 0.07], ['sinew3', 0.1], ['frostgem', 0.2]], trex: [['hide4', 0.06], ['sinew4', 0.05], ['emberruby', 0.08]], dragon: [['hide4', 0.08], ['sinew4', 0.06], ['dragonheart', 0.04], ['voidopal', 0.05]],
 };
 function rollMats(type, x, z, elite) {
   const out = {}; const sd = SCROLL_DROP[type]; if (sd && !(S.scrolls || []).includes(sd[0]) && Math.random() < sd[1] * (elite ? 3 : 1)) out['scroll_' + sd[0]] = 1;
@@ -4073,10 +4073,10 @@ function doSalvage(id) {
   gainRefund(it.r); applyMyLook(); play('chop'); banner('Salvaged ' + it.n, false, 'Got back ' + costTxt(it.r)); savePersonal();
 }
 const MAT_EXTRA = {
-  frostgem: ['Every cleared dungeon (sometimes)', 'Treasure in far camps'], spirit: ['Every cleared dungeon (sometimes)'],
+  frostgem: ['Every cleared dungeon', 'Treasure in far camps'], spirit: ['Every cleared dungeon (sometimes)'],
   moonsilver: ['Harder dungeons (star 3+)', 'Treasure in tougher camps', 'Epic dungeons'], voidopal: ['Star-4 and epic dungeons', 'Treasure in the farthest camps'],
   emberruby: ['Star-4 and epic dungeons'], dragonheart: ['Epic dungeons (always one)', '1 in 4 dragons that besiege your castle'],
-  iron: ['Smelter: smelt it from stone', 'Treasure chests'], steel: ['Smelter: from iron and crystal', 'Harder dungeons and chests'], runesteel: ['Smelter: from steel, crystal and a Frost Gem', 'Star-4 and epic dungeons', 'Far chests'],
+  iron: ['Smelter: smelt it from stone', 'Treasure chests'], steel: ['Smelter: from iron and crystal', 'Harder dungeons and chests'], runesteel: ['Smelter: 2 bars from steel, crystal and a Frost Gem', 'Star-4 and epic dungeons', 'Far chests'],
   hide4: ['Epic dungeons', 'Treasure in the farthest lairs'], sinew4: ['Epic dungeons', 'Treasure in the farthest lairs'],
   shard: [], slag: ['A failed smelter mix'], gunk: ['A failed pot mix'], p_murky: ['A failed pot mix'],
 };
@@ -4128,9 +4128,9 @@ const timesCost = (c, n) => Object.fromEntries(Object.entries(c).map(([k, v]) =>
    A wrong mix gives junk or is simply lost. */
 const BREWS = [
   { v: 'smelter', in: { stone: 4 }, out: 'iron', n: 1 },
-  { v: 'smelter', in: { iron: 2, ore: 2 }, out: 'steel', n: 1, th: 2 },
-  { v: 'smelter', in: { steel: 1, frostgem: 1, ore: 2 }, out: 'runesteel', n: 1, th: 3 },
-  { v: 'smelter', in: { ore: 2, stone: 2 }, out: 'frostglass', n: 1 },
+  { v: 'smelter', in: { iron: 2, ore: 1 }, out: 'steel', n: 1, th: 2 },
+  { v: 'smelter', in: { steel: 1, frostgem: 1, ore: 2 }, out: 'runesteel', n: 2, th: 3 },
+  { v: 'smelter', in: { ore: 1, stone: 2 }, out: 'frostglass', n: 1 },
   { v: 'smelter', in: { steel: 1, moonsilver: 1 }, out: 'moonsteel', n: 1, th: 3 },
   { v: 'smelter', in: { runesteel: 1, emberruby: 2 }, out: 'dragonsteel', n: 1, th: 3 },
   { v: 'pot', in: { meat: 3 }, out: 'tallow', n: 2 },
@@ -4211,8 +4211,10 @@ function brewFire() {
     play('alert'); }
   brewSel = {}; savePersonal();
 }
+/* how many times you can afford a recipe right now */
+const brewMax = b => Math.floor(Math.min(...Object.keys(b.in).map(k => haveOf(k) / b.in[k])));
 function brewMake(key, n) {
-  const b = recipeOf(key); if (!b || !knownBrews().includes(key) || S.th < (b.th || 1)) return; const c = timesCost(b.in, n); if (!canAfford(c)) return;
+  const b = recipeOf(key); if (b && n === 'all') n = brewMax(b); n = +n; if (!(n > 0)) return; if (!b || !knownBrews().includes(key) || S.th < (b.th || 1)) return; const c = timesCost(b.in, n); if (!canAfford(c)) return;
   payCost(c); gainMats({ [b.out]: b.n * n }, player.x, player.z); play('hammer'); savePersonal();
 }
 function brewSellJunk() { const M = S.mats || {}, n = (M.slag || 0) + (M.gunk || 0); if (!n) return; M.slag = 0; M.gunk = 0; S.wallet += n * 2; bump('cash'); play('coin'); note('+' + n * 2 + ' gold for junk', 'cash'); }
@@ -4230,7 +4232,7 @@ function brewHtml(near) {
   const mine = knownBrews().map(recipeOf).filter(b => b && b.v === brewV), left = BREWS.filter(b => b.v === brewV && !knownBrews().includes(b.key)).length;
   h += '<h3>Known recipes</h3>' + (mine.length ? mine.map(b => { const ok = S.th >= (b.th || 1);
     return fRow(matSvg(b.out, 44), MATS[b.out] + (b.n > 1 ? ' ×' + b.n : ''), '', '', matUse(b.out) + (ok ? '' : ' · needs Town Hall ' + ROMAN[b.th]), costChips(b.in),
-      `<span style="display:flex;flex-direction:column;gap:4px"><button type="button" data-bmake="${b.key}|1" ${ok && near && canAfford(b.in) ? '' : 'disabled'}>Make 1</button><button type="button" data-bmake="${b.key}|5" ${ok && near && canAfford(timesCost(b.in, 5)) ? '' : 'disabled'}>Make 5</button></span>`); }).join('') : '<p>None yet.</p>')
+      `<span style="display:flex;flex-direction:column;gap:4px"><button type="button" data-bmake="${b.key}|1" ${ok && near && canAfford(b.in) ? '' : 'disabled'}>Make 1</button><button type="button" data-bmake="${b.key}|5" ${ok && near && canAfford(timesCost(b.in, 5)) ? '' : 'disabled'}>Make 5</button>${brewMax(b) > 5 ? `<button type="button" data-bmake="${b.key}|all" ${ok && near ? '' : 'disabled'}>Make all (${brewMax(b)})</button>` : ''}</span>`); }).join('') : '<p>None yet.</p>')
     + '<p>' + (left ? left + ' more ' + brewV + ' recipe' + (left > 1 ? 's' : '') + ' to discover. Experiment!' : 'You know every ' + brewV + ' recipe.') + '</p>';
   const junk = ((S.mats || {}).slag || 0) + ((S.mats || {}).gunk || 0);
   if (junk) h += `<p>You have ${junk} junk. <button type="button" class="salv" data-bjunk="1" style="border:0;border-radius:8px;padding:6px 10px;color:#fff;font:13px var(--display)">Sell for ${junk * 2} gold</button></p>`;
