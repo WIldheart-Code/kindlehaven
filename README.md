@@ -9,7 +9,7 @@ Open `index.html` in a browser. There is no build step; three.js r128 loads from
 ## Getting started
 ![The camp at the start](assets/help/start.jpg)
 ![Chopping: logs stack on your back](assets/help/chop.jpg)
-- **Create your hero:** the first time you play, after the title screen, you name your hero and pick a look (Braids or Beard), a coat colour and a skin colour (natural shades or something more fantastical). Change them any time under cog → Hero → **Change look and skin**. Teammates in co-op see your look too.
+- **Create your hero:** the first time you play, after the title screen, you name your hero and pick a look (Braids, Beard or No beard), a coat colour and a skin colour (natural shades or something more fantastical). Change them any time under cog → Hero → **Change look and skin**. Teammates in co-op see your look too.
 - **Move:** swipe (drag) anywhere on the screen for a floating joystick, or use WASD / arrow keys.
 - **Gather:** your axe swings on its own at trees, rocks, animals and enemies in reach. What you gather stacks on your back.
 - **Build and buy:** stand on a build space and a glowing border fills around it like a clock. When it's full (about a second), it takes what you carry and your gold. Step off before then and nothing is paid, so you can't pay by accident by walking across one.
@@ -249,6 +249,7 @@ Cave entrances lie 200–315 m out, with more scattered through the outer lands 
 
 ## Change log
 - When you come back after an update, a **What's new** screen lists what changed since you last played. Find the full list any time under the cog: **What's new**.
+- **2.18:** a **No beard** look, a neater beard and a sharper hero preview in Create your hero.
 - **2.17:** tool upgrades (boots, Medic Tent, Work Sleds, Watch Horn, Crystal Pick) need materials as well as gold.
 - **2.16:** the title screen fits wide computer screens.
 - **2.15:** the Wildheart Gaming logo animation no longer overlaps.
