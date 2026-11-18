@@ -249,6 +249,7 @@ Cave entrances lie 200–315 m out, with more scattered through the outer lands 
 
 ## Change log
 - When you come back after an update, a **What's new** screen lists what changed since you last played. Find the full list any time under the cog: **What's new**.
+- **2.29:** on phones the tutorial sits at the bottom of the screen, clear of your hero.
 - **2.28:** end-game materials rebalanced (more crystal, cheaper Steel and Frost Glass, Frost Gems make 2 Runesteel and drop more often) and a Make all button for smelting.
 - **2.18–2.27:** Create your hero reworked: six looks (Braids, Long hair, Shaved, Stache, Beard, Hairy), hair colour, colour drop-downs, matching hood, gloves and boots, a name dice, and the creator on every new game.
 - **2.17:** tool upgrades (boots, Medic Tent, Work Sleds, Watch Horn, Crystal Pick) need materials as well as gold.
