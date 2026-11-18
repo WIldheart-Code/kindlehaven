@@ -55,8 +55,8 @@ survival,town builder,crafting,winter,snow,castle,co-op,village,tame,pets,dungeo
 
 ## Privacy
 
-- **Privacy policy URL:** `https://dcardine.github.io/engage/privacy.html` (the `privacy.html` page in this repo;
-  check the address once GitHub Pages has published it)
+- **Privacy policy URL:** `https://wildheartgaming.com/privacy/` (Wildheart Gaming's policy; `privacy.html` in this
+  repo is a draft of what it should cover for Kindlehaven)
 - **Apple App Privacy:** Data Not Collected
 - **Google Data safety:**
   - Does your app collect or share user data? Answer **Yes** to be safe: in optional co-op the hero name and
