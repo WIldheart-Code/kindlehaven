@@ -9,7 +9,7 @@ Open `index.html` in a browser. There is no build step; three.js r128 loads from
 ## Getting started
 ![The camp at the start](assets/help/start.jpg)
 ![Chopping: logs stack on your back](assets/help/chop.jpg)
-- **Create your hero:** the first time you play, after the title screen, you name your hero and pick a look (Braids, Long hair, Shaved, Stache, Beard or Hairy), a coat colour (your hood matches it, and your gloves and boots are a darker shade) a hair colour and a skin colour (natural shades or something more fantastical). Your hair colour is used for your hair, braids and beard. Colours are picked from the **Coat**, **Hair** and **Skin** drop-downs. Drag the hero to turn them round. Starting a **New game** brings this screen up again, and you can change your look any time under cog → Hero → **Change look and skin**. Teammates in co-op see your look too.
+- **Create your hero:** the first time you play, after the title screen, you name your hero and pick a look (Braids, Long hair, Shaved, Stache, Beard or Hairy), a coat colour (your hood matches it, and your gloves and boots are a darker shade) a hair colour and a skin colour (natural shades or something more fantastical). Your hair colour is used for your hair, braids and beard. Colours are picked from the **Coat**, **Hair** and **Skin** drop-downs. Drag the hero to turn them round. Starting a **New game** brings this screen up again, and you can change your look any time under cog → Hero → **Change Hero Look** (name, look and colours). Teammates in co-op see your look too.
 - **Move:** swipe (drag) anywhere on the screen for a floating joystick, or use WASD / arrow keys.
 - **Gather:** your axe swings on its own at trees, rocks, animals and enemies in reach. What you gather stacks on your back.
 - **Build and buy:** stand on a build space and a glowing border fills around it like a clock. When it's full (about a second), it takes what you carry and your gold. Step off before then and nothing is paid, so you can't pay by accident by walking across one.
@@ -110,7 +110,7 @@ Village upgrades are bought in the forge: **comfort** (Warm Cloaks, Smokehouse, 
 ![The Hero screen](assets/help/hero.jpg)
 - **Hero levels** come from gathering, building, selling and fighting, and add damage and health.
 - **Everything is made at the forge** (see Crafting): weapons, armour, axes, packs, boots, the **Crystal Pick** (Tools tab, to mine crystal) and **ranged weapons** (Weapons tab, below). In co-op each player has their own.
-- **The Hero screen** (cog → Hero): your 3D hero in their gear, equipment slots, your Gear and your Materials listed separately (tap an item to see it or equip it), plus Pet, Stats, Town and Relics tabs, and your name and coat colour.
+- **The Hero screen** (cog → Hero): your 3D hero in their gear, equipment slots, your Gear and your Materials listed separately (tap an item to see it or equip it), plus Pet, Stats, Town and Relics tabs, and a **Change Hero Look** button to change your name, look and colours.
 - New gear is equipped automatically when it's better than what you have.
 
 ## Crafting
@@ -249,6 +249,7 @@ Cave entrances lie 200–315 m out, with more scattered through the outer lands 
 
 ## Change log
 - When you come back after an update, a **What's new** screen lists what changed since you last played. Find the full list any time under the cog: **What's new**.
+- **2.26:** one Change Hero Look button on the Hero screen.
 - **2.25:** Hairless is now Shaved and keeps its hair.
 - **2.24:** Hairless (bald) and Hairy looks.
 - **2.23:** colour drop-downs in Create your hero.
