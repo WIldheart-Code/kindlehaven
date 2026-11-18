@@ -7,8 +7,8 @@ android {
         applicationId "com.wildheartgaming.kindlehaven"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "2.26"
+        versionCode((project.findProperty("appVersionCode") ?: "1") as Integer)
+        versionName((project.findProperty("appVersionName") ?: "2.27") as String)
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
@@ -16,8 +16,20 @@ android {
             ignoreAssetsPattern = '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
+    // Upload-key signing for Google Play: the GitHub "Android app bundle" workflow passes the key in from repo secrets
+    signingConfigs {
+        release {
+            if (System.getenv("KH_KEYSTORE")) {
+                storeFile file(System.getenv("KH_KEYSTORE"))
+                storePassword System.getenv("KH_STORE_PASSWORD")
+                keyAlias System.getenv("KH_KEY_ALIAS")
+                keyPassword System.getenv("KH_KEY_PASSWORD")
+            }
+        }
+    }
     buildTypes {
         release {
+            if (System.getenv("KH_KEYSTORE")) signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }

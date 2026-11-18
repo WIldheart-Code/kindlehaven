@@ -30,16 +30,21 @@ the app works with no internet connection (co-op still needs one). The web versi
 
 ## Android (Google Play)
 
-1. Install [Android Studio](https://developer.android.com/studio). Run `npm run android` to open the project.
-2. Try it on a phone or emulator (Run ▶).
-3. Build → Generate Signed App Bundle → Android App Bundle → create a new keystore. **Back up the keystore and its
-   passwords**: every future update must be signed with it (or enrol in Play App Signing, which Play offers on upload).
-4. In [Google Play Console](https://play.google.com/console) ($25 once): Create app → fill in the listing from
-   `STORE.md`, content rating (IARC questionnaire), Data safety (answers in `STORE.md`), privacy policy URL, target
-   audience.
-5. New personal accounts must first run a **closed test with at least 12 testers for 14 days**: Testing → Closed
+No Android Studio needed: GitHub builds the app bundle.
+
+1. **One time:** add four repository secrets (Settings → Secrets and variables → Actions → New repository secret):
+   `KH_KEYSTORE_BASE64`, `KH_STORE_PASSWORD`, `KH_KEY_ALIAS`, `KH_KEY_PASSWORD`. Their values come with the upload key
+   (`kindlehaven-upload.jks`), which must be kept private and backed up: every update must be signed with it.
+2. **Each release:** Actions tab → **Android app bundle** → Run workflow. Enter a version code one higher than the last
+   upload (the first is 1). When it finishes, download the `.aab` from the run's **Artifacts**.
+3. In [Google Play Console](https://play.google.com/console): Create app → fill in the listing from `STORE.md`, content
+   rating, Data safety, privacy policy URL, target audience. Play App Signing is on by default: Google holds the app
+   signing key and your upload key proves uploads are yours.
+4. New personal accounts must first run a **closed test with at least 12 testers for 14 days**: Testing → Closed
    testing → upload the `.aab`, add testers' emails. After 14 days apply for production access.
-6. Production → Create release → upload the `.aab` → roll out.
+5. Production → Create release → upload the `.aab` → roll out.
+
+(With Android Studio you can still run `npm run android` and use Build → Generate Signed App Bundle with the same key.)
 
 ## iOS (App Store)
 
