@@ -60,6 +60,7 @@ Workers, villagers, guards, animals, pets, camp monsters and raiders all walk ar
 - At night, **workers drop off what they carry and go home** until morning.
 
 ## Raids and defense
+- **Raids start once your camp's wall ring is closed.** Until then the HUD's Next raid says *After walls*, so finish the palisade first. The first raid is small: three wolves and goblins.
 - **One raid a night, at nightfall.** Raiders are a mix: wolves and goblins at first, then spiders, bears, trolls, yetis and wraiths. Raiders who can't break through give up after 3 minutes.
 - Raiders chew through walls; broken sections show a cheaper rebuild space. They go after workers caught outside the walls first.
 - **Watchtowers** shoot anything in range; every corner of every wall ring has a tower spot. Each tower has its own upgrades (Crossbows, Ballista, Frost Spire).
@@ -249,6 +250,7 @@ Cave entrances lie 200–315 m out, with more scattered through the outer lands 
 
 ## Change log
 - When you come back after an update, a **What's new** screen lists what changed since you last played. Find the full list any time under the cog: **What's new**.
+- **2.30:** raids wait until your first wall ring is closed and the first two are smaller; on phones the camera lifts your hero above the tutorial card.
 - **2.29:** on phones the tutorial sits at the bottom of the screen, clear of your hero.
 - **2.28:** end-game materials rebalanced (more crystal, cheaper Steel and Frost Glass, Frost Gems make 2 Runesteel and drop more often) and a Make all button for smelting.
 - **2.18–2.27:** Create your hero reworked: six looks (Braids, Long hair, Shaved, Stache, Beard, Hairy), hair colour, colour drop-downs, matching hood, gloves and boots, a name dice, and the creator on every new game.
