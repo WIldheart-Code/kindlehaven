@@ -14,7 +14,7 @@ Open `index.html` in a browser. There is no build step; three.js r128 loads from
 - **Gather:** your axe swings on its own at trees, rocks, animals and enemies in reach. What you gather stacks on your back.
 - **Build and buy:** stand on a build space and a glowing border fills around it like a clock. When it's full (about a second), it takes what you carry and your gold. Step off before then and nothing is paid, so you can't pay by accident by walking across one.
 - **Sell:** stand in the dashed spot behind a stall's counter to hand over logs (firewood stall) or food (cookhouse). Villagers buy them for gold.
-- **The GOAL card** (top left) always says what to do next; the orange arrow on the ground points the way.
+- **Quests** sit at the bottom of the town box (top left). The first three are **beginner quests** (chop logs, sell them, collect your gold). After that you see your current quest and its reward, plus a **Next** line with what to build; the orange arrow on the ground points the way. Danger (freezing, hunger, raiders inside, broken walls) takes over this spot in red.
 - A new game starts with a short **Tutorial**; **Skip tutorial** closes it, and **Tutorial** in the cog menu replays it.
 
 ## Survival
@@ -222,7 +222,7 @@ A ranged weapon fires on its own at the nearest threat in range, alongside your 
 Chests mostly give **crafting materials** (hides, sinew and metal for the camp's tier, with a chance of gems, magic and, in the farthest lairs, a Dragon Heart). Finished weapons and armour are now rare finds (the forge makes them). Chests can also hold heart stones (+health), war runes (+damage), wind charms (+speed), storage charms (bigger piles), ember totems, yak totems, staffs, helmets, capes, med kits, the Beast Charm, gold and materials. Farther out means better loot.
 
 ## Quests
-The Town Hall offers one quest at a time (the Quest card): hunt animals, collect resources, defeat a kind of monster, clear camps, or slay a named **legend** marked with a gold **!** on the minimap. Quests match your hero: at the start they stay close to home (rabbits, deer, logs, fish, wolves and goblins), and tougher monsters and the named legends only appear as your hero levels up (legends from hero level 5 or Town Hall II). Rewards grow with the quest: gold, XP and a reward chest.
+The Town Hall offers one quest at a time (shown at the bottom of the town box): hunt animals, collect resources, defeat a kind of monster, clear camps, or slay a named **legend** marked with a gold **!** on the minimap. Quests match your hero: at the start they stay close to home (rabbits, deer, logs, fish, wolves and goblins), and tougher monsters and the named legends only appear as your hero levels up (legends from hero level 5 or Town Hall II). Rewards grow with the quest: gold, XP and a reward chest.
 
 ## Dungeons
 ![A dungeon entrance](assets/help/dungeon_door.jpg)
@@ -238,7 +238,7 @@ Cave entrances lie 200–315 m out, with more scattered through the outer lands 
 ![The cog menu](assets/help/menu.jpg)
 - On a keyboard, **1–4** turn collecting on or off: 1 wood, 2 food, 3 stone, 4 crystal (the same order as the counters on screen).
 - Tap a resource counter to **drop** it (all or 10) or **stop collecting** it. While collecting is off you leave that resource alone: no chopping trees (wood off), or mining rocks (stone or crystal off), and you can't load it from piles. With food off you still fight and hunt animals and beasts, but the food they drop stays on the ground.
-- The **cog** (bottom left) holds Help, Tutorial, Co-op, Hero, Pause, Sound and New game, switches to hide the goal, quest, town gauges, resources or minimap, and a switch for each kind of sound.
+- The **cog** (bottom left) holds Help, Tutorial, Co-op, Hero, Pause, Sound and New game, switches to hide the quest, town gauges, resources or minimap, and a switch for each kind of sound.
 
 ## Co-op
 - **Room code (no account):** on the GitHub Pages site, tap **Co-op → Host a game** for a 4-character code and QR; friends tap Co-op and enter the code or scan the QR.
@@ -250,6 +250,7 @@ Cave entrances lie 200–315 m out, with more scattered through the outer lands 
 
 ## Change log
 - When you come back after an update, a **What's new** screen lists what changed since you last played. Find the full list any time under the cog: **What's new**.
+- **2.32:** goals and quests are one section at the bottom of the town box (the first three are beginner quests), freeing up screen space; tutorial step 11 is shorter.
 - **2.31:** your hero stays centred during the tutorial; on phones the tutorial card is shorter so it stays below them.
 - **2.30:** raids wait until your first wall ring is closed and the first two are smaller.
 - **2.29:** on phones the tutorial sits at the bottom of the screen, clear of your hero.
