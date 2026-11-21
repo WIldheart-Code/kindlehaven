@@ -299,7 +299,7 @@ html,body{height:100%;margin:0;background:var(--ice);color:var(--ink);overflow:h
 <div id="hint" class="hud">Swipe to move</div>
 <div id="paused" class="hud" hidden>Paused<small>Tap to resume</small></div>
 <div id="netbar" class="hud"><button id="cog" type="button" aria-label="Menu" aria-expanded="false"><svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M19.4 13a7.5 7.5 0 0 0 0-2l2.1-1.6-2-3.5-2.5 1a7.6 7.6 0 0 0-1.7-1L15 3h-4l-.4 2.9a7.6 7.6 0 0 0-1.7 1l-2.5-1-2 3.5L6.6 11a7.5 7.5 0 0 0 0 2l-2.1 1.6 2 3.5 2.5-1a7.6 7.6 0 0 0 1.7 1L11 21h4l.4-2.9a7.6 7.6 0 0 0 1.7-1l2.5 1 2-3.5zM13 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z" transform="translate(-1 0)"/></svg></button><span id="netTxt" hidden></span></div>
-<div id="menu" hidden><div class="box"><h2>Menu</h2><p style="margin:-4px 0 8px;text-align:center;font:800 11px var(--body);color:#8a96a8">Kindlehaven · version 2.29</p>
+<div id="menu" hidden><div class="box"><h2>Menu</h2><p style="margin:-4px 0 8px;text-align:center;font:800 11px var(--body);color:#8a96a8">Kindlehaven · version 2.30</p>
 <div class="mgrid"><button id="helpBtn" type="button">Help</button><button id="newsBtn" type="button">What's new</button><button id="reportBtn" type="button" hidden>Play report</button><button id="tutBtn" type="button">Tutorial</button><button id="coop" type="button">Co-op</button><button id="inviteBtn" type="button" hidden>Invite</button><button id="statsBtn" type="button">Hero</button><button id="pause" type="button">Pause</button><button id="mute" type="button">Sound: on</button><button id="newg" type="button">New game</button></div>
 <h3>Show on screen</h3>
 <div class="mshow"><label><input type="checkbox" data-hud="quest" checked> Goal</label><label><input type="checkbox" data-hud="qcard" checked> Quest</label><label><input type="checkbox" data-hud="town" checked> Town gauges</label><label><input type="checkbox" data-hud="res" checked> Resources</label><label><input type="checkbox" data-hud="mini" checked> Minimap</label></div>
@@ -462,9 +462,10 @@ const resName = t => t === 'ore' ? 'crystal' : t === 'cash' ? 'gold' : t === 'me
 const C = { x: 0, z: 10 };                // fort centre
 const TIERS = [12, 21, 30];               // half-size of each fort ring
 const GATE_HW = 2.5;
-const GAME_VERSION = '2.29';
+const GAME_VERSION = '2.30';
 // newest first; players who come back after an update see the entries newer than the last version they played
 const CHANGELOG = [
+  ['2.30', 'November 2026', ['Raids now wait until your camp\'s wall ring is closed, and the first two raids are much smaller (three, then five raiders).', 'On phones, the camera lifts your hero above the tutorial card so nothing is hidden.']],
   ['2.29', 'November 2026', ['On phones the tutorial now sits at the bottom of the screen, so it no longer covers your hero.']],
   ['2.28', 'November 2026', ['End-game materials are much easier to get: miners carry twice as much crystal, Steel Bars and Frost Glass need half the crystal, and each Frost Gem now makes two Runesteel bars.', 'Golems and mammoths drop Frost Gems twice as often, and every cleared dungeon gives one.', 'Smelt & Brew: a new Make all button makes as many as you can afford in one tap.']],
   ['2.27', 'November 2026', ['Create your hero, reworked: six looks (Braids, Long hair, Shaved, Stache, Beard, Hairy), hair and beards that sit properly on the face, and a hero you drag to turn.', 'Coat, hair and skin colours are tidy drop-downs. Your hood matches your coat, your gloves and boots are a darker shade, legs are black trousers, and every skin colour covers the whole face.', 'Tap the dice to roll a fun hero name like Frostpaw or Emberwick.', 'Starting a new game opens Create your hero again, and the Hero screen has one Change Hero Look button.']],
@@ -2476,10 +2477,10 @@ const TUT = [
   { t: 'Gold and resources', p: 'Your gold, logs, food, stone and crystal are shown top right. Tap a counter to drop that resource or stop collecting it.', hi: 'res' },
   { t: 'Choose what you collect', p: 'Tap the log counter, then Stop collecting: your axe leaves trees alone until you turn it back on. On a keyboard, keys 1-4 do the same (1 wood, 2 food, 3 stone, 4 crystal, the same order as the counters). Turn it back on the same way.', hi: 'res', task: 'Turn log collecting off, then on again', start: () => ({ off: false }), done: b => { if (S.noCollect.log) b.off = true; return b.off && !S.noCollect.log; } },
   { t: 'Your goal', p: 'The GOAL card always tells you what to do next, and the orange arrow on the ground points the way. Follow it whenever you are unsure.', hi: 'quest' },
-  { t: 'Build the walls', p: 'Raiders will come. Glowing build spaces show what they cost. Stand on one until its border fills like a clock, then you pay with what you carry: fix the broken palisade first.', task: 'Build a wall section', start: () => rings[0].segs.filter(sg => sg.built).length, done: b => rings[0].segs.filter(sg => sg.built).length > b || rings[0].complete },
+  { t: 'Build the walls', p: 'Raiders come at night once your wall ring is closed, so finish it first. Glowing build spaces show what they cost. Stand on one until its border fills like a clock, then you pay with what you carry: fix the broken palisade first.', task: 'Build a wall section', start: () => rings[0].segs.filter(sg => sg.built).length, done: b => rings[0].segs.filter(sg => sg.built).length > b || rings[0].complete },
   { t: 'Warmth and food', p: 'These gauges show warmth and, once you build the cookhouse, food. If either reaches zero, villagers die. Hunt rabbits and deer or pick berries and wild roots for food, and sell it at the cookhouse. Meat fills people most, berries least.', hi: 'town' },
   { t: 'Grow your town', p: 'Build houses, a blacksmith whose forge crafts gear from hides and sinew, and lodges to hire workers who gather on their own. Upgrade the Town Hall to unlock a bigger ring of walls.' },
-  { t: 'Raids and danger', p: 'A raid comes every night at nightfall, and each day is harder. Watchtowers and guards help, and the minimap shows raiders in red and your workers out in the wilds (drag it to move it, and use − + ⤡ under it to zoom and resize). The farther you explore, the tougher the monsters and the better the treasure.', hi: 'mini' },
+  { t: 'Raids and danger', p: 'Once your walls are up, a raid comes every night at nightfall. The first is small; each one after is harder. Watchtowers and guards help, and the minimap shows raiders in red and your workers out in the wilds (drag it to move it, and use − + ⤡ under it to zoom and resize). The farther you explore, the tougher the monsters and the better the treasure.', hi: 'mini' },
   { t: 'Menu and more', p: 'The cog holds Help (everything about the game), this tutorial, Co-op, your Hero (gear, pets), pause and sound options. Quests, fishing, dungeons, pets and castles await. Good luck!', hi: 'cog' },
 ];
 let tut = null;
@@ -2714,8 +2715,8 @@ const RAID_IDS = Object.keys(RAID);
 function raidPack(w) {
   if ((S.castle || 0) >= 3) { const n = 1 + Math.min(2, S.dragonWins || 0), out = Array(n).fill('dragon'); for (let i = 0; i < 16 + w * 2; i++) out.push(['troll', 'yeti', 'wraith', 'bear'][i % 4]); S.siege = true; return out; }
   const pool = ['wolf', 'goblin'].concat(w >= 2 ? ['spider'] : [], w >= 3 ? ['bear'] : [], w >= 4 ? ['troll', 'yeti'] : [], w >= 6 ? ['wraith'] : []);
-  const big = ['bear', 'troll', 'yeti', 'wraith'], n = Math.round((4 + Math.floor(w * 1.6) + Math.floor((dayNo() - 1) / 2)) * (1 + (S.castle || 0) * 0.5)), out = [];
-  const lead = pool[Math.random() * pool.length | 0];   // each night has a leading kind plus a mix
+  const big = ['bear', 'troll', 'yeti', 'wraith'], n = w <= 1 ? 3 : w === 2 ? 5 : Math.round((4 + Math.floor(w * 1.6) + Math.floor((dayNo() - 1) / 2)) * (1 + (S.castle || 0) * 0.5)), out = [];
+  const lead = w <= 1 ? 'wolf' : pool[Math.random() * pool.length | 0];   // each night has a leading kind plus a mix
   for (let i = 0; i < n; i++) { let t = Math.random() < 0.45 ? lead : pool[Math.random() * pool.length | 0]; if (big.includes(t) && out.filter(o => big.includes(o)).length >= Math.ceil(w / 3) * (1 + (S.castle || 0))) t = 'wolf'; out.push(t); }
   return out;
 }
@@ -3708,7 +3709,7 @@ function update(dt) {
   }
 
   /* --- raids --- */
-  const raidsOn = S.step >= 3;
+  const raidsOn = S.step >= 3 && (S.wave > 0 || rings[0].complete);   // the first raid waits until the camp's wall ring is closed
   if (isGuest()) {} else if (raidsOn && !S.raidOn) {
     S.waveT = ((0.755 - timeOfDay() + 1) % 1) * DAY_LEN;   // raids come once a night, at nightfall
     if (isNight() && S.lastRaidDay !== dayNo()) {
@@ -3823,7 +3824,7 @@ function update(dt) {
   $('warmBar').style.width = (wf * 100) + '%'; $('warmTxt').textContent = Math.round(wf * 100) + '%'; $('mWarm').classList.toggle('low', wf < 0.25);
   $('foodBar').style.width = (ff * 100) + '%'; $('foodTxt').textContent = S.cook ? Math.round(ff * 100) + '%' : '—'; $('mFood').classList.toggle('low', S.cook && ff < 0.25);
   $('lvTxt').textContent = S.lvl; $('xpBar').style.width = (S.xp / xpNeed(S.lvl) * 100) + '%'; $('xpPct').textContent = Math.floor(S.xp / xpNeed(S.lvl) * 100) + '%';
-  $('waveTxt').textContent = !raidsOn ? '—' : S.raidOn ? 'Now!' : Math.floor(S.waveT / 60) + ':' + String(Math.floor(S.waveT % 60)).padStart(2, '0');
+  $('waveTxt').textContent = !raidsOn ? (S.step >= 3 && !S.wave ? 'After walls' : '—') : S.raidOn ? 'Now!' : Math.floor(S.waveT / 60) + ':' + String(Math.floor(S.waveT % 60)).padStart(2, '0');
   const st = $('status'); const msg = freezing ? 'Freezing! Villagers are dying' : starving ? 'Starving! Villagers are dying' : S.blizOn > 0 ? 'Blizzard ' + Math.ceil(S.blizOn) + 's' : (P >= housing() && S.cook ? 'Housing full: build houses' : '');
   st.hidden = !msg; st.textContent = msg;
   if (bannerT > 0) { bannerT -= dt; if (bannerT <= 0) $('banner').classList.remove('on'); }
@@ -3837,6 +3838,8 @@ function update(dt) {
   snowGeo.attributes.position.needsUpdate = true;
   camTarget.x += (player.x - camTarget.x) * Math.min(1, dt * 6); camTarget.z += (player.z - camTarget.z) * Math.min(1, dt * 6);
   camera.position.copy(camTarget).add(CAM_OFF); camera.lookAt(camTarget);
+  { const tutUp = !$('tut').hidden && innerWidth <= 600 ? Math.round(innerHeight * 0.17) : 0;
+    if (tutUp + 'x' + innerWidth !== camera.userData.tutUp) { camera.userData.tutUp = tutUp + 'x' + innerWidth; if (tutUp) camera.setViewOffset(innerWidth, innerHeight, 0, tutUp, innerWidth, innerHeight); else camera.clearViewOffset(); } }
   snow.position.set(camTarget.x, 0, camTarget.z);
   sun.position.copy(camTarget).add(SUN_OFF); sun.target.position.copy(camTarget);
 }
