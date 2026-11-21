@@ -31,10 +31,9 @@ html,body{height:100%;margin:0;background:var(--ice);color:var(--ink);overflow:h
 .ico{width:24px;height:19px;display:block;flex:none}
 #left{top:calc(8px + env(safe-area-inset-top,0px));left:calc(8px + env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:6px;width:min(58vw,270px)}
 .card{background:var(--panel);border:1px solid var(--panel-line);border-radius:13px;padding:7px 11px;color:#fff}
-#quest{font:800 14px/1.28 var(--body);text-wrap:balance}
-#quest b{display:block;font:12px/1 var(--display);letter-spacing:.14em;color:var(--ember);margin-bottom:4px;text-transform:uppercase}
-#qcard{font:800 13px/1.28 var(--body)}#qcard b{display:block;font:12px/1 var(--display);letter-spacing:.14em;color:#ffd166;margin-bottom:4px;text-transform:uppercase}#qcard small{display:block;margin-top:3px;font:800 11px var(--body);color:#ffd9a0;opacity:.9}
-#quest.alert{border-color:#ff8b7e;box-shadow:0 0 0 2px rgba(226,72,63,.45)}
+#quest{font:800 13px/1.28 var(--body);text-wrap:balance;text-transform:none;letter-spacing:0;border-top:1px solid var(--panel-line);margin-top:2px;padding-top:7px}#quest small{display:block;margin-top:3px;font:800 11px/1.25 var(--body);color:#ffd9a0;opacity:.9}#quest #qNext{color:#cfe0f5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#quest b{display:block;font:12px/1 var(--display);letter-spacing:.14em;color:var(--ember);margin-bottom:4px;text-transform:uppercase}#quest.q b{color:#ffd166}
+#town.alert{border-color:#ff8b7e;box-shadow:0 0 0 2px rgba(226,72,63,.45)}
 #quest.alert b{color:#ff8b7e}
 #town{display:flex;flex-direction:column;gap:5px;font:800 11px/1 var(--body);font-variant-numeric:tabular-nums}
 #town .row{display:flex;justify-content:space-between;align-items:center;gap:8px;letter-spacing:.05em;text-transform:uppercase}
@@ -264,8 +263,6 @@ html,body{height:100%;margin:0;background:var(--ice);color:var(--ink);overflow:h
 <div id="joy"><i></i></div>
 
 <div id="left" class="hud">
-  <div id="quest" class="card"><b id="questHead">Goal</b><span id="questTxt">Chop trees to gather logs</span></div>
-  <div id="qcard" class="card" hidden><b>Quest</b><span id="qTxt"></span><small id="qRew"></small></div>
   <div id="town" class="card">
     <div class="row"><span id="thName">Camp</span><span><span class="k">Pop</span> <span id="popTxt">6/6</span></span></div>
     <div class="meter" id="mWarm"><span>Warmth</span><div class="bar"><i id="warmBar"></i></div><span id="warmTxt">0</span></div>
@@ -275,6 +272,7 @@ html,body{height:100%;margin:0;background:var(--ice);color:var(--ink);overflow:h
     <div class="row"><span class="k">Next raid</span><span id="waveTxt">—</span></div>
     <div class="row"><span class="k">Gear</span><span id="gearTxt">Camp axe</span></div>
     <div class="row" id="status" hidden></div>
+    <div id="quest"><b id="questHead">Beginner quest 1/3</b><span id="questTxt">Chop trees to gather logs</span><small id="qRew" hidden></small><small id="qNext" hidden></small></div>
   </div>
 </div>
 
@@ -299,10 +297,10 @@ html,body{height:100%;margin:0;background:var(--ice);color:var(--ink);overflow:h
 <div id="hint" class="hud">Swipe to move</div>
 <div id="paused" class="hud" hidden>Paused<small>Tap to resume</small></div>
 <div id="netbar" class="hud"><button id="cog" type="button" aria-label="Menu" aria-expanded="false"><svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M19.4 13a7.5 7.5 0 0 0 0-2l2.1-1.6-2-3.5-2.5 1a7.6 7.6 0 0 0-1.7-1L15 3h-4l-.4 2.9a7.6 7.6 0 0 0-1.7 1l-2.5-1-2 3.5L6.6 11a7.5 7.5 0 0 0 0 2l-2.1 1.6 2 3.5 2.5-1a7.6 7.6 0 0 0 1.7 1L11 21h4l.4-2.9a7.6 7.6 0 0 0 1.7-1l2.5 1 2-3.5zM13 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z" transform="translate(-1 0)"/></svg></button><span id="netTxt" hidden></span></div>
-<div id="menu" hidden><div class="box"><h2>Menu</h2><p style="margin:-4px 0 8px;text-align:center;font:800 11px var(--body);color:#8a96a8">Kindlehaven · version 2.31</p>
+<div id="menu" hidden><div class="box"><h2>Menu</h2><p style="margin:-4px 0 8px;text-align:center;font:800 11px var(--body);color:#8a96a8">Kindlehaven · version 2.32</p>
 <div class="mgrid"><button id="helpBtn" type="button">Help</button><button id="newsBtn" type="button">What's new</button><button id="reportBtn" type="button" hidden>Play report</button><button id="tutBtn" type="button">Tutorial</button><button id="coop" type="button">Co-op</button><button id="inviteBtn" type="button" hidden>Invite</button><button id="statsBtn" type="button">Hero</button><button id="pause" type="button">Pause</button><button id="mute" type="button">Sound: on</button><button id="newg" type="button">New game</button></div>
 <h3>Show on screen</h3>
-<div class="mshow"><label><input type="checkbox" data-hud="quest" checked> Goal</label><label><input type="checkbox" data-hud="qcard" checked> Quest</label><label><input type="checkbox" data-hud="town" checked> Town gauges</label><label><input type="checkbox" data-hud="res" checked> Resources</label><label><input type="checkbox" data-hud="mini" checked> Minimap</label></div>
+<div class="mshow"><label><input type="checkbox" data-hud="quest" checked> Quest</label><label><input type="checkbox" data-hud="town" checked> Town gauges</label><label><input type="checkbox" data-hud="res" checked> Resources</label><label><input type="checkbox" data-hud="mini" checked> Minimap</label></div>
 <h3>Sounds</h3><div class="mshow" id="sndList"></div>
 <button id="closeMenu" type="button" class="ghost">Close</button></div></div>
 <div id="invite" hidden><div class="box"><h2>Play together</h2><p>Scan with a phone, open Kindlehaven and tap <b>Co-op</b> to join your town.</p><div id="qr"></div><p class="link"><span id="inviteUrl"></span></p><div class="btns"><button id="copyLink" type="button">Copy link</button><button id="closeInvite" type="button">Done</button></div><p class="fine">Friends need access to this page: share it from the page’s Share menu first.</p></div></div>
@@ -462,9 +460,10 @@ const resName = t => t === 'ore' ? 'crystal' : t === 'cash' ? 'gold' : t === 'me
 const C = { x: 0, z: 10 };                // fort centre
 const TIERS = [12, 21, 30];               // half-size of each fort ring
 const GATE_HW = 2.5;
-const GAME_VERSION = '2.31';
+const GAME_VERSION = '2.32';
 // newest first; players who come back after an update see the entries newer than the last version they played
 const CHANGELOG = [
+  ['2.32', 'November 2026', ['A tidier screen: goals and quests are now one Quest section at the bottom of the town box. Your first three goals are beginner quests, and later the Next line shows what to build.', 'The Raids and danger tutorial step is shorter so it fits on small screens.']],
   ['2.31', 'November 2026', ['Your hero stays in the centre of the screen during the tutorial; on phones the tutorial card is shorter so it stays below your hero.']],
   ['2.30', 'November 2026', ['Raids now wait until your camp\'s wall ring is closed, and the first two raids are much smaller (three, then five raiders).']],
   ['2.29', 'November 2026', ['On phones the tutorial now sits at the bottom of the screen, so it no longer covers your hero.']],
@@ -2457,11 +2456,18 @@ function questEvent(type, what, n = 1) {
     renderQuest();
   }
 }
-function renderQuest() {
-  const q = S.quest, el = $('qcard'); if (!el) return;
-  if (!q) { el.hidden = true; return; } el.hidden = false;
-  $('qTxt').textContent = q.done ? 'Done! A new quest comes soon' : q.text + (q.n > 1 ? ' (' + q.have + '/' + q.n + ')' : '');
-  $('qRew').textContent = q.done ? '' : 'Reward: ' + q.gold + ' gold + ' + ['★', '★★', '★★★', '★★★★', '★★★★★'][q.tier] + ' chest';
+function renderQuest() {}   // the quest section is drawn each frame with the goal (questCard)
+/* one quest section at the bottom of the town box: danger first, then the three beginner quests (the early goals),
+   then the current quest with its reward, plus a one-line hint of the next thing to build */
+function questCard(g) {
+  const q = S.quest, live = q && !q.done, txt = (id, v) => { const e = $(id); if (e.textContent !== v) e.textContent = v; e.hidden = !v; };
+  let head, main, rew = '', next = '';
+  if (g.alert) { head = 'Danger'; main = g.txt; }
+  else if (S.step < 3) { head = 'Beginner quest ' + (S.step + 1) + '/3'; main = g.txt; }
+  else if (live) { head = 'Quest'; main = q.text + (q.n > 1 ? ' (' + q.have + '/' + q.n + ')' : ''); rew = 'Reward: ' + q.gold + ' gold + ' + ['★', '★★', '★★★', '★★★★', '★★★★★'][q.tier] + ' chest'; next = g.txt ? 'Next: ' + g.txt : ''; }
+  else { head = 'Next'; main = g.txt || (q && q.done ? 'Quest done! A new one comes soon' : 'Explore and grow your town'); }
+  txt('questHead', head); txt('questTxt', main); txt('qRew', rew); txt('qNext', next);
+  $('quest').classList.toggle('q', head === 'Quest'); $('quest').classList.toggle('alert', !!g.alert); $('town').classList.toggle('alert', !!g.alert);
 }
 function updateQuests(dt) {
   if (S.step < 3) return;
@@ -2477,11 +2483,11 @@ const TUT = [
   { t: 'Keep your people warm', p: 'Villagers burn firewood. Walk to the firewood stall (blue roof) and stand in the dashed spot behind its counter: you hand over your logs, and villagers buy them for gold.', hi: 'town', task: 'Hand logs to the firewood stall', start: () => fireStall.received, done: b => fireStall.received > b },
   { t: 'Gold and resources', p: 'Your gold, logs, food, stone and crystal are shown top right. Tap a counter to drop that resource or stop collecting it.', hi: 'res' },
   { t: 'Choose what you collect', p: 'Tap the log counter, then Stop collecting: your axe leaves trees alone until you turn it back on. On a keyboard, keys 1-4 do the same (1 wood, 2 food, 3 stone, 4 crystal, the same order as the counters). Turn it back on the same way.', hi: 'res', task: 'Turn log collecting off, then on again', start: () => ({ off: false }), done: b => { if (S.noCollect.log) b.off = true; return b.off && !S.noCollect.log; } },
-  { t: 'Your goal', p: 'The GOAL card always tells you what to do next, and the orange arrow on the ground points the way. Follow it whenever you are unsure.', hi: 'quest' },
+  { t: 'Your quests', p: 'The bottom of the town box shows your quest. The first three are beginner quests; after that you get quests with rewards, and a Next line with what to build. The orange arrow on the ground points the way.', hi: 'quest' },
   { t: 'Build the walls', p: 'Raiders come at night once your wall ring is closed, so finish it first. Glowing build spaces show what they cost. Stand on one until its border fills like a clock, then you pay with what you carry: fix the broken palisade first.', task: 'Build a wall section', start: () => rings[0].segs.filter(sg => sg.built).length, done: b => rings[0].segs.filter(sg => sg.built).length > b || rings[0].complete },
   { t: 'Warmth and food', p: 'These gauges show warmth and, once you build the cookhouse, food. If either reaches zero, villagers die. Hunt rabbits and deer or pick berries and wild roots for food, and sell it at the cookhouse. Meat fills people most, berries least.', hi: 'town' },
   { t: 'Grow your town', p: 'Build houses, a blacksmith whose forge crafts gear from hides and sinew, and lodges to hire workers who gather on their own. Upgrade the Town Hall to unlock a bigger ring of walls.' },
-  { t: 'Raids and danger', p: 'Once your walls are up, a raid comes every night at nightfall. The first is small; each one after is harder. Watchtowers and guards help, and the minimap shows raiders in red and your workers out in the wilds (drag it to move it, and use − + ⤡ under it to zoom and resize). The farther you explore, the tougher the monsters and the better the treasure.', hi: 'mini' },
+  { t: 'Raids and danger', p: 'Once your walls are up, raiders come every night, a little tougher each time. Towers and guards help. On the minimap raiders show in red; drag it to move it, and use − + ⤡ to zoom and resize.', hi: 'mini' },
   { t: 'Menu and more', p: 'The cog holds Help (everything about the game), this tutorial, Co-op, your Hero (gear, pets), pause and sound options. Quests, fishing, dungeons, pets and castles await. Good luck!', hi: 'cog' },
 ];
 let tut = null;
@@ -3806,7 +3812,7 @@ function update(dt) {
   /* --- goals & guide --- */
   let g = goal();
   while (g.done && S.step < 3) { S.step++; g = goal(); }
-  $('questTxt').textContent = g.txt; $('questHead').textContent = g.alert ? 'Danger' : 'Goal'; $('quest').classList.toggle('alert', !!g.alert);
+  questCard(g);
   const tgt = g.tgt;
   if (tgt && S.downT <= 0) {
     guide.visible = true; guide.position.set(tgt.x, 3.0 + Math.sin(time * 5) * 0.25 + (tgt.kind === 'tree' ? 1.2 : 0), tgt.z); guide.rotation.y += dt * 2;
